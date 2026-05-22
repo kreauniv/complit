@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Interrogating programs &#8212; CompLIT: Programming Literacy v1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d8a2add5" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <script src="_static/documentation_options.js?v=5cb08e4e"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Words" href="words.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="interrogating-programs">
+<h1>Interrogating programs<a class="headerlink" href="#interrogating-programs" title="Link to this heading">¶</a></h1>
+<p>Consider the following program that builds an image -</p>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="o">#</span><span class="nv">lang</span><span class="w"> </span><span class="nv">racket</span>
+<span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="nv">2htdp/image</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">beside</span>
+<span class="w">   </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">)</span>
+<span class="w">          </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">))</span>
+<span class="w">   </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">)</span>
+<span class="w">          </span><span class="p">(</span><span class="nf">overlay</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;outline</span><span class="w"> </span><span class="ss">&#39;black</span><span class="p">)</span>
+<span class="w">                   </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;green</span><span class="p">)))</span>
+<span class="w">   </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">)</span>
+<span class="w">          </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>How do we go about understanding what this program does if we know only the
+basic notation of Racket to help us read it? Below is a possible approach for
+this particular program. The principles used to interrogate this program are
+general though and you’ll gradually build fluency with them.</p>
+<section id="run-the-program">
+<h2>Run the program<a class="headerlink" href="#run-the-program" title="Link to this heading">¶</a></h2>
+<p>First, we see that the only thing the program does is to construct an image. We
+know this because we know the words we’re reading make images either from
+scratch or by combining images they apply to.</p>
+<p>So we can just hit “Run” and see what happens. We get what looks like a row of
+three houses (yeah imagine they are). This step is part of understanding the
+result of a program. We still haven’t figured out how the program produces it.</p>
+<p>Running the program has many uses. If there are basic errors in the program
+such as the syntax used, Racket will flag them when you hit “Run”. If the
+program makes use of identifiers that aren’t in the scope, Racket will flag
+those for you. <a class="footnote-reference brackets" href="#addpkg" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> You can then decide what you wish to do with the
+program – you can try to fix it or send it back to its creator and report the
+problem.</p>
+<p>Some kinds of programs only provide definitions and don’t actually compute any
+values. Once you’re done with this section, you’ll have an idea of how to
+understand such programs as well.</p>
+</section>
+<section id="code-formatting">
+<h2>Code formatting<a class="headerlink" href="#code-formatting" title="Link to this heading">¶</a></h2>
+<p>Programs are written not only to instruct computers, but also to communicate
+“how to” knowledge to other human readers.</p>
+<blockquote>
+<div><p>“Programs must be written for people to read and only incidentally for
+machines to execute”.</p>
+<p class="attribution">—Gerald Sussman, in “The Structure and Interpretation of Computer Programs”</p>
+</div></blockquote>
+<p>The way the arguments to the <code class="docutils literal notranslate"><span class="pre">beside</span></code> word are laid out is something
+to pay attention to. Each sub-expression appears aligned on its own
+– i.e. the <code class="docutils literal notranslate"><span class="pre">(above</span></code> are all very visibly distinct. Compare that with
+the below way of writing the same program –</p>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">beside</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span>
+<span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">overlay</span>
+<span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;outline</span><span class="w"> </span><span class="ss">&#39;black</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span>
+<span class="ss">&#39;green</span><span class="p">)))</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span>
+<span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>To Racket, this reads the same and it means exactly the same as the program
+above, and will therefore produce exactly the same image. Racket doesn’t care
+how many or what kind of space you use to separate the words you give it. But
+it is clear that if we write it this way, the relationships between the parts
+are obfuscated compared to the original presentation above.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>Different programming languages show different tolerances to such re-flowing
+of the code. With python, the “white space” matters and often confuses
+novices. Haskell also has white space sensitive syntax, though there are
+means to get around it. But other languages like C/C++, Java and Julia are
+far less white space sensitive.</p>
+</div>
+<p>Racket helps you suggest to your reader how you want your program to be read.
+With the above code copy-pasted into DrRacket’s editor, place your cursor to
+the left of the first <code class="docutils literal notranslate"><span class="pre">(above</span></code> and press &lt;enter&gt;. You’ll see that it appears
+automatically indentend on the next line. For the <code class="docutils literal notranslate"><span class="pre">above</span></code> expression which
+composes two pictures, we can permit one of them to be on the same line without
+loss of clarity. So now place the cursor to the left of <code class="docutils literal notranslate"><span class="pre">(rectangle</span></code> and
+press &lt;enter&gt;. You’ll see that Racket will align it with the opening
+parenthesis of the preceding <code class="docutils literal notranslate"><span class="pre">(triangle</span></code>. By proceeding in this manner, you
+can format the text in a manner you think aligns with the way you - the author
+- read the expression and expect your readers to do the same.</p>
+<div class="admonition-expectation admonition">
+<p class="admonition-title"><strong>Expectation</strong></p>
+<p>You’re expected to present your code to humans, well formatted,
+as any literate programmer would do.</p>
+</div>
+</section>
+<section id="challenges-reading-code">
+<h2>Challenges reading code<a class="headerlink" href="#challenges-reading-code" title="Link to this heading">¶</a></h2>
+<p>To read text in any language and understand what is being said, you need to
+know the script, how words are constructed, vocabulary (i.e. words and what
+they mean), phrase and sentence structure (i.e. the grammar).</p>
+<p>Programs are not very different from that.</p>
+<ul class="simple">
+<li><p><strong>Words</strong>: What identifiers does the program use?</p></li>
+<li><p><strong>Context</strong>: Where does the meaning of a particular identifier come from?
+Local contexts are also called “scope”.</p></li>
+<li><p><strong>Expression</strong>: What is the extent of an expression? i.e. where does a complete
+expression that an identifier participates in begin and end.</p></li>
+</ul>
+</section>
+<section id="unknown-words">
+<h2>Unknown words<a class="headerlink" href="#unknown-words" title="Link to this heading">¶</a></h2>
+<p>If you don’t know the meaning of a word/identifier used in the Racket code, you
+can place the cursor on the word in DrRacket. You’ll see a documentation arrow
+at the top right corner of the editor window. If you then move your mouse to
+that arrow, you’ll see it open up and provide some information about how to use
+that word. This is a brief assuming you only need to be <strong>reminded</strong> of how to
+use it. If you truly don’t know, you can click the “Read more” link which will
+take you to the documentation of that identifier.</p>
+<figure class="align-center" id="id3">
+<img alt="_images/triangle-docs1.png" src="_images/triangle-docs1.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">An example of using the quick reference to remind yourself of how the
+<code class="docutils literal notranslate"><span class="pre">triangle</span></code> word provided by the <code class="docutils literal notranslate"><span class="pre">2htdp/image</span></code> package is to be used.
+Notice the “read more…” link that will take you to the full documentation.</span><a class="headerlink" href="#id3" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The full documentation for <code class="docutils literal notranslate"><span class="pre">triangle</span></code> is shown below. It consists of two
+parts – first comes a syntactic presentation of how the word is to be used.
+This should give you an idea of the pattern to expect in the code wherever
+you’re seeing the <code class="docutils literal notranslate"><span class="pre">triangle</span></code> word (in the <code class="docutils literal notranslate"><span class="pre">2htdp/image</span></code> package context).
+The second is a textual description of what it means. This usually also includes
+a description of the “arguments” a.k.a. “parameters” of the expression that
+the operator word is part of, whose meaning you’re really interested in.</p>
+<figure class="align-center" id="id4">
+<img alt="_images/triangle-docs2.png" src="_images/triangle-docs2.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">The full documentation of the <code class="docutils literal notranslate"><span class="pre">triangle</span></code> word.</span><a class="headerlink" href="#id4" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>In the first part of the documentation, for now, you’ll need to pay attention
+to just the expression form with the named arguments as shown in <a class="reference internal" href="#triangle-docline">triangle-docline</a>.</p>
+<figure class="align-center" id="id5">
+<span id="triangle-docline"></span><img alt="_images/triangle-docline.png" src="_images/triangle-docline.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">First documentation cue about how to use <code class="docutils literal notranslate"><span class="pre">triangle</span></code>.</span><a class="headerlink" href="#id5" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>This line says that the bold operator word (<strong>``triangle``</strong>) is a “procedure”.
+This means it needs to participate in an expression with some additional given
+information (its “arguments”) in order to mean something in your program.</p>
+<p>The line also points to <code class="docutils literal notranslate"><span class="pre">triangle</span></code> needing three such arguments – the
+<code class="docutils literal notranslate"><span class="pre">side-length</span></code>, the <code class="docutils literal notranslate"><span class="pre">mode</span></code> and <code class="docutils literal notranslate"><span class="pre">color</span></code>. If you’re just trying to remind
+yourself of the operator, these argument names are usually sufficient and you
+can move on from here. If you can’t tell what <em>side-length</em> means, for
+instance, you can read the body text to understand. More often, you can use
+your understanding of what a “triangle” is to guess what <em>side-length</em> might
+mean, and cross check your understanding in the interaction window.</p>
+<p>The line also says that the whole expression is an “image” (the “→ image?” part
+of the line). The reason there is an “?” at the end of “→ image?” is that the
+<code class="docutils literal notranslate"><span class="pre">image?</span></code> word itself is a procedure that answers <code class="docutils literal notranslate"><span class="pre">#t</span></code> when given an image and
+<code class="docutils literal notranslate"><span class="pre">#f</span></code> for any other kind of value. In a way, what the “→ image?” part is telling you
+is that <code class="docutils literal notranslate"><span class="pre">(image?</span> <span class="pre">(triangle</span> <span class="pre">&lt;side-length&gt;</span> <span class="pre">&lt;mode&gt;</span> <span class="pre">&lt;color&gt;))</span></code> (for specific values
+of the arguments) will always give you <code class="docutils literal notranslate"><span class="pre">#t</span></code>.</p>
+<p>We’ll skip the remainder of the top box for now and skip to the body text.
+Usually the body text will also include one or more examples of using the
+procedure word/identifier. It will often also have hyperlinks to other parts
+of the documentation that give more detail.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Read documentation with a question in mind</p>
+<p>If you force yourself to read all the documentation pertaining to a single
+operator word like <code class="docutils literal notranslate"><span class="pre">triangle</span></code> and follow through all the hyperlinks,
+you might end up reading about all of Racket and the 2htdp/image package!
+It is therefore very important to read with a question in your mind and
+seek the answer to that question. Once you get an answer, another question
+might form in your mind which might require reading further. As long as
+knowing the answer to that question contributes more to your understanding
+of the previous answer, seeking out this follow up question is ok. But
+don’t in general “go down the rabbit hole”, but <strong>read with intention</strong>.</p>
+</div>
+<p>A very useful part of the body of the documentation is the “examples” section.
+Just reading the code in the examples section often gives you an idea about how
+the word is to be used.</p>
+<figure class="align-center" id="id6">
+<img alt="_images/triangle-example.png" src="_images/triangle-example.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">The example presented in the documentation for <code class="docutils literal notranslate"><span class="pre">triangle</span></code> in the
+<code class="docutils literal notranslate"><span class="pre">2htdp/image</span></code> package.</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Putting all of this together, we can now understand the expression
+<code class="docutils literal notranslate"><span class="pre">(triangle</span> <span class="pre">40</span> <span class="pre">'solid</span> <span class="pre">'red)</span></code> to mean “an upright solid red triangle
+of side length 40 units”.</p>
+</section>
+<section id="sub-expressions">
+<h2>Sub-expressions<a class="headerlink" href="#sub-expressions" title="Link to this heading">¶</a></h2>
+<p>Even before we jump into the documentation for <code class="docutils literal notranslate"><span class="pre">triangle</span></code>, we can
+find out what the expression means using the interaction window.
+Since all the supplied arguments to the triangle are concrete values
+and not identifiers that further need to be determined, we can simply
+copy-paste the <code class="docutils literal notranslate"><span class="pre">(triangle</span> <span class="pre">40</span> <span class="pre">'solid</span> <span class="pre">'red)</span></code> expression and paste
+it into the interaction window (and press &lt;enter&gt;, which we’ll stop
+saying from now on).</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Copy-pasting expressions in DrRacket</p>
+<p>DrRacket makes it easy for you to work with expressions. If you position the
+cursor to the left of the opening parenthesis of <code class="docutils literal notranslate"><span class="pre">(triangle</span> <span class="pre">...)</span></code>, you can
+see that DrRacket highlights the expression already. To copy-paste the
+<code class="docutils literal notranslate"><span class="pre">(triangle</span> <span class="pre">40</span> <span class="pre">'solid</span> <span class="pre">'red)</span></code> expression, position the cursor to the left of
+the opening parenthesis, then press alt-shift-rightarrow to select the whole
+expression. Then the usual copy/paste commands work as usual. If you’re
+closer to the closing parenthesis, you can use alt-shift-leftarrow once you
+place the cursor to the right of the closing parenthesis to select the
+expression.</p>
+<p>These cursor movements are very useful when rewriting expressions to
+understand them.</p>
+</div>
+<p>You’ll see a red upright triangle show up there. You might have questions about
+what the <code class="docutils literal notranslate"><span class="pre">40</span></code> means, in which case you can type out <code class="docutils literal notranslate"><span class="pre">(triangle</span> <span class="pre">80</span> <span class="pre">'solid</span>
+<span class="pre">'red)</span></code> and you’ll see a bigger triangle and can therefore guess that the
+number has to do with the size of the triangle. You might also try out
+<code class="docutils literal notranslate"><span class="pre">(triangle</span> <span class="pre">40</span> <span class="pre">'solid</span> <span class="pre">'green)</span></code> and see that various colour names are possible
+for the third argument.</p>
+<p>You can go through the same process for <code class="docutils literal notranslate"><span class="pre">(rectangle</span> <span class="pre">40</span> <span class="pre">40</span> <span class="pre">'solid</span> <span class="pre">'brown)</span></code>
+as well since all its arguments are also known and you might only need to
+lookup the documentation for <code class="docutils literal notranslate"><span class="pre">rectangle</span></code> if you want to do that.</p>
+<div class="admonition-task admonition">
+<p class="admonition-title"><strong>Task</strong></p>
+<p>Go through the above process for <code class="docutils literal notranslate"><span class="pre">rectangle</span></code> and the expression to
+familiarize yourself with this process.</p>
+</div>
+</section>
+<section id="giving-meaning">
+<h2>Giving meaning<a class="headerlink" href="#giving-meaning" title="Link to this heading">¶</a></h2>
+<p>The interesting thing about our program is that it is made up of expressions
+all the way. Let’s look at the <code class="docutils literal notranslate"><span class="pre">(above</span> <span class="pre">...)</span></code> expression first.</p>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">)</span>
+<span class="w">       </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now that we know what the <code class="docutils literal notranslate"><span class="pre">(triangle</span> <span class="pre">...)</span></code> and <code class="docutils literal notranslate"><span class="pre">(rectangle</span> <span class="pre">...)</span></code>
+expressions mean, we can “read” the <code class="docutils literal notranslate"><span class="pre">(above</span> <span class="pre">...)</span></code> expression as
+<code class="docutils literal notranslate"><span class="pre">(above</span> <span class="pre">&lt;a-red-triangle&gt;</span> <span class="pre">&lt;a-brown-rectangle&gt;)</span></code>. Given the
+word has been well chosen in this case, we might guess this whole
+expression means the picture “a red triangle above a brown rectangle”.</p>
+<p>You have a couple of paths in front of you now. You can either go to the
+documentation of <code class="docutils literal notranslate"><span class="pre">above</span></code> to confirm your guess, or use the experimental
+approach to find out whether your guess was right.</p>
+<p>Since all the identifiers in the expression are determined purely in the
+<code class="docutils literal notranslate"><span class="pre">2htdp/image</span></code> package context, we can just copy-paste this whole
+<code class="docutils literal notranslate"><span class="pre">(above</span> <span class="pre">...)</span></code> expression and paste it into the interaction window.</p>
+<p>When we do that, we see that it looks like a house – well, perhaps a
+hyper simplified monopoly-piece-like “house”, but that’s an interpretation
+we might given.</p>
+<p>Now, we might understand that the <code class="docutils literal notranslate"><span class="pre">(triangle</span> <span class="pre">...)</span></code> is a “roof” and the
+<code class="docutils literal notranslate"><span class="pre">(rectangle</span> <span class="pre">...)</span></code> is the “front” of the “house”.</p>
+<div class="admonition-reflect admonition">
+<p class="admonition-title"><strong>Reflect</strong></p>
+<p>If the person who wrote the program directly <strong>told</strong> you about the
+“house” and “roof” and “front”, wouldn’t you have been able to read
+and understand this much more easily?</p>
+</div>
+<p>You might also notice that <code class="docutils literal notranslate"><span class="pre">(triangle</span> <span class="pre">40</span> <span class="pre">'solid</span> <span class="pre">'red)</span></code> appears 3 times
+in the program. To reflect our newly gained understanding that this is
+a drawing of a “house” with a “roof” and a “front”, we can rewrite the
+program thus without changing its meaning –</p>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">front</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">house</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="nv">front</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">beside</span><span class="w"> </span><span class="nv">house</span>
+<span class="w">        </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="nv">roof</span>
+<span class="w">               </span><span class="p">(</span><span class="nf">overlay</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;outline</span><span class="w"> </span><span class="ss">&#39;black</span><span class="p">)</span>
+<span class="w">                        </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;green</span><span class="p">)))</span>
+<span class="w">        </span><span class="nv">house</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>So the first and the third “houses” are the same and we can already guess that
+<code class="docutils literal notranslate"><span class="pre">beside</span></code> is putting the houses in a row. So the second expression must be
+the second house which stands out a bit. We can now see that only its
+“front” is different. So we can “pull” that out of the expression to make
+that clear.</p>
+<div class="highlight-scheme notranslate" id="rewritten-program"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">front</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">house</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="nv">front</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">unique-front</span><span class="w"> </span><span class="p">(</span><span class="nf">overlay</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;outline</span><span class="w"> </span><span class="ss">&#39;black</span><span class="p">)</span>
+<span class="w">                              </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;green</span><span class="p">)))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">unique-house</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="nv">unique-front</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">beside</span><span class="w"> </span><span class="nv">house</span><span class="w"> </span><span class="nv">unique-house</span><span class="w"> </span><span class="nv">house</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Btw, Racket identifiers can have multiple words and by convention these words
+are all in lower case and separated by a hyphen character, like with
+<code class="docutils literal notranslate"><span class="pre">unique-front</span></code> and <code class="docutils literal notranslate"><span class="pre">unique-house</span></code>.</p>
+<div class="admonition-important-lesson admonition">
+<p class="admonition-title"><strong>Important lesson</strong></p>
+<p>This is an important point of difference with what “reading” means in the
+context of a program. It is not only the case that you can interactively
+“figure out” what each part of the program means, and put together the
+meaning/purpose/function of the program, you can also do that by a process
+of incrementally rewriting the program in a way that always preserves that
+meaning in each step.</p>
+</div>
+</section>
+<section id="scopes">
+<h2>Scopes<a class="headerlink" href="#scopes" title="Link to this heading">¶</a></h2>
+<p>In <a class="reference internal" href="#rewritten-program">rewritten-program</a>, we recast the whole program as the expression <code class="docutils literal notranslate"><span class="pre">(beside</span>
+<span class="pre">house</span> <span class="pre">unique-house</span> <span class="pre">house)</span></code> by defining new words <code class="docutils literal notranslate"><span class="pre">roof</span></code>, <code class="docutils literal notranslate"><span class="pre">front</span></code>,
+<code class="docutils literal notranslate"><span class="pre">house</span></code>, <code class="docutils literal notranslate"><span class="pre">unique-front</span></code> and <code class="docutils literal notranslate"><span class="pre">unique-house</span></code>. If you point your cursor to
+the word <code class="docutils literal notranslate"><span class="pre">house</span></code> in the final <code class="docutils literal notranslate"><span class="pre">(beside</span> <span class="pre">...)</span></code> expression, DrRacket will draw
+an arrow from our definition of <code class="docutils literal notranslate"><span class="pre">house</span></code> to where we’ve used that definition.</p>
+<p>Similarly, pointing to <code class="docutils literal notranslate"><span class="pre">triangle</span></code> will cause DrRacket to draw an arrow from
+the <code class="docutils literal notranslate"><span class="pre">2htdp/image</span></code> package name in the <code class="docutils literal notranslate"><span class="pre">(require</span> <span class="pre">...)</span></code> form which introduces
+new vocabulary for us, thus telling us that this word is coming from that
+package.</p>
+<p>With the <a class="reference internal" href="#rewritten-program">rewritten-program</a>, if you click the “Run” button, all of the words
+we’ve defined in the program will “come into scope” in the interaction window.
+This means, we can now type <code class="docutils literal notranslate"><span class="pre">roof</span></code> or <code class="docutils literal notranslate"><span class="pre">house</span></code> or <code class="docutils literal notranslate"><span class="pre">unique-house</span></code> in the
+interaction window and see each of the components separately.</p>
+<p>This way, we can see that our <code class="docutils literal notranslate"><span class="pre">(define</span> <span class="pre">...)</span></code> forms introduce an identifier in a
+scope and it is only within this scope that the identifier gets the meaning
+given in its definition.</p>
+</section>
+<section id="abstraction">
+<h2>Abstraction<a class="headerlink" href="#abstraction" title="Link to this heading">¶</a></h2>
+<p>While <a class="reference internal" href="#rewritten-program">rewritten-program</a> is a bit clearer than the original version, thanks
+to the introduction of identifiers that tell the reader the “domain meaning”
+of the individual constructs (maybe this is a kid’s street map), there is
+still some repetition in the code we may notice.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">(rectangle</span> <span class="pre">40</span> <span class="pre">40</span> <span class="pre">'solid</span> <span class="pre">'brown)</span></code> and <code class="docutils literal notranslate"><span class="pre">(rectangle</span> <span class="pre">40</span> <span class="pre">40</span> <span class="pre">'solid</span> <span class="pre">'green)</span></code>
+differ only in the color of the front. As it stands, the word <code class="docutils literal notranslate"><span class="pre">front</span></code> that we’ve
+defined only stands for the “brown painted front”, while there is also
+a “green painted front” to be dealt with. This gives us a suggestion that
+maybe the concept of “front” requires the colour of the front to be made
+concrete (ahem, pun not intended).</p>
+<p>The word “abstraction” means “removing unnecessary details for a purpose”.
+Here, we’re lifting the concrete definition of our <code class="docutils literal notranslate"><span class="pre">front</span></code> word which
+currently means “brown colored front” to the abstraction of a “front”
+that is independent of the colour. We can capture this abstraction
+using a definition like shown below –</p>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="nv">colour</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="nv">colour</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>A few things to notice here.</p>
+<ul class="simple">
+<li><p>In place of just an identifier like we had earlier, we now have <code class="docutils literal notranslate"><span class="pre">(front</span> <span class="pre">colour)</span></code>.
+One way to read this definition is as “the form <code class="docutils literal notranslate"><span class="pre">(front</span> <span class="pre">colour)</span></code> is defined
+to be a rectangle of dimensions 40x40 filled solid with the colour <code class="docutils literal notranslate"><span class="pre">colour</span></code>”.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">colour</span></code> identifier in <code class="docutils literal notranslate"><span class="pre">(front</span> <span class="pre">colour)</span></code> is a placeholder identifier.
+When we use it as <code class="docutils literal notranslate"><span class="pre">(front</span> <span class="pre">'brown)</span></code>, it will be as though the identifier
+<code class="docutils literal notranslate"><span class="pre">colour</span></code> in the definition got replaced by <code class="docutils literal notranslate"><span class="pre">'brown</span></code> everywhere it occurred.</p></li>
+</ul>
+<p>Therefore, <code class="docutils literal notranslate"><span class="pre">(front</span> <span class="pre">'brown)</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">(rectangle</span> <span class="pre">40</span> <span class="pre">40</span> <span class="pre">'solid</span> <span class="pre">'brown)</span></code>
+and <code class="docutils literal notranslate"><span class="pre">(front</span> <span class="pre">'green)</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">(rectangle</span> <span class="pre">40</span> <span class="pre">40</span> <span class="pre">'solid</span> <span class="pre">'green)</span></code>.</p>
+<p>We can now improve our program a bit while still retaining the same meaning.</p>
+<div class="highlight-scheme notranslate" id="rewritten-abstract1"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="nv">colour</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="nv">colour</span><span class="p">)))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">house</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">)))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">unique-front</span><span class="w"> </span><span class="p">(</span><span class="nf">overlay</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;outline</span><span class="w"> </span><span class="ss">&#39;black</span><span class="p">)</span>
+<span class="w">                              </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;green</span><span class="o">&#39;</span><span class="p">)))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">unique-house</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="nv">unique-front</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">beside</span><span class="w"> </span><span class="nv">house</span><span class="w"> </span><span class="nv">unique-house</span><span class="w"> </span><span class="nv">house</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now we might also notice that the definitions for <code class="docutils literal notranslate"><span class="pre">house</span></code> and <code class="docutils literal notranslate"><span class="pre">unique-house</span></code> only
+differ in how their fronts are constructed. They are both “houses with front-designs”.
+So we can now abstract the concept of a “house” to mean “a house that has a given
+front design”. Similar to what we did with <code class="docutils literal notranslate"><span class="pre">front</span></code>, we can now make <code class="docutils literal notranslate"><span class="pre">house</span></code>
+into an abstraction. Read the code below carefully and make sure you understand it.</p>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="nv">colour</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="nv">colour</span><span class="p">)))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="nf">house</span><span class="w"> </span><span class="nv">front-design</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="nv">front-design</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">unique-front</span><span class="w"> </span><span class="p">(</span><span class="nf">overlay</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;outline</span><span class="w"> </span><span class="ss">&#39;black</span><span class="p">)</span>
+<span class="w">                              </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;green</span><span class="o">&#39;</span><span class="p">)))</span>
+<span class="p">(</span><span class="nf">beside</span><span class="w"> </span><span class="p">(</span><span class="nf">house</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="nf">house</span><span class="w"> </span><span class="nv">unique-front</span><span class="p">)</span>
+<span class="w">        </span><span class="p">(</span><span class="nf">house</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>Now the form of <code class="docutils literal notranslate"><span class="pre">(beside</span> <span class="pre">...)</span></code> is much clearer to read as “a brown house
+beside a house with a unique front and then another brown house”.</p>
+<div class="admonition-task admonition">
+<p class="admonition-title"><strong>Task</strong></p>
+<p>Point your cursor to the identifier <code class="docutils literal notranslate"><span class="pre">colour</span></code> inside the <code class="docutils literal notranslate"><span class="pre">(rectangle</span> <span class="pre">40</span> <span class="pre">40</span>
+<span class="pre">'solid</span> <span class="pre">colour)</span></code> expression. You’ll see that DrRacket draws an arrow from
+<code class="docutils literal notranslate"><span class="pre">colour</span></code> within <code class="docutils literal notranslate"><span class="pre">(define</span> <span class="pre">(front</span> <span class="pre">colour)</span> <span class="pre">...)</span></code> to this occurrence,
+indicating that the meaning of the word <code class="docutils literal notranslate"><span class="pre">colour</span></code> in this context is
+determined by the value of the first argument <code class="docutils literal notranslate"><span class="pre">front</span></code> in an expression
+like <code class="docutils literal notranslate"><span class="pre">(front</span> <span class="pre">'brown)</span></code>.</p>
+<p>We say “the scope of <code class="docutils literal notranslate"><span class="pre">colour</span></code> is the definition of <code class="docutils literal notranslate"><span class="pre">front</span></code>. This
+identifier is therefore not visible “outside” of the definition. If you, for
+example, run this program and type <code class="docutils literal notranslate"><span class="pre">colour</span></code> into the interaction window,
+Racket will tell you that the identifier is “undefined”.</p>
+</div>
+<p>While <code class="docutils literal notranslate"><span class="pre">beside</span></code> in this case is clear enough, in this particular domain
+context, it is being used to stand for the concept “a row of”. What we want
+to really say is “a row of houses”. We can introduce that as a word now
+and (in this case) define it to simply mean <code class="docutils literal notranslate"><span class="pre">beside</span></code>.</p>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="nv">colour</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="nv">colour</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="nf">house</span><span class="w"> </span><span class="nv">front-design</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="nv">front-design</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">unique-front</span><span class="w"> </span><span class="p">(</span><span class="nf">overlay</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;outline</span><span class="w"> </span><span class="ss">&#39;black</span><span class="p">)</span>
+<span class="w">                              </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;green</span><span class="p">)))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">a-row-of</span><span class="w"> </span><span class="nv">beside</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">a-row-of</span><span class="w"> </span><span class="p">(</span><span class="nf">house</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">))</span>
+<span class="w">          </span><span class="p">(</span><span class="nf">house</span><span class="w"> </span><span class="nv">unique-front</span><span class="p">)</span>
+<span class="w">          </span><span class="p">(</span><span class="nf">house</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>We’ve done something rather interesting with this step. We’ll touch on it
+now but elaborate later on quite a bit.</p>
+<p>We’ve so far used <code class="docutils literal notranslate"><span class="pre">(define</span> <span class="pre">...)</span></code> to bind an “identifier” to a “value”. Here,
+we see that <code class="docutils literal notranslate"><span class="pre">beside</span></code> is itself an abstraction that is a “procedure value”
+and therefore we can just as well introduce another identifier bound to the
+same procedure value that the <code class="docutils literal notranslate"><span class="pre">beside</span></code> identifier stands for. <a class="footnote-reference brackets" href="#renaming" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+</section>
+<section id="interrogating-abstractions">
+<h2>Interrogating abstractions<a class="headerlink" href="#interrogating-abstractions" title="Link to this heading">¶</a></h2>
+<p>So far, when interrogating this example program, we’ve had only concrete
+values to deal with. How can we interrogate an abstraction whose
+definition is given, like <code class="docutils literal notranslate"><span class="pre">front</span></code>?</p>
+<p>If we simply type <code class="docutils literal notranslate"><span class="pre">front</span></code> into the interaction window (after having run the
+entire definitions window program), Racket will just tell you <code class="docutils literal notranslate"><span class="pre">&lt;procedure:front&gt;</span></code>.
+Well, that tells us that is a procedure and nothing much else.</p>
+<div class="admonition-terminology admonition">
+<p class="admonition-title"><strong>Terminology</strong></p>
+<p>We know that a procedure takes a number of arguments usually. The actual
+number of arguments it takes is called its <strong>arity</strong>.</p>
+</div>
+<p>By inspecting the definition, we can see that <code class="docutils literal notranslate"><span class="pre">front</span></code> takes one argument and
+so we expect its “arity” to be <code class="docutils literal notranslate"><span class="pre">1</span></code>. We can confirm that by typing
+<code class="docutils literal notranslate"><span class="pre">(procedure-arity</span> <span class="pre">front)</span></code> into the interaction window. This also tells us
+that <code class="docutils literal notranslate"><span class="pre">front</span></code> is itself an ordinary value, despite being an abstraction.</p>
+<div class="admonition-learning admonition">
+<p class="admonition-title"><strong>Learning</strong></p>
+<p>The fact that we can represent abstractions as ordinary values in a program
+is a very powerful idea that we’ll elaborate on more later.</p>
+</div>
+<p>The simplest way we can interrogate an abstraction is to <strong>use it</strong> in an expression
+of our own. For <code class="docutils literal notranslate"><span class="pre">front</span></code>, we can type <code class="docutils literal notranslate"><span class="pre">(front</span> <span class="pre">'brown)</span></code>, <code class="docutils literal notranslate"><span class="pre">(front</span> <span class="pre">'yellow)</span></code> or
+<code class="docutils literal notranslate"><span class="pre">(front</span> <span class="pre">'blue)</span></code> into the interactions window and see that it makes a rectangle
+of the given colour. In this case, the abstraction happens to be fairly simple, but
+in other cases, the definition body may be more complex and span multiple lines
+with nested sub-expressions.</p>
+<div class="admonition-task admonition">
+<p class="admonition-title"><strong>Task</strong></p>
+<p>Type <code class="docutils literal notranslate"><span class="pre">(front</span> <span class="pre">42)</span></code> into the interactions window and see what happens. Can
+you try and interpret the messages you get? See also how the highlight in
+the editor correlates with the error message. How would you write the
+documentation for the <code class="docutils literal notranslate"><span class="pre">front</span></code> procedure along the style of Racket
+(ignoring the parts you don’t know yet)?</p>
+</div>
+<p>Understanding what such complex abstractions do can seem more involved.
+However, it is merely the application of the whole process we’ve been doing
+here <strong>within the context of the definition</strong>.</p>
+<p>Supposing we don’t understand what <code class="docutils literal notranslate"><span class="pre">front</span></code> means yet and need to find out
+what the <code class="docutils literal notranslate"><span class="pre">(rectangle</span> <span class="pre">...)</span></code> within its definition does. We see that it
+mentions <code class="docutils literal notranslate"><span class="pre">colour</span></code> as an identifier that is introduced by the argument of
+<code class="docutils literal notranslate"><span class="pre">front</span></code> in <code class="docutils literal notranslate"><span class="pre">(define</span> <span class="pre">(front</span> <span class="pre">colour)</span> <span class="pre">...)</span></code>. This means if we define the
+identifier <code class="docutils literal notranslate"><span class="pre">colour</span></code> to mean a specific colour in the interactions window,
+like <code class="docutils literal notranslate"><span class="pre">(define</span> <span class="pre">colour</span> <span class="pre">'blue)</span></code>, we can now copy-paste the <code class="docutils literal notranslate"><span class="pre">(rectangle</span> <span class="pre">40</span> <span class="pre">40</span>
+<span class="pre">'solid</span> <span class="pre">colour)</span></code> expression into the interaction window to see what it does,
+just like before. Only now, the <code class="docutils literal notranslate"><span class="pre">colour</span></code> identifier will be given the value
+to which we defined it in the interaction window.</p>
+<p>So you can see that the process of understanding an abstraction by
+“interrogating” it is nearly the same as for the whole program we used as an
+example.</p>
+<div class="admonition-todo admonition">
+<p class="admonition-title"><strong>TODO</strong></p>
+<p>There are more ways for more complex programs and we’ll introduce those in
+due course where necessary.</p>
+</div>
+</section>
+<section id="recap">
+<h2>Recap<a class="headerlink" href="#recap" title="Link to this heading">¶</a></h2>
+<p>We’ve seen a case of understanding a simple program by “interrogating” it.</p>
+<ul class="simple">
+<li><p>We looked up the meaning of identifiers used in the program in the
+documentation to understand how to use them properly.</p></li>
+<li><p>We examined individual sub-expressions to understand what the “parts”
+of the program mean.</p></li>
+<li><p>We understood what the compound expressions mean through evaluating
+them in the interaction window.</p></li>
+<li><p>We rewrote the program using domain-specific identifiers that more clearly
+articulate the intention of the program, in so far as we understand it,
+without changing the values produced and manipulated by the program.</p></li>
+<li><p>We noticed repetitive patterns and constructed “abstractions” that clarify
+the program even further.</p></li>
+<li><p>We saw how the definition of an abstraction introduces identifiers limited
+to the scope of the definition.</p></li>
+<li><p>We saw how abstractions are themselves ordinary values that are “procedures”
+and how we can give abstractions new names that are more meaningful to the
+reader.</p></li>
+</ul>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="renaming" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">1</a><span class="fn-bracket">]</span></span>
+<p>The modern version of many languages like Python, Javascript,
+and others provide this facility, while earlier languages like C/C++ and
+Java do not directly provide it.</p>
+</aside>
+<aside class="footnote brackets" id="addpkg" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">2</a><span class="fn-bracket">]</span></span>
+<p>You may have to “require” a package that “provides” the
+identifier’s definition.</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">CompLIT: Programming Literacy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="words.html">Words</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Interrogating programs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#run-the-program">Run the program</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#code-formatting">Code formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#challenges-reading-code">Challenges reading code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#unknown-words">Unknown words</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sub-expressions">Sub-expressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#giving-meaning">Giving meaning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scopes">Scopes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#abstraction">Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#interrogating-abstractions">Interrogating abstractions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#recap">Recap</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="words.html" title="previous chapter">Words</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Srikumar K. S..
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/interrogation.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
