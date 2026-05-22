@@ -1,7 +1,7 @@
 Interrogating programs
 ======================
 
-Consider the following program that builds an image -
+Consider the following program that builds an image --
 
 .. code:: scheme
 
@@ -31,7 +31,7 @@ know this because we know the words we're reading make images either from
 scratch or by combining images they apply to.
 
 So we can just hit "Run" and see what happens. We get what looks like a row of
-three houses (yeah imagine they are). This step is part of understanding the
+three houses (well, imagine they are). This step is part of understanding the
 result of a program. We still haven't figured out how the program produces it.
 
 Running the program has many uses. If there are basic errors in the program
@@ -58,7 +58,7 @@ Programs are written not only to instruct computers, but also to communicate
 
 The way the arguments to the ``beside`` word are laid out is something
 to pay attention to. Each sub-expression appears aligned on its own
--- i.e. the ``(above`` are all very visibly distinct. Compare that with
+-- i.e. the ``(above`` are all visibly distinct. Compare that with
 the below way of writing the same program --
 
 .. code:: scheme
@@ -83,10 +83,10 @@ are obfuscated compared to the original presentation above.
    means to get around it. But other languages like C/C++, Java and Julia are
    far less white space sensitive.
 
-Racket helps you suggest to your reader how you want your program to be read.
+Racket helps you communicate to your reader how you want your program to be read.
 With the above code copy-pasted into DrRacket's editor, place your cursor to
 the left of the first ``(above`` and press <enter>. You'll see that it appears
-automatically indentend on the next line. For the ``above`` expression which
+automatically indented on the next line. For the ``above`` expression which
 composes two pictures, we can permit one of them to be on the same line without
 loss of clarity. So now place the cursor to the left of ``(rectangle`` and
 press <enter>. You'll see that Racket will align it with the opening
@@ -121,9 +121,9 @@ If you don't know the meaning of a word/identifier used in the Racket code, you
 can place the cursor on the word in DrRacket. You'll see a documentation arrow
 at the top right corner of the editor window. If you then move your mouse to
 that arrow, you'll see it open up and provide some information about how to use
-that word. This is a brief assuming you only need to be **reminded** of how to
-use it. If you truly don't know, you can click the "Read more" link which will
-take you to the documentation of that identifier.
+that word. This is a brief that assumes you only need to be **reminded** of how
+to use it. If you truly don't know, you can click the "Read more" link which
+will take you to the documentation of that identifier.
 
 .. figure:: images/triangle-docs1.png
    :align: center
@@ -271,12 +271,12 @@ documentation of ``above`` to confirm your guess, or use the experimental
 approach to find out whether your guess was right.
 
 Since all the identifiers in the expression are determined purely in the
-``2htdp/image`` package context, we can just copy-paste this whole
-``(above ...)`` expression and paste it into the interaction window.
+``2htdp/image`` package context, we can just copy this whole ``(above ...)``
+expression and paste it into the interaction window.
 
 When we do that, we see that it looks like a house -- well, perhaps a
 hyper simplified monopoly-piece-like "house", but that's an interpretation
-we might given.
+we might have given.
 
 Now, we might understand that the ``(triangle ...)`` is a "roof" and the
 ``(rectangle ...)`` is the "front" of the "house".
@@ -404,10 +404,10 @@ We can now improve our program a bit while still retaining the same meaning.
 .. code:: scheme
 
    (define roof (triangle 40 'solid 'red))
-   (define (front colour) (rectangle 40 40 'solid colour)))
+   (define (front colour) (rectangle 40 40 'solid colour))
    (define house (above roof (front 'brown)))
    (define unique-front (overlay (rectangle 40 40 'outline 'black)
-                                 (front 'green')))
+                                 (front 'green)))
    (define unique-house (above roof unique-front))
    (beside house unique-house house)
 
@@ -420,10 +420,10 @@ into an abstraction. Read the code below carefully and make sure you understand 
 .. code:: scheme
 
    (define roof (triangle 40 'solid 'red))
-   (define (front colour) (rectangle 40 40 'solid colour)))
+   (define (front colour) (rectangle 40 40 'solid colour))
    (define (house front-design) (above roof front-design))
    (define unique-front (overlay (rectangle 40 40 'outline 'black)
-                                 (front 'green')))
+                                 (front 'green)))
    (beside (house (front 'brown))
            (house unique-front)
            (house (front 'brown)))
