@@ -440,7 +440,7 @@ beside a house with a unique front and then another brown house".
    determined by the value of the first argument ``front`` in an expression
    like ``(front 'brown)``. 
 
-   We say "the scope of ``colour`` is the definition of ``front``. This
+   We say "the scope of ``colour`` is the definition of ``front``". This
    identifier is therefore not visible "outside" of the definition. If you, for
    example, run this program and type ``colour`` into the interaction window,
    Racket will tell you that the identifier is "undefined".
