@@ -541,7 +541,7 @@ Recap
 We've seen a case of understanding a simple program by "interrogating" it.
 
 + We looked up the meaning of identifiers used in the program in the
-  documentation to understand how to use them properly.
+  documentation to understand what they mean and how to use them properly.
 
 + We examined individual sub-expressions to understand what the "parts"
   of the program mean.
