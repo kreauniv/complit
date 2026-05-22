@@ -321,10 +321,6 @@ that clear.
    (define unique-house (above roof unique-front))
    (beside house unique-house house)
 
-Btw, Racket identifiers can have multiple words and by convention these words
-are all in lower case and separated by a hyphen character, like with
-``unique-front`` and ``unique-house``.
-
 .. admonition:: **Important lesson**
 
    This is an important point of difference with what "reading" means in the
@@ -333,6 +329,10 @@ are all in lower case and separated by a hyphen character, like with
    meaning/purpose/function of the program, you can also do that by a process
    of incrementally rewriting the program in a way that always preserves that
    meaning in each step.
+
+Btw, Racket identifiers can have multiple words and by convention these words
+are all in lower case and separated by a hyphen character, like with
+``unique-front`` and ``unique-house``.
 
 Scopes
 ------
