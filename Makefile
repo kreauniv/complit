@@ -25,6 +25,7 @@ pages: html
 	cd /tmp && git clone git@github.com:kreauniv/$(PROJ).git $(PROJ)_build
 	cd /tmp/$(PROJ)_build \
 		&& git checkout gh-pages \
+		&& touch .nojekyll && git add .nojekyll \
 		&& tar zxf /tmp/$(PROJ)-html.tar.gz \
 		&& git add . \
 		&& git commit -m "Updated gh-pages" \
