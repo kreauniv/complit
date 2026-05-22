@@ -1,6 +1,6 @@
-.. CompPRL: Programming Literacy
+.. CompLIT: Programming Literacy
 
-Welcome to CompPRL: Programming Literacy
+Welcome to CompLIT: Programming Literacy
 ========================================
 
 .. toctree::

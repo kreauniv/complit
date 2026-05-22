@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = "CompPRL: Programming Literacy"
+project = "CompLIT: Programming Literacy"
 copyright = "2026, Srikumar K. S."
 author = "Srikumar K. S."
 
