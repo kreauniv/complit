@@ -35,7 +35,7 @@
             
   <section id="interrogating-programs">
 <h1>Interrogating programs<a class="headerlink" href="#interrogating-programs" title="Link to this heading">¶</a></h1>
-<p>Consider the following program that builds an image -</p>
+<p>Consider the following program that builds an image –</p>
 <div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="o">#</span><span class="nv">lang</span><span class="w"> </span><span class="nv">racket</span>
 <span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="nv">2htdp/image</span><span class="p">)</span>
 
@@ -59,7 +59,7 @@ general though and you’ll gradually build fluency with them.</p>
 know this because we know the words we’re reading make images either from
 scratch or by combining images they apply to.</p>
 <p>So we can just hit “Run” and see what happens. We get what looks like a row of
-three houses (yeah imagine they are). This step is part of understanding the
+three houses (well, imagine they are). This step is part of understanding the
 result of a program. We still haven’t figured out how the program produces it.</p>
 <p>Running the program has many uses. If there are basic errors in the program
 such as the syntax used, Racket will flag them when you hit “Run”. If the
@@ -82,7 +82,7 @@ machines to execute”.</p>
 </div></blockquote>
 <p>The way the arguments to the <code class="docutils literal notranslate"><span class="pre">beside</span></code> word are laid out is something
 to pay attention to. Each sub-expression appears aligned on its own
-– i.e. the <code class="docutils literal notranslate"><span class="pre">(above</span></code> are all very visibly distinct. Compare that with
+– i.e. the <code class="docutils literal notranslate"><span class="pre">(above</span></code> are all visibly distinct. Compare that with
 the below way of writing the same program –</p>
 <div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">beside</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span>
 <span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">overlay</span>
@@ -104,10 +104,10 @@ novices. Haskell also has white space sensitive syntax, though there are
 means to get around it. But other languages like C/C++, Java and Julia are
 far less white space sensitive.</p>
 </div>
-<p>Racket helps you suggest to your reader how you want your program to be read.
+<p>Racket helps you communicate to your reader how you want your program to be read.
 With the above code copy-pasted into DrRacket’s editor, place your cursor to
 the left of the first <code class="docutils literal notranslate"><span class="pre">(above</span></code> and press &lt;enter&gt;. You’ll see that it appears
-automatically indentend on the next line. For the <code class="docutils literal notranslate"><span class="pre">above</span></code> expression which
+automatically indented on the next line. For the <code class="docutils literal notranslate"><span class="pre">above</span></code> expression which
 composes two pictures, we can permit one of them to be on the same line without
 loss of clarity. So now place the cursor to the left of <code class="docutils literal notranslate"><span class="pre">(rectangle</span></code> and
 press &lt;enter&gt;. You’ll see that Racket will align it with the opening
@@ -140,9 +140,9 @@ expression that an identifier participates in begin and end.</p></li>
 can place the cursor on the word in DrRacket. You’ll see a documentation arrow
 at the top right corner of the editor window. If you then move your mouse to
 that arrow, you’ll see it open up and provide some information about how to use
-that word. This is a brief assuming you only need to be <strong>reminded</strong> of how to
-use it. If you truly don’t know, you can click the “Read more” link which will
-take you to the documentation of that identifier.</p>
+that word. This is a brief that assumes you only need to be <strong>reminded</strong> of how
+to use it. If you truly don’t know, you can click the “Read more” link which
+will take you to the documentation of that identifier.</p>
 <figure class="align-center" id="id3">
 <img alt="_images/triangle-docs1.png" src="_images/triangle-docs1.png" />
 <figcaption>
@@ -275,11 +275,11 @@ expression means the picture “a red triangle above a brown rectangle”.</p>
 documentation of <code class="docutils literal notranslate"><span class="pre">above</span></code> to confirm your guess, or use the experimental
 approach to find out whether your guess was right.</p>
 <p>Since all the identifiers in the expression are determined purely in the
-<code class="docutils literal notranslate"><span class="pre">2htdp/image</span></code> package context, we can just copy-paste this whole
-<code class="docutils literal notranslate"><span class="pre">(above</span> <span class="pre">...)</span></code> expression and paste it into the interaction window.</p>
+<code class="docutils literal notranslate"><span class="pre">2htdp/image</span></code> package context, we can just copy this whole <code class="docutils literal notranslate"><span class="pre">(above</span> <span class="pre">...)</span></code>
+expression and paste it into the interaction window.</p>
 <p>When we do that, we see that it looks like a house – well, perhaps a
 hyper simplified monopoly-piece-like “house”, but that’s an interpretation
-we might given.</p>
+we might have given.</p>
 <p>Now, we might understand that the <code class="docutils literal notranslate"><span class="pre">(triangle</span> <span class="pre">...)</span></code> is a “roof” and the
 <code class="docutils literal notranslate"><span class="pre">(rectangle</span> <span class="pre">...)</span></code> is the “front” of the “house”.</p>
 <div class="admonition-reflect admonition">
@@ -381,10 +381,10 @@ When we use it as <code class="docutils literal notranslate"><span class="pre">(
 and <code class="docutils literal notranslate"><span class="pre">(front</span> <span class="pre">'green)</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">(rectangle</span> <span class="pre">40</span> <span class="pre">40</span> <span class="pre">'solid</span> <span class="pre">'green)</span></code>.</p>
 <p>We can now improve our program a bit while still retaining the same meaning.</p>
 <div class="highlight-scheme notranslate" id="rewritten-abstract1"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="nv">colour</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="nv">colour</span><span class="p">)))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="nv">colour</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="nv">colour</span><span class="p">))</span>
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">house</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">)))</span>
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">unique-front</span><span class="w"> </span><span class="p">(</span><span class="nf">overlay</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;outline</span><span class="w"> </span><span class="ss">&#39;black</span><span class="p">)</span>
-<span class="w">                              </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;green</span><span class="o">&#39;</span><span class="p">)))</span>
+<span class="w">                              </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;green</span><span class="p">)))</span>
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">unique-house</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="nv">unique-front</span><span class="p">))</span>
 <span class="p">(</span><span class="nf">beside</span><span class="w"> </span><span class="nv">house</span><span class="w"> </span><span class="nv">unique-house</span><span class="w"> </span><span class="nv">house</span><span class="p">)</span>
 </pre></div>
@@ -395,10 +395,10 @@ So we can now abstract the concept of a “house” to mean “a house that has 
 front design”. Similar to what we did with <code class="docutils literal notranslate"><span class="pre">front</span></code>, we can now make <code class="docutils literal notranslate"><span class="pre">house</span></code>
 into an abstraction. Read the code below carefully and make sure you understand it.</p>
 <div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="nv">colour</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="nv">colour</span><span class="p">)))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="nv">colour</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="nv">colour</span><span class="p">))</span>
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="nf">house</span><span class="w"> </span><span class="nv">front-design</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="nv">front-design</span><span class="p">))</span>
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">unique-front</span><span class="w"> </span><span class="p">(</span><span class="nf">overlay</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;outline</span><span class="w"> </span><span class="ss">&#39;black</span><span class="p">)</span>
-<span class="w">                              </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;green</span><span class="o">&#39;</span><span class="p">)))</span>
+<span class="w">                              </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;green</span><span class="p">)))</span>
 <span class="p">(</span><span class="nf">beside</span><span class="w"> </span><span class="p">(</span><span class="nf">house</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">))</span>
 <span class="w">        </span><span class="p">(</span><span class="nf">house</span><span class="w"> </span><span class="nv">unique-front</span><span class="p">)</span>
 <span class="w">        </span><span class="p">(</span><span class="nf">house</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">)))</span>

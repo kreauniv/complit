@@ -3,14 +3,14 @@ Words
 
 When we work with programs, we use a "language" and we'll need to understand
 what we mean by a "language" in the context of computing, given that we're used
-to language for communication between people.
+to using language for communicating with people.
 
 All computer languages work with **words** and assign **meaning** to them which
 might depend on the **context** in which the words occur. Understanding and
 working with a program therefore means understanding what the words mean on
 their own, and how groups of these words determine meaning. 
 
-Some of these words and means of combinations are defined for you and fixed by
+Some of these words and means of combination are defined for you and fixed by
 the designer of a particular programming language. Some of them are defined for
 you by authors of "libraries" -- which are collections of definitions for what
 some new words mean. Much of the task of programming therefore is you the
@@ -161,13 +161,15 @@ large vocabulary makes for a large space of possibilities.
 
 Fortunately for most of us, much of this vocabulary is structured in a manner
 you can find out about the words you need when you need them by searching the
-Racket documentation. Below are come commonly used "operator" words for your
+Racket documentation. Below are some commonly used "operator" words for your
 reference -
 
 **Math**
    - The usual operators ``+ - * / sqrt sin cos tan asin acos atan sinh cosh
      tanh asinh acosh atanh`` are all available. There are more mathematical
-     operators ("functions") you can lookup in the documentation. 
+     operators ("functions") you can lookup in the documentation. Some example
+     expressions using them are -- ``(+ 3 4)``, ``(* (sin 2) (cos 2))``, 
+     ``(+ (* 3 3) (* 4 4))``.
    - There are also various comparison operators ``< <= > >= = !=`` and various
      ways to combine the truth values (also known as "boolean values") that
      they determine using ``(and b1 b2 ...)``, ``(or b1 b2 ...)``, ``(not
@@ -300,8 +302,8 @@ Some picture words and how to use them in expressions -
    Using ``circle``, ``rectangle``, ``empty-scene`` and ``place-image``, draw
    a cricket pitch or a cricket bat/ball representation.
 
-You can check out more "image making and manipulating words" in the
-`2htdp/image package`_ or go through how to use them in the `Image Guide`_.
+You can find more "image making and manipulating words" in the `2htdp/image
+package`_ or go through how to use them in the `Image Guide`_.
 
 .. _2htdp/image package: https://docs.racket-lang.org/teachpack/2htdpimage.html
 .. _Image Guide: https://docs.racket-lang.org/teachpack/2htdpimage-guide.html
