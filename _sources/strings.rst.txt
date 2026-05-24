@@ -120,7 +120,8 @@ To see the actual string we created by typing that, run this --
 
 .. code:: scheme
 
-    (display name)
+    > (display name)
+    Guy "Schemer" Steele
 
 This will cause the string associated with the identifier ``name`` to be "displayed".
 You'll see that the "\" characters are not present in the output.
