@@ -10,3 +10,4 @@ Welcome to CompLIT: Programming Literacy
    intro
    words
    interrogation
+   strings
