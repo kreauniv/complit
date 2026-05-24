@@ -114,6 +114,8 @@ Programs are not very different from that.
 + **Expression**: What is the extent of an expression? i.e. where does a complete
   expression that an identifier participates in begin and end.
 
+Where programs differ a little is with **how** you can understand one.
+
 Unknown words
 -------------
 
