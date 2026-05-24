@@ -26,12 +26,13 @@ pages: html
 	cd build/html && tar zcf /tmp/$(PROJ)-html.tar.gz . 
 	cd /tmp && git clone --branch gh-pages --single-branch $(PROJDIR) $(PROJ)_build
 	cd /tmp/$(PROJ)_build \
-		&& git remote set-url origin $(REMOTE) && git pull \
+		&& git remote add github $(REMOTE) \
+		&& git pull github gh-pages \
 		&& touch .nojekyll && git add .nojekyll \
 		&& tar zxf /tmp/$(PROJ)-html.tar.gz \
 		&& git add . \
 		&& git commit -m "Updated gh-pages" \
-		&& git push
+		&& git push origin gh-pages && git push github gh-pages
 	rm -rf /tmp/$(PROJ)_build
 	rm /tmp/$(PROJ)-html.tar.gz
 
