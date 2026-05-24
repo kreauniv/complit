@@ -8,6 +8,8 @@ SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = source
 BUILDDIR      = build
 PROJ	      = complit
+PROJDIR       = $(shell pwd)
+REMOTE        = $(shell git remote get-url origin)
 
 # Put it first so that "make" without argument is like "make help".
 help:
@@ -22,8 +24,9 @@ help:
 
 pages: html
 	cd build/html && tar zcf /tmp/$(PROJ)-html.tar.gz . 
-	cd /tmp && git clone --branch gh-pages --single-branch git@github.com:kreauniv/$(PROJ).git $(PROJ)_build
+	cd /tmp && git clone --branch gh-pages --single-branch $(PROJDIR) $(PROJ)_build
 	cd /tmp/$(PROJ)_build \
+		&& git remote set-url origin $(REMOTE) && git pull \
 		&& touch .nojekyll && git add .nojekyll \
 		&& tar zxf /tmp/$(PROJ)-html.tar.gz \
 		&& git add . \
