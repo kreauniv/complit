@@ -1,12 +1,16 @@
 Strings
 =======
 
-A large number of programs written for societal use involves working with
+A large number of programs written for general use involves working with
 "strings" -- i.e. text manipulated as a sequence of characters in some
 language/script. This is partly because programs do need to interface with
 human operators, and partly because constructing mini languages to express
 ideas and processes in programs can help human programmers make sense of what
 is going on as well. 
+
+.. tip:: You can think of a "string" as a metaphor for text by imagining a
+   string on which beads with characters written on them are strung to make
+   sentences. A "string" is a specific way to store and manipulate text.
 
 For our purpose, strings offer a level of familiarity that can help us gain
 ground with learning to read and write a few important kinds of programs.
@@ -17,12 +21,13 @@ through this section.
 Getting feet wet
 ----------------
 
-We've seen that we can type ``"Magnificent flying machines"`` into the interaction
-window (or the editor) and Racket will understand that the part of what you typed
-in between the two ``"`` (double quote) characters are to be collected together
-in that sequence and kept as a single value. We call such a specific sequence
-the **syntax** for representing **literal strings**. After this value is stored
-in computer memory we say that the value **has type string**.
+We've seen that we can type ``"Magnificent flying machines"`` into the
+interaction window (or the definitions window) and Racket will understand that
+the part of what you typed in between the two ``"`` (double quote) characters
+are to be collected together in that sequence and kept as a single value. We
+call such a specific sequence the **syntax** for representing **literal
+strings**. After this value is stored in computer memory we say that the value
+**has type string**.
 
 Such strings can come from a variety of places --
 
@@ -38,7 +43,7 @@ an **identifier**. If "Magnificent flying machines" happened to be the title
 of an article, we might bind the ``title`` identifier to the string value
 by typing this into the "definitions window" and clicking on "Run" --
 
-.. code:: scheme
+.. code:: racket
 
     (define title "Magnificent flying machines")
 
@@ -56,7 +61,7 @@ the second character ``a`` has the index ``1`` and so on.
 You can get the character at particular position in the string using the
 ``string-ref`` procedure like this --
 
-.. code:: scheme
+.. code:: racket
 
     > (string-ref title 0)
     #\M
@@ -75,7 +80,7 @@ You can get the character at particular position in the string using the
 
 To know the total characters in a string, you can use ``string-length`` like this --
 
-.. code:: scheme
+.. code:: racket
 
    > (string-length title)
    27
@@ -98,44 +103,44 @@ syntax ti help us with that. ``"`` characters that are intended to be a part of
 the string will needed to be preceded by the ``\`` (backslash) character, as
 shown below --
 
-.. code:: scheme
+.. code:: racket
 
    (define name "Guy \"Schemer\" Steele")
 
-If you include that in the definitions window and run and then type ``name`` into 
+If you include that in the definitions window, run and then type ``name`` into
 the interactions window, you'll see that Racket prints out 
 
-.. code:: scheme
+.. code:: racket
 
    "Guy \"Schemer\" Steele"
 
 Exactly as we typed it. But this appears to not be what we wanted our string to be.
 We certainly did not intend to have anything to do with the backslash character.
-But it is only shown that way because Racket tries to print out all of its results
+But it is only shown that way because :hl:`Racket tries to print out all of its results
 as far as possible in a manner such that when you copy the output and paste it back
-as input, you'll get the same result. This is not possible in all circumstances, but it
+as input, you'll get the same result`. This is not possible in all circumstances, but it
 is certainly possible here.
 
 To see the actual string we created by typing that, run this --
 
-.. code:: scheme
+.. code:: racket
 
     > (display name)
     Guy "Schemer" Steele
 
 This will cause the string associated with the identifier ``name`` to be "displayed".
-You'll see that the "\" characters are not present in the output.
+You'll see that the "\\" characters are not present in the output.
 
-To further convince ourselves that the "\" is purely syntax to help us tell
+To further convince ourselves that the "\\" is purely syntax to help us tell
 Racket which quote characters are part of the string, we can count the number
 of characters we typed and measure the length of the string that resulted from
 it. If we count the characters we typed in ``"Guy \"Scheme\" Steele"``
-(excluding the opening and closing quotes), we get 22 characters. But if you
+(excluding the opening and closing quotes), we get 22 characters. [#strexcl]_ But if you
 then evaluate ``(string-length name)`` in the interaction window, we see that
 the string length is reported as ``20``. The two backslash characters were only
 seen while "parsing" and were discarded when constructing the string value.
 
-.. tip:: The "\" character is often read as "escape" because it tells Racket to
+.. tip:: The "\\" character is often read as "escape" because it tells Racket to
    "escape" from the mode of treating the next character as something special,
    and interpret it literally. In other situations, the opposite happens as
    well. For example, "n" is the ordinary lowercase letter, but when preceded
@@ -151,7 +156,7 @@ Hello there!
 
 We're now ready to write a very simple program and run it. 
 
-.. code:: scheme
+.. code:: racket
 
    ; Purpose: Ask the user for their name and greet the user with the
    ; name they provided.
@@ -171,7 +176,7 @@ A number of things to observe here.
   of that line as a "comment" and ignores these characters. So, as far
   as Racket goes, the above program is literally equivalent to --
 
-  .. code:: scheme
+  .. code:: racket
     
      (display "Please tell me your name: ")
      (define name (read-line))
@@ -218,15 +223,15 @@ A number of things to observe here.
   compute" part. This helps make your program be more flexible to permit reuse
   of the "how to compute" part when the means of input/output change.
 
-Abstraction
------------
+Abstract ``greeting``
+---------------------
 
 After running the program, if you type ``greeting`` into the interaction window,
 you'll see that it is a string type value that contains the name you gave. We
 can then choose to abstract the idea of a greeting as containing an arbitrary
 name decided at the point the abstraction is used.
 
-.. code:: scheme
+.. code:: racket
 
    ; Purpose: Ask the user for their name and greet the user with the
    ; name they provided.
@@ -292,7 +297,7 @@ Substrings
 ``(substring str start end)`` can be used to extract a contiguous region of
 characters from a given string. For example, 
 
-.. code:: scheme
+.. code:: racket
 
    > (substring "Magnificent flying machines" 12 18)
    "flying"
@@ -309,7 +314,9 @@ characters from a given string. For example,
 .. admonition:: **Task 3**
 
     Find out the start and end positions you need to give to extract the three
-    words in ``"Magnificent flying machines"``.
+    words in ``"Magnificent flying machines"``. Also, experimentally find out
+    the range of valid indices you can give for ``string-ref`` and
+    ``substring`` for a given string.
 
 .. admonition:: **Task 4**
 
@@ -340,13 +347,91 @@ characters from a given string. For example,
     simply what its provided documentation might say, because you'll be testing
     it with the **specific** cases for which you intend to use it.
 
-TODO
-----
+
+A "close reading"
+-----------------
+
+Suppose we have a string and an index into a valid position within the string.
+For a string like ``"hello"``, there are the following positions as indicated
+by the ``|`` character.
+
+.. figure:: images/cursor-positions.png
+   :align: center
+
+   The possible "cursor positions" in the 5-character string "hello".
+   Note that 012345 make for **six** cursor positions in all.
+
+Wait a minute! The string ``"hello"`` has only 5 characters and so only the
+positions 0,1,2,3,4 should be valid. However now we're saying there are 6
+positions 0,1,2,3,4,5?
+
+If we try each of those positions with ``string-ref``, we'll read off the characters
+one by one until we reach position ``5``, in which case ``string-ref`` will raise
+an error.
+
+.. admonition:: **Task**
+      
+   Do it and convince yourself that is the case.
+
+However look at the series below --
+
+.. code:: racket
+
+   > (substring "hello" 0)
+   "hello"
+   > (substring "hello" 1)
+   "ello"
+   > (substring "hello" 2)
+   "llo"
+   > (substring "hello" 3)
+   "lo"
+   > (substring "hello" 4)
+   "o"
+   > (substring "hello" 5) ; This will give an empty (i.e. zero length) string.
+   ""
+   > (substring "hello" 6)
+   substring: starting index is out of range
+   starting index: 6
+   valid range: [0, 5]
+   string: "hello"
+
+Notice that for ``substring``, we can go up to index ``5`` which yields the
+empty string. So for substring, the index behaves as though we're asking for
+all the characters after the cursor position whose index is given to ``substring``.
+
+When we're being explicit with the ``end`` argument as well, we see --
+
+.. code:: racket
+
+   > (substring "hello" 2 4) ; from "he|llo" to "hell|o" gives "ll"
+   "ll"
+   > (substring "hello" 2 5) ; from "he|llo" to "hello|" gives "llo"
+   "llo"
+
+This consistent with our explanation of what the index means for the end position
+as well.
+
+To reconcile this view with ``string-ref``, we can now re-interpret the index
+we pass to ``string-ref`` as though we're asking for the "character to the
+right of the given cursor position". This ask does not make sense when the
+index we give is greater than or equal to the number of characters, and truly
+enough ``string-ref`` will produce an error if you do that.
+
+Now armed with the "position of cursor" view of the index, we can see
+that if we're given a string and an index, we can use this information to
+represent two concepts -- a) the character to the right of the given cursor
+position, and b) the substring consisting of all the characters to the right
+of the given cursor position.
+
+While our hand is forced when asked for a single character, we can always
+produce an empty string if no characters meeting some criteria are available.
+
+Remember this and we'll take it forward in the succeeding sections.
 
 
 
 
-
+.. [#strexcl] Excluding the surrounding double-quote characters.
 
 
 

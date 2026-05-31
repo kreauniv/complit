@@ -3,7 +3,7 @@ Interrogating programs
 
 Consider the following program that builds an image --
 
-.. code:: scheme
+.. code:: racket
 
    #lang racket
    (require 2htdp/image)
@@ -61,7 +61,7 @@ to pay attention to. Each sub-expression appears aligned on its own
 -- i.e. the ``(above`` are all visibly distinct. Compare that with
 the below way of writing the same program --
 
-.. code:: scheme
+.. code:: racket
 
    (beside (above (triangle 40 'solid 'red) (rectangle
    40 40 'solid 'brown)) (above (triangle 40 'solid 'red) (overlay
@@ -257,7 +257,7 @@ Giving meaning
 The interesting thing about our program is that it is made up of expressions
 all the way. Let's look at the ``(above ...)`` expression first.
 
-.. code:: scheme
+.. code:: racket
 
    (above (triangle 40 'solid 'red)
           (rectangle 40 40 'solid 'brown))
@@ -294,7 +294,7 @@ in the program. To reflect our newly gained understanding that this is
 a drawing of a "house" with a "roof" and a "front", we can rewrite the
 program thus without changing its meaning --
 
-.. code:: scheme
+.. code:: racket
 
    (define roof (triangle 40 'solid 'red))
    (define front (rectangle 40 40 'solid 'brown))
@@ -313,7 +313,7 @@ that clear.
 
 .. _rewritten-program:
 
-.. code:: scheme
+.. code:: racket
 
    (define roof (triangle 40 'solid 'red))
    (define front (rectangle 40 40 'solid 'brown))
@@ -359,8 +359,8 @@ This way, we can see that our ``(define ...)`` forms introduce an identifier in 
 scope and it is only within this scope that the identifier gets the meaning
 given in its definition.
 
-Abstraction
------------
+Abstraction and generalization
+------------------------------
 
 While rewritten-program_ is a bit clearer than the original version, thanks
 to the introduction of identifiers that tell the reader the "domain meaning"
@@ -380,7 +380,7 @@ currently means "brown colored front" to the abstraction of a "front"
 that is independent of the colour. We can capture this abstraction
 using a definition like shown below --
 
-.. code:: scheme
+.. code:: racket
 
    (define (front colour) (rectangle 40 40 'solid colour))
 
@@ -395,6 +395,18 @@ A few things to notice here.
   When we use it as ``(front 'brown)``, it will be as though the identifier
   ``colour`` in the definition got replaced by ``'brown`` everywhere it occurred.
 
++ By naming the construct ``front``, we're giving meaning to a concept that
+  has so far only been expressed as "a 40x40 rectangle filled with solid brown",
+  which we've elevated to the abstract idea of "the front of a house of a particular
+  colour". We call this an **abstraction** because to use the word ``front``, you
+  no longer need to know that it is implemented using ``rectangle``. All you need
+  to know is that you need to choose a colour and that ``front`` will give 
+  you a "picture" to work with.
+
+.. note:: In the of ``front``, we've introduced Racket's mechanism for creating
+   abstractions as a way to generalize and capture repetitive patterns in code.
+   This is not the *only* reason to create abstractions and we'll see more
+   as we go along.
 
 Therefore, ``(front 'brown)`` is equivalent to ``(rectangle 40 40 'solid 'brown)``
 and ``(front 'green)`` is equivalent to ``(rectangle 40 40 'solid 'green)``.
@@ -403,7 +415,7 @@ We can now improve our program a bit while still retaining the same meaning.
 
 .. _rewritten-abstract1:
 
-.. code:: scheme
+.. code:: racket
 
    (define roof (triangle 40 'solid 'red))
    (define (front colour) (rectangle 40 40 'solid colour))
@@ -419,7 +431,7 @@ So we can now abstract the concept of a "house" to mean "a house that has a give
 front design". Similar to what we did with ``front``, we can now make ``house``
 into an abstraction. Read the code below carefully and make sure you understand it.
 
-.. code:: scheme
+.. code:: racket
 
    (define roof (triangle 40 'solid 'red))
    (define (front colour) (rectangle 40 40 'solid colour))
@@ -452,7 +464,7 @@ context, it is being used to stand for the concept "a row of". What we want
 to really say is "a row of houses". We can introduce that as a word now
 and (in this case) define it to simply mean ``beside``.
 
-.. code:: scheme
+.. code:: racket
 
    (define roof (triangle 40 'solid 'red))
    (define (front colour) (rectangle 40 40 'solid colour))
