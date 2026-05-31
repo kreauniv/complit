@@ -589,10 +589,10 @@ You see what we did there? We simply repeated the process ad nausem so the
 player gets tired or aborts the program, but the program won't crash because
 of a casual mistake.
 
-We've done something different here. The rewrites that resultant in the abstraction
-``ask-next-guess`` has now shown us a deficiency in the program and also suggested
-us a route to resolve that deficiency ... all without having to change the 
-overall flow or meaning of the program.
+We've done something different this time. The rewrite that resulted in the
+abstraction ``ask-next-guess`` has shown us a deficiency in the program and
+also suggested a route to resolve that deficiency ... all without having to
+change the overall flow or meaning of the program.
 
 .. admonition:: **Terminology**
 
