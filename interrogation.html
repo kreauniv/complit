@@ -7,11 +7,13 @@
 
     <title>Interrogating programs &#8212; CompLIT: Programming Literacy v1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d8a2add5" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=17171a54" />
     <script src="_static/documentation_options.js?v=5cb08e4e"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -37,17 +39,17 @@
   <section id="interrogating-programs">
 <h1>Interrogating programs<a class="headerlink" href="#interrogating-programs" title="Link to this heading">¶</a></h1>
 <p>Consider the following program that builds an image –</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="o">#</span><span class="nv">lang</span><span class="w"> </span><span class="nv">racket</span>
-<span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="nv">2htdp/image</span><span class="p">)</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="kn">#lang </span><span class="nn">racket</span>
+<span class="p">(</span><span class="k">require</span><span class="w"> </span><span class="n">2htdp/image</span><span class="p">)</span>
 
-<span class="p">(</span><span class="nf">beside</span>
-<span class="w">   </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">)</span>
-<span class="w">          </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">))</span>
-<span class="w">   </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">)</span>
-<span class="w">          </span><span class="p">(</span><span class="nf">overlay</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;outline</span><span class="w"> </span><span class="ss">&#39;black</span><span class="p">)</span>
-<span class="w">                   </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;green</span><span class="p">)))</span>
-<span class="w">   </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">)</span>
-<span class="w">          </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">)))</span>
+<span class="p">(</span><span class="n">beside</span>
+<span class="w">   </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">)</span>
+<span class="w">          </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">))</span>
+<span class="w">   </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">)</span>
+<span class="w">          </span><span class="p">(</span><span class="n">overlay</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">outline</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">black</span><span class="p">)</span>
+<span class="w">                   </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">green</span><span class="p">)))</span>
+<span class="w">   </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">)</span>
+<span class="w">          </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">)))</span>
 </pre></div>
 </div>
 <p>How do we go about understanding what this program does if we know only the
@@ -85,11 +87,11 @@ machines to execute”.</p>
 to pay attention to. Each sub-expression appears aligned on its own
 – i.e. the <code class="docutils literal notranslate"><span class="pre">(above</span></code> are all visibly distinct. Compare that with
 the below way of writing the same program –</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">beside</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span>
-<span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">overlay</span>
-<span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;outline</span><span class="w"> </span><span class="ss">&#39;black</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span>
-<span class="ss">&#39;green</span><span class="p">)))</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span>
-<span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">)))</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">beside</span><span class="w"> </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span>
+<span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">overlay</span>
+<span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">outline</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">black</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span>
+<span class="o">&#39;</span><span class="ss">green</span><span class="p">)))</span><span class="w"> </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span>
+<span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">)))</span>
 </pre></div>
 </div>
 <p>To Racket, this reads the same and it means exactly the same as the program
@@ -264,8 +266,8 @@ familiarize yourself with this process.</p>
 <h2>Giving meaning<a class="headerlink" href="#giving-meaning" title="Link to this heading">¶</a></h2>
 <p>The interesting thing about our program is that it is made up of expressions
 all the way. Let’s look at the <code class="docutils literal notranslate"><span class="pre">(above</span> <span class="pre">...)</span></code> expression first.</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">)</span>
-<span class="w">       </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">))</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">)</span>
+<span class="w">       </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Now that we know what the <code class="docutils literal notranslate"><span class="pre">(triangle</span> <span class="pre">...)</span></code> and <code class="docutils literal notranslate"><span class="pre">(rectangle</span> <span class="pre">...)</span></code>
@@ -294,14 +296,14 @@ and understand this much more easily?</p>
 in the program. To reflect our newly gained understanding that this is
 a drawing of a “house” with a “roof” and a “front”, we can rewrite the
 program thus without changing its meaning –</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">front</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">house</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="nv">front</span><span class="p">))</span>
-<span class="p">(</span><span class="nf">beside</span><span class="w"> </span><span class="nv">house</span>
-<span class="w">        </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="nv">roof</span>
-<span class="w">               </span><span class="p">(</span><span class="nf">overlay</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;outline</span><span class="w"> </span><span class="ss">&#39;black</span><span class="p">)</span>
-<span class="w">                        </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;green</span><span class="p">)))</span>
-<span class="w">        </span><span class="nv">house</span><span class="p">)</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">roof</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">front</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">house</span><span class="w"> </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="n">roof</span><span class="w"> </span><span class="n">front</span><span class="p">))</span>
+<span class="p">(</span><span class="n">beside</span><span class="w"> </span><span class="n">house</span>
+<span class="w">        </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="n">roof</span>
+<span class="w">               </span><span class="p">(</span><span class="n">overlay</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">outline</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">black</span><span class="p">)</span>
+<span class="w">                        </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">green</span><span class="p">)))</span>
+<span class="w">        </span><span class="n">house</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>So the first and the third “houses” are the same and we can already guess that
@@ -309,13 +311,13 @@ program thus without changing its meaning –</p>
 the second house which stands out a bit. We can now see that only its
 “front” is different. So we can “pull” that out of the expression to make
 that clear.</p>
-<div class="highlight-scheme notranslate" id="rewritten-program"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">front</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">house</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="nv">front</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">unique-front</span><span class="w"> </span><span class="p">(</span><span class="nf">overlay</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;outline</span><span class="w"> </span><span class="ss">&#39;black</span><span class="p">)</span>
-<span class="w">                              </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;green</span><span class="p">)))</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">unique-house</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="nv">unique-front</span><span class="p">))</span>
-<span class="p">(</span><span class="nf">beside</span><span class="w"> </span><span class="nv">house</span><span class="w"> </span><span class="nv">unique-house</span><span class="w"> </span><span class="nv">house</span><span class="p">)</span>
+<div class="highlight-racket notranslate" id="rewritten-program"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">roof</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">front</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">house</span><span class="w"> </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="n">roof</span><span class="w"> </span><span class="n">front</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">unique-front</span><span class="w"> </span><span class="p">(</span><span class="n">overlay</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">outline</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">black</span><span class="p">)</span>
+<span class="w">                              </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">green</span><span class="p">)))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">unique-house</span><span class="w"> </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="n">roof</span><span class="w"> </span><span class="n">unique-front</span><span class="p">))</span>
+<span class="p">(</span><span class="n">beside</span><span class="w"> </span><span class="n">house</span><span class="w"> </span><span class="n">unique-house</span><span class="w"> </span><span class="n">house</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition-important-lesson admonition">
@@ -350,8 +352,8 @@ interaction window and see each of the components separately.</p>
 scope and it is only within this scope that the identifier gets the meaning
 given in its definition.</p>
 </section>
-<section id="abstraction">
-<h2>Abstraction<a class="headerlink" href="#abstraction" title="Link to this heading">¶</a></h2>
+<section id="abstraction-and-generalization">
+<h2>Abstraction and generalization<a class="headerlink" href="#abstraction-and-generalization" title="Link to this heading">¶</a></h2>
 <p>While <a class="reference internal" href="#rewritten-program">rewritten-program</a> is a bit clearer than the original version, thanks
 to the introduction of identifiers that tell the reader the “domain meaning”
 of the individual constructs (maybe this is a kid’s street map), there is
@@ -367,7 +369,7 @@ Here, we’re lifting the concrete definition of our <code class="docutils liter
 currently means “brown colored front” to the abstraction of a “front”
 that is independent of the colour. We can capture this abstraction
 using a definition like shown below –</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="nv">colour</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="nv">colour</span><span class="p">))</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">front</span><span class="w"> </span><span class="n">colour</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="n">colour</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>A few things to notice here.</p>
@@ -378,17 +380,31 @@ to be a rectangle of dimensions 40x40 filled solid with the colour <code class="
 <li><p>The <code class="docutils literal notranslate"><span class="pre">colour</span></code> identifier in <code class="docutils literal notranslate"><span class="pre">(front</span> <span class="pre">colour)</span></code> is a placeholder identifier.
 When we use it as <code class="docutils literal notranslate"><span class="pre">(front</span> <span class="pre">'brown)</span></code>, it will be as though the identifier
 <code class="docutils literal notranslate"><span class="pre">colour</span></code> in the definition got replaced by <code class="docutils literal notranslate"><span class="pre">'brown</span></code> everywhere it occurred.</p></li>
+<li><p>By naming the construct <code class="docutils literal notranslate"><span class="pre">front</span></code>, we’re giving meaning to a concept that
+has so far only been expressed as “a 40x40 rectangle filled with solid brown”,
+which we’ve elevated to the abstract idea of “the front of a house of a particular
+colour”. We call this an <strong>abstraction</strong> because to use the word <code class="docutils literal notranslate"><span class="pre">front</span></code>, you
+no longer need to know that it is implemented using <code class="docutils literal notranslate"><span class="pre">rectangle</span></code>. All you need
+to know is that you need to choose a colour and that <code class="docutils literal notranslate"><span class="pre">front</span></code> will give
+you a “picture” to work with.</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the of <code class="docutils literal notranslate"><span class="pre">front</span></code>, we’ve introduced Racket’s mechanism for creating
+abstractions as a way to generalize and capture repetitive patterns in code.
+This is not the <em>only</em> reason to create abstractions and we’ll see more
+as we go along.</p>
+</div>
 <p>Therefore, <code class="docutils literal notranslate"><span class="pre">(front</span> <span class="pre">'brown)</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">(rectangle</span> <span class="pre">40</span> <span class="pre">40</span> <span class="pre">'solid</span> <span class="pre">'brown)</span></code>
 and <code class="docutils literal notranslate"><span class="pre">(front</span> <span class="pre">'green)</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">(rectangle</span> <span class="pre">40</span> <span class="pre">40</span> <span class="pre">'solid</span> <span class="pre">'green)</span></code>.</p>
 <p>We can now improve our program a bit while still retaining the same meaning.</p>
-<div class="highlight-scheme notranslate" id="rewritten-abstract1"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="nv">colour</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="nv">colour</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">house</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">)))</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">unique-front</span><span class="w"> </span><span class="p">(</span><span class="nf">overlay</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;outline</span><span class="w"> </span><span class="ss">&#39;black</span><span class="p">)</span>
-<span class="w">                              </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;green</span><span class="p">)))</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">unique-house</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="nv">unique-front</span><span class="p">))</span>
-<span class="p">(</span><span class="nf">beside</span><span class="w"> </span><span class="nv">house</span><span class="w"> </span><span class="nv">unique-house</span><span class="w"> </span><span class="nv">house</span><span class="p">)</span>
+<div class="highlight-racket notranslate" id="rewritten-abstract1"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">roof</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">front</span><span class="w"> </span><span class="n">colour</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="n">colour</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">house</span><span class="w"> </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="n">roof</span><span class="w"> </span><span class="p">(</span><span class="n">front</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">)))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">unique-front</span><span class="w"> </span><span class="p">(</span><span class="n">overlay</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">outline</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">black</span><span class="p">)</span>
+<span class="w">                              </span><span class="p">(</span><span class="n">front</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">green</span><span class="p">)))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">unique-house</span><span class="w"> </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="n">roof</span><span class="w"> </span><span class="n">unique-front</span><span class="p">))</span>
+<span class="p">(</span><span class="n">beside</span><span class="w"> </span><span class="n">house</span><span class="w"> </span><span class="n">unique-house</span><span class="w"> </span><span class="n">house</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Now we might also notice that the definitions for <code class="docutils literal notranslate"><span class="pre">house</span></code> and <code class="docutils literal notranslate"><span class="pre">unique-house</span></code> only
@@ -396,14 +412,14 @@ differ in how their fronts are constructed. They are both “houses with front-d
 So we can now abstract the concept of a “house” to mean “a house that has a given
 front design”. Similar to what we did with <code class="docutils literal notranslate"><span class="pre">front</span></code>, we can now make <code class="docutils literal notranslate"><span class="pre">house</span></code>
 into an abstraction. Read the code below carefully and make sure you understand it.</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="nv">colour</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="nv">colour</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="nf">house</span><span class="w"> </span><span class="nv">front-design</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="nv">front-design</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">unique-front</span><span class="w"> </span><span class="p">(</span><span class="nf">overlay</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;outline</span><span class="w"> </span><span class="ss">&#39;black</span><span class="p">)</span>
-<span class="w">                              </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;green</span><span class="p">)))</span>
-<span class="p">(</span><span class="nf">beside</span><span class="w"> </span><span class="p">(</span><span class="nf">house</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">))</span>
-<span class="w">        </span><span class="p">(</span><span class="nf">house</span><span class="w"> </span><span class="nv">unique-front</span><span class="p">)</span>
-<span class="w">        </span><span class="p">(</span><span class="nf">house</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">)))</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">roof</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">front</span><span class="w"> </span><span class="n">colour</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="n">colour</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">house</span><span class="w"> </span><span class="n">front-design</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="n">roof</span><span class="w"> </span><span class="n">front-design</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">unique-front</span><span class="w"> </span><span class="p">(</span><span class="n">overlay</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">outline</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">black</span><span class="p">)</span>
+<span class="w">                              </span><span class="p">(</span><span class="n">front</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">green</span><span class="p">)))</span>
+<span class="p">(</span><span class="n">beside</span><span class="w"> </span><span class="p">(</span><span class="n">house</span><span class="w"> </span><span class="p">(</span><span class="n">front</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="n">house</span><span class="w"> </span><span class="n">unique-front</span><span class="p">)</span>
+<span class="w">        </span><span class="p">(</span><span class="n">house</span><span class="w"> </span><span class="p">(</span><span class="n">front</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">)))</span>
 </pre></div>
 </div>
 <p>Now the form of <code class="docutils literal notranslate"><span class="pre">(beside</span> <span class="pre">...)</span></code> is much clearer to read as “a brown house
@@ -425,15 +441,15 @@ Racket will tell you that the identifier is “undefined”.</p>
 context, it is being used to stand for the concept “a row of”. What we want
 to really say is “a row of houses”. We can introduce that as a word now
 and (in this case) define it to simply mean <code class="docutils literal notranslate"><span class="pre">beside</span></code>.</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="p">(</span><span class="nf">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="ss">&#39;red</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="nv">colour</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;solid</span><span class="w"> </span><span class="nv">colour</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="nf">house</span><span class="w"> </span><span class="nv">front-design</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">above</span><span class="w"> </span><span class="nv">roof</span><span class="w"> </span><span class="nv">front-design</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">unique-front</span><span class="w"> </span><span class="p">(</span><span class="nf">overlay</span><span class="w"> </span><span class="p">(</span><span class="nf">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ss">&#39;outline</span><span class="w"> </span><span class="ss">&#39;black</span><span class="p">)</span>
-<span class="w">                              </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;green</span><span class="p">)))</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">a-row-of</span><span class="w"> </span><span class="nv">beside</span><span class="p">)</span>
-<span class="p">(</span><span class="nf">a-row-of</span><span class="w"> </span><span class="p">(</span><span class="nf">house</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">))</span>
-<span class="w">          </span><span class="p">(</span><span class="nf">house</span><span class="w"> </span><span class="nv">unique-front</span><span class="p">)</span>
-<span class="w">          </span><span class="p">(</span><span class="nf">house</span><span class="w"> </span><span class="p">(</span><span class="nf">front</span><span class="w"> </span><span class="ss">&#39;brown</span><span class="p">)))</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">roof</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">front</span><span class="w"> </span><span class="n">colour</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="n">colour</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">house</span><span class="w"> </span><span class="n">front-design</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="n">roof</span><span class="w"> </span><span class="n">front-design</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">unique-front</span><span class="w"> </span><span class="p">(</span><span class="n">overlay</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">outline</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">black</span><span class="p">)</span>
+<span class="w">                              </span><span class="p">(</span><span class="n">front</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">green</span><span class="p">)))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">a-row-of</span><span class="w"> </span><span class="n">beside</span><span class="p">)</span>
+<span class="p">(</span><span class="n">a-row-of</span><span class="w"> </span><span class="p">(</span><span class="n">house</span><span class="w"> </span><span class="p">(</span><span class="n">front</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">))</span>
+<span class="w">          </span><span class="p">(</span><span class="n">house</span><span class="w"> </span><span class="n">unique-front</span><span class="p">)</span>
+<span class="w">          </span><span class="p">(</span><span class="n">house</span><span class="w"> </span><span class="p">(</span><span class="n">front</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">)))</span>
 </pre></div>
 </div>
 <p>We’ve done something rather interesting with this step. We’ll touch on it
@@ -553,7 +569,16 @@ identifier’s definition.</p>
 
 
 
-<h3>Navigation</h3>
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
@@ -566,12 +591,15 @@ identifier’s definition.</p>
 <li class="toctree-l2"><a class="reference internal" href="#sub-expressions">Sub-expressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#giving-meaning">Giving meaning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#scopes">Scopes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#abstraction">Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#abstraction-and-generalization">Abstraction and generalization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#interrogating-abstractions">Interrogating abstractions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#recap">Recap</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="strings.html">Strings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample-programs.html">Sample programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abstractions.html">A guessing game</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structures.html">Structures</a></li>
 </ul>
 
 <div class="relations">
@@ -583,16 +611,6 @@ identifier’s definition.</p>
   </ul></li>
 </ul>
 </div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -609,8 +627,8 @@ identifier’s definition.</p>
       &#169;2026, Srikumar K. S..
       
       |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
-      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
       <a href="_sources/interrogation.rst.txt"

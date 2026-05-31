@@ -7,14 +7,17 @@
 
     <title>Strings &#8212; CompLIT: Programming Literacy v1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d8a2add5" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=17171a54" />
     <script src="_static/documentation_options.js?v=5cb08e4e"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Sample programs" href="sample-programs.html" />
     <link rel="prev" title="Interrogating programs" href="interrogation.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -35,24 +38,31 @@
             
   <section id="strings">
 <h1>Strings<a class="headerlink" href="#strings" title="Link to this heading">¶</a></h1>
-<p>A large number of programs written for societal use involves working with
+<p>A large number of programs written for general use involves working with
 “strings” – i.e. text manipulated as a sequence of characters in some
 language/script. This is partly because programs do need to interface with
 human operators, and partly because constructing mini languages to express
 ideas and processes in programs can help human programmers make sense of what
 is going on as well.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can think of a “string” as a metaphor for text by imagining a
+string on which beads with characters written on them are strung to make
+sentences. A “string” is a specific way to store and manipulate text.</p>
+</div>
 <p>For our purpose, strings offer a level of familiarity that can help us gain
 ground with learning to read and write a few important kinds of programs.</p>
 <p>As usual, make sure you have a DrRacket environment open as you work
 through this section.</p>
 <section id="getting-feet-wet">
 <h2>Getting feet wet<a class="headerlink" href="#getting-feet-wet" title="Link to this heading">¶</a></h2>
-<p>We’ve seen that we can type <code class="docutils literal notranslate"><span class="pre">&quot;Magnificent</span> <span class="pre">flying</span> <span class="pre">machines&quot;</span></code> into the interaction
-window (or the editor) and Racket will understand that the part of what you typed
-in between the two <code class="docutils literal notranslate"><span class="pre">&quot;</span></code> (double quote) characters are to be collected together
-in that sequence and kept as a single value. We call such a specific sequence
-the <strong>syntax</strong> for representing <strong>literal strings</strong>. After this value is stored
-in computer memory we say that the value <strong>has type string</strong>.</p>
+<p>We’ve seen that we can type <code class="docutils literal notranslate"><span class="pre">&quot;Magnificent</span> <span class="pre">flying</span> <span class="pre">machines&quot;</span></code> into the
+interaction window (or the definitions window) and Racket will understand that
+the part of what you typed in between the two <code class="docutils literal notranslate"><span class="pre">&quot;</span></code> (double quote) characters
+are to be collected together in that sequence and kept as a single value. We
+call such a specific sequence the <strong>syntax</strong> for representing <strong>literal
+strings</strong>. After this value is stored in computer memory we say that the value
+<strong>has type string</strong>.</p>
 <p>Such strings can come from a variety of places –</p>
 <ul class="simple">
 <li><p>Given as literals within programs as shown just now,</p></li>
@@ -66,7 +76,7 @@ to refer to it. In Racket, and in many programming languages, is played by
 an <strong>identifier</strong>. If “Magnificent flying machines” happened to be the title
 of an article, we might bind the <code class="docutils literal notranslate"><span class="pre">title</span></code> identifier to the string value
 by typing this into the “definitions window” and clicking on “Run” –</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">title</span><span class="w"> </span><span class="s">&quot;Magnificent flying machines&quot;</span><span class="p">)</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">title</span><span class="w"> </span><span class="s2">&quot;Magnificent flying machines&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition tip">
@@ -82,13 +92,13 @@ working your way upwards. So the first character <code class="docutils literal n
 the second character <code class="docutils literal notranslate"><span class="pre">a</span></code> has the index <code class="docutils literal notranslate"><span class="pre">1</span></code> and so on.</p>
 <p>You can get the character at particular position in the string using the
 <code class="docutils literal notranslate"><span class="pre">string-ref</span></code> procedure like this –</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-ref</span><span class="w"> </span><span class="nv">title</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-ref</span><span class="w"> </span><span class="n">title</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
 <span class="sc">#\M</span>
-<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-ref</span><span class="w"> </span><span class="s">&quot;Magnificent flying machines&quot;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-ref</span><span class="w"> </span><span class="s2">&quot;Magnificent flying machines&quot;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span>
 <span class="sc">#\e</span>
-<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-ref</span><span class="w"> </span><span class="nv">title</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-ref</span><span class="w"> </span><span class="n">title</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span>
 <span class="sc">#\e</span>
-<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-ref</span><span class="w"> </span><span class="nv">title</span><span class="w"> </span><span class="mi">11</span><span class="p">)</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-ref</span><span class="w"> </span><span class="n">title</span><span class="w"> </span><span class="mi">11</span><span class="p">)</span>
 <span class="sc">#\space</span>
 </pre></div>
 </div>
@@ -101,7 +111,7 @@ To get the result, remember to press the &lt;enter&gt; key at the end. You do no
 need to type the leading “&gt;” character.</p>
 </div>
 <p>To know the total characters in a string, you can use <code class="docutils literal notranslate"><span class="pre">string-length</span></code> like this –</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="nv">title</span><span class="p">)</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">title</span><span class="p">)</span>
 <span class="mi">27</span>
 </pre></div>
 </div>
@@ -121,38 +131,38 @@ to distinguish between a <code class="docutils literal notranslate"><span class=
 syntax ti help us with that. <code class="docutils literal notranslate"><span class="pre">&quot;</span></code> characters that are intended to be a part of
 the string will needed to be preceded by the <code class="docutils literal notranslate"><span class="pre">\</span></code> (backslash) character, as
 shown below –</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="s">&quot;Guy </span><span class="se">\&quot;</span><span class="s">Schemer</span><span class="se">\&quot;</span><span class="s"> Steele&quot;</span><span class="p">)</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="s2">&quot;Guy </span><span class="se">\&quot;</span><span class="s2">Schemer</span><span class="se">\&quot;</span><span class="s2"> Steele&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>If you include that in the definitions window and run and then type <code class="docutils literal notranslate"><span class="pre">name</span></code> into
+<p>If you include that in the definitions window, run and then type <code class="docutils literal notranslate"><span class="pre">name</span></code> into
 the interactions window, you’ll see that Racket prints out</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="s">&quot;Guy </span><span class="se">\&quot;</span><span class="s">Schemer</span><span class="se">\&quot;</span><span class="s"> Steele&quot;</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;Guy </span><span class="se">\&quot;</span><span class="s2">Schemer</span><span class="se">\&quot;</span><span class="s2"> Steele&quot;</span>
 </pre></div>
 </div>
 <p>Exactly as we typed it. But this appears to not be what we wanted our string to be.
 We certainly did not intend to have anything to do with the backslash character.
-But it is only shown that way because Racket tries to print out all of its results
+But it is only shown that way because <span class="yellow-highlight">Racket tries to print out all of its results
 as far as possible in a manner such that when you copy the output and paste it back
-as input, you’ll get the same result. This is not possible in all circumstances, but it
+as input, you’ll get the same result</span>. This is not possible in all circumstances, but it
 is certainly possible here.</p>
 <p>To see the actual string we created by typing that, run this –</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="nv">name</span><span class="p">)</span>
-<span class="nv">Guy</span><span class="w"> </span><span class="s">&quot;Schemer&quot;</span><span class="w"> </span><span class="nv">Steele</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">name</span><span class="p">)</span>
+<span class="n">Guy</span><span class="w"> </span><span class="s2">&quot;Schemer&quot;</span><span class="w"> </span><span class="n">Steele</span>
 </pre></div>
 </div>
 <p>This will cause the string associated with the identifier <code class="docutils literal notranslate"><span class="pre">name</span></code> to be “displayed”.
-You’ll see that the “&quot; characters are not present in the output.</p>
-<p>To further convince ourselves that the “&quot; is purely syntax to help us tell
+You’ll see that the “\” characters are not present in the output.</p>
+<p>To further convince ourselves that the “\” is purely syntax to help us tell
 Racket which quote characters are part of the string, we can count the number
 of characters we typed and measure the length of the string that resulted from
 it. If we count the characters we typed in <code class="docutils literal notranslate"><span class="pre">&quot;Guy</span> <span class="pre">\&quot;Scheme\&quot;</span> <span class="pre">Steele&quot;</span></code>
-(excluding the opening and closing quotes), we get 22 characters. But if you
+(excluding the opening and closing quotes), we get 22 characters. <a class="footnote-reference brackets" href="#strexcl" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> But if you
 then evaluate <code class="docutils literal notranslate"><span class="pre">(string-length</span> <span class="pre">name)</span></code> in the interaction window, we see that
 the string length is reported as <code class="docutils literal notranslate"><span class="pre">20</span></code>. The two backslash characters were only
 seen while “parsing” and were discarded when constructing the string value.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>The “&quot; character is often read as “escape” because it tells Racket to
+<p>The “\” character is often read as “escape” because it tells Racket to
 “escape” from the mode of treating the next character as something special,
 and interpret it literally. In other situations, the opposite happens as
 well. For example, “n” is the ordinary lowercase letter, but when preceded
@@ -169,16 +179,16 @@ the interaction window or when you’re running your program.</p>
 <section id="hello-there">
 <h2>Hello there!<a class="headerlink" href="#hello-there" title="Link to this heading">¶</a></h2>
 <p>We’re now ready to write a very simple program and run it.</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="c1">; Purpose: Ask the user for their name and greet the user with the</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="c1">; Purpose: Ask the user for their name and greet the user with the</span>
 <span class="c1">; name they provided.</span>
-<span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s">&quot;Please tell me your name: &quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;Please tell me your name: &quot;</span><span class="p">)</span>
 <span class="c1">; Read in a line of text given by the user and store it as a string</span>
 <span class="c1">; value bound to an identifier.</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="p">(</span><span class="nf">read-line</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="p">(</span><span class="nb">read-line</span><span class="p">))</span>
 <span class="c1">; Construct the greeting by appending the name to a standard greeting.</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">greeting</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="s">&quot;Hello &quot;</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="s">&quot;!&quot;</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">greeting</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="s2">&quot;Hello &quot;</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="s2">&quot;!&quot;</span><span class="p">))</span>
 <span class="c1">; Show the greeting</span>
-<span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="nv">greeting</span><span class="p">)</span>
+<span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">greeting</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>A number of things to observe here.</p>
@@ -187,10 +197,10 @@ the interaction window or when you’re running your program.</p>
 in a different way. Racket treats all characters from a ‘;’ up to the end
 of that line as a “comment” and ignores these characters. So, as far
 as Racket goes, the above program is literally equivalent to –</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s">&quot;Please tell me your name: &quot;</span><span class="p">)</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="p">(</span><span class="nf">read-line</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">greeting</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="s">&quot;Hello &quot;</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="s">&quot;!&quot;</span><span class="p">))</span>
-<span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="nv">greeting</span><span class="p">)</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;Please tell me your name: &quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="p">(</span><span class="nb">read-line</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">greeting</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="s2">&quot;Hello &quot;</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="s2">&quot;!&quot;</span><span class="p">))</span>
+<span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">greeting</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>These comment lines are useful to someone reading your program to understand
@@ -235,22 +245,22 @@ of the “how to compute” part when the means of input/output change.</p>
 </li>
 </ul>
 </section>
-<section id="abstraction">
-<h2>Abstraction<a class="headerlink" href="#abstraction" title="Link to this heading">¶</a></h2>
+<section id="abstract-greeting">
+<h2>Abstract <code class="docutils literal notranslate"><span class="pre">greeting</span></code><a class="headerlink" href="#abstract-greeting" title="Link to this heading">¶</a></h2>
 <p>After running the program, if you type <code class="docutils literal notranslate"><span class="pre">greeting</span></code> into the interaction window,
 you’ll see that it is a string type value that contains the name you gave. We
 can then choose to abstract the idea of a greeting as containing an arbitrary
 name decided at the point the abstraction is used.</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="c1">; Purpose: Ask the user for their name and greet the user with the</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="c1">; Purpose: Ask the user for their name and greet the user with the</span>
 <span class="c1">; name they provided.</span>
-<span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s">&quot;Please tell me your name: &quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;Please tell me your name: &quot;</span><span class="p">)</span>
 <span class="c1">; Read in a line of text given by the user and store it as a string</span>
 <span class="c1">; value bound to an identifier.</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="p">(</span><span class="nf">read-line</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="p">(</span><span class="nb">read-line</span><span class="p">))</span>
 <span class="c1">; Construct the greeting by appending the name to a standard greeting.</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="nf">greeting</span><span class="w"> </span><span class="nv">name</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="s">&quot;Hello &quot;</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="s">&quot;!&quot;</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">greeting</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="s2">&quot;Hello &quot;</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="s2">&quot;!&quot;</span><span class="p">))</span>
 <span class="c1">; Show the greeting</span>
-<span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="p">(</span><span class="nf">greeting</span><span class="w"> </span><span class="nv">name</span><span class="p">))</span>
+<span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="p">(</span><span class="n">greeting</span><span class="w"> </span><span class="n">name</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Here, instead of defining <code class="docutils literal notranslate"><span class="pre">greeting</span></code> to be the appended string, we’ve
@@ -299,8 +309,8 @@ argument.</p></li>
 <h2>Substrings<a class="headerlink" href="#substrings" title="Link to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">(substring</span> <span class="pre">str</span> <span class="pre">start</span> <span class="pre">end)</span></code> can be used to extract a contiguous region of
 characters from a given string. For example,</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="s">&quot;Magnificent flying machines&quot;</span><span class="w"> </span><span class="mi">12</span><span class="w"> </span><span class="mi">18</span><span class="p">)</span>
-<span class="s">&quot;flying&quot;</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="s2">&quot;Magnificent flying machines&quot;</span><span class="w"> </span><span class="mi">12</span><span class="w"> </span><span class="mi">18</span><span class="p">)</span>
+<span class="s2">&quot;flying&quot;</span>
 </pre></div>
 </div>
 <div class="admonition-task-2 admonition" id="task-2">
@@ -313,7 +323,9 @@ relationship between the length of the resultant string as reported by
 <div class="admonition-task-3 admonition">
 <p class="admonition-title"><strong>Task 3</strong></p>
 <p>Find out the start and end positions you need to give to extract the three
-words in <code class="docutils literal notranslate"><span class="pre">&quot;Magnificent</span> <span class="pre">flying</span> <span class="pre">machines&quot;</span></code>.</p>
+words in <code class="docutils literal notranslate"><span class="pre">&quot;Magnificent</span> <span class="pre">flying</span> <span class="pre">machines&quot;</span></code>. Also, experimentally find out
+the range of valid indices you can give for <code class="docutils literal notranslate"><span class="pre">string-ref</span></code> and
+<code class="docutils literal notranslate"><span class="pre">substring</span></code> for a given string.</p>
 </div>
 <div class="admonition-task-4 admonition">
 <p class="admonition-title"><strong>Task 4</strong></p>
@@ -343,8 +355,79 @@ simply what its provided documentation might say, because you’ll be testing
 it with the <strong>specific</strong> cases for which you intend to use it.</p>
 </div>
 </section>
-<section id="todo">
-<h2>TODO<a class="headerlink" href="#todo" title="Link to this heading">¶</a></h2>
+<section id="a-close-reading">
+<h2>A “close reading”<a class="headerlink" href="#a-close-reading" title="Link to this heading">¶</a></h2>
+<p>Suppose we have a string and an index into a valid position within the string.
+For a string like <code class="docutils literal notranslate"><span class="pre">&quot;hello&quot;</span></code>, there are the following positions as indicated
+by the <code class="docutils literal notranslate"><span class="pre">|</span></code> character.</p>
+<figure class="align-center" id="id2">
+<img alt="_images/cursor-positions.png" src="_images/cursor-positions.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">The possible “cursor positions” in the 5-character string “hello”.
+Note that 012345 make for <strong>six</strong> cursor positions in all.</span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Wait a minute! The string <code class="docutils literal notranslate"><span class="pre">&quot;hello&quot;</span></code> has only 5 characters and so only the
+positions 0,1,2,3,4 should be valid. However now we’re saying there are 6
+positions 0,1,2,3,4,5?</p>
+<p>If we try each of those positions with <code class="docutils literal notranslate"><span class="pre">string-ref</span></code>, we’ll read off the characters
+one by one until we reach position <code class="docutils literal notranslate"><span class="pre">5</span></code>, in which case <code class="docutils literal notranslate"><span class="pre">string-ref</span></code> will raise
+an error.</p>
+<div class="admonition-task admonition">
+<p class="admonition-title"><strong>Task</strong></p>
+<p>Do it and convince yourself that is the case.</p>
+</div>
+<p>However look at the series below –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="s2">&quot;hello&quot;</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="s2">&quot;ello&quot;</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+<span class="s2">&quot;llo&quot;</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="s2">&quot;lo&quot;</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span>
+<span class="s2">&quot;o&quot;</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="c1">; This will give an empty (i.e. zero length) string.</span>
+<span class="s2">&quot;&quot;</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span>
+<span class="n">substring:</span><span class="w"> </span><span class="n">starting</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="nb">range</span>
+<span class="n">starting</span><span class="w"> </span><span class="n">index:</span><span class="w"> </span><span class="mi">6</span>
+<span class="n">valid</span><span class="w"> </span><span class="n">range:</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="mi">5</span><span class="p">]</span>
+<span class="n">string:</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span>
+</pre></div>
+</div>
+<p>Notice that for <code class="docutils literal notranslate"><span class="pre">substring</span></code>, we can go up to index <code class="docutils literal notranslate"><span class="pre">5</span></code> which yields the
+empty string. So for substring, the index behaves as though we’re asking for
+all the characters after the cursor position whose index is given to <code class="docutils literal notranslate"><span class="pre">substring</span></code>.</p>
+<p>When we’re being explicit with the <code class="docutils literal notranslate"><span class="pre">end</span></code> argument as well, we see –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="c1">; from &quot;he|llo&quot; to &quot;hell|o&quot; gives &quot;ll&quot;</span>
+<span class="s2">&quot;ll&quot;</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="c1">; from &quot;he|llo&quot; to &quot;hello|&quot; gives &quot;llo&quot;</span>
+<span class="s2">&quot;llo&quot;</span>
+</pre></div>
+</div>
+<p>This consistent with our explanation of what the index means for the end position
+as well.</p>
+<p>To reconcile this view with <code class="docutils literal notranslate"><span class="pre">string-ref</span></code>, we can now re-interpret the index
+we pass to <code class="docutils literal notranslate"><span class="pre">string-ref</span></code> as though we’re asking for the “character to the
+right of the given cursor position”. This ask does not make sense when the
+index we give is greater than or equal to the number of characters, and truly
+enough <code class="docutils literal notranslate"><span class="pre">string-ref</span></code> will produce an error if you do that.</p>
+<p>Now armed with the “position of cursor” view of the index, we can see
+that if we’re given a string and an index, we can use this information to
+represent two concepts – a) the character to the right of the given cursor
+position, and b) the substring consisting of all the characters to the right
+of the given cursor position.</p>
+<p>While our hand is forced when asked for a single character, we can always
+produce an empty string if no characters meeting some criteria are available.</p>
+<p>Remember this and we’ll take it forward in the succeeding sections.</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="strexcl" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Excluding the surrounding double-quote characters.</p>
+</aside>
+</aside>
 </section>
 </section>
 
@@ -364,7 +447,16 @@ it with the <strong>specific</strong> cases for which you intend to use it.</p>
 
 
 
-<h3>Navigation</h3>
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
@@ -373,11 +465,14 @@ it with the <strong>specific</strong> cases for which you intend to use it.</p>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Strings</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#getting-feet-wet">Getting feet wet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#hello-there">Hello there!</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#abstraction">Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#abstract-greeting">Abstract <code class="docutils literal notranslate"><span class="pre">greeting</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#substrings">Substrings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#todo">TODO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#a-close-reading">A “close reading”</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="sample-programs.html">Sample programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abstractions.html">A guessing game</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structures.html">Structures</a></li>
 </ul>
 
 <div class="relations">
@@ -385,19 +480,10 @@ it with the <strong>specific</strong> cases for which you intend to use it.</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="interrogation.html" title="previous chapter">Interrogating programs</a></li>
+      <li>Next: <a href="sample-programs.html" title="next chapter">Sample programs</a></li>
   </ul></li>
 </ul>
 </div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -414,8 +500,8 @@ it with the <strong>specific</strong> cases for which you intend to use it.</p>
       &#169;2026, Srikumar K. S..
       
       |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
-      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
       <a href="_sources/strings.rst.txt"

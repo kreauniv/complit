@@ -65,7 +65,7 @@ your own.
 
    Start DrRacket and type the following into a new window.
 
-   .. code:: scheme
+   .. code:: racket
 
       (define scene "A horse in a box-car drawn by a steam engine.")
 
@@ -107,7 +107,10 @@ languages.
    ``#\2`` and so on.
 
 **Truth values**
-   ``#t`` stands for "true" and ``#f`` stands for "false".
+   ``#t`` stands for "true" and ``#f`` stands for "false". These can also be
+   written in full as ``#true`` and ``#false`` respectively, though Racket
+   will always display them as ``#t`` and ``#f`` so it is good to learn to
+   recognize them.
 
 **Symbols**
    Usually given prefixed with a single quote like ``'horse``. Such a "quoted
@@ -123,7 +126,7 @@ Phrases and sentences
 Earlier, we used the ``define`` word to introduce a new identifier ``scene``.
 We had to type it in a special manner --
 
-.. code:: scheme
+.. code:: racket
 
    (define <identifier> <value>)
 
@@ -221,7 +224,7 @@ Pictures as values
 
 Type the following at the start of your Racket file --
 
-.. code:: scheme
+.. code:: racket
 
    #lang racket
    (require 2htdp/image)
@@ -239,7 +242,7 @@ window and press the <enter> key. You'll see ``<procedure:circle>`` displayed.
 This means the ``circle`` identifier refers to a procedure and can therefore
 be used in the operator position. Type the following into the interaction window --
 
-.. code:: scheme
+.. code:: racket
 
    (circle 20 'solid 'blue)
 

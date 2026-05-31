@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Structures &#8212; CompLIT: Programming Literacy v1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d8a2add5" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=17171a54" />
+    <script src="_static/documentation_options.js?v=5cb08e4e"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="A guessing game" href="abstractions.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="structures">
+<h1>Structures<a class="headerlink" href="#structures" title="Link to this heading">¶</a></h1>
+<p>At the end of the <a class="reference internal" href="strings.html"><span class="doc">Strings</span></a> section, we saw how combining two
+pieces of information – a string and an index – gives us access
+to multiple kinds of computations on the string focused on that
+position.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-ref</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="sc">#\l</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="s2">&quot;lo&quot;</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="s2">&quot;hel&quot;</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="mi">3</span><span class="p">))</span>
+<span class="s2">&quot;hello&quot;</span>
+</pre></div>
+</div>
+<p>But how do we keep these two pieces of information together?
+That’s the job of a <code class="docutils literal notranslate"><span class="pre">struct</span></code> which is short for “structure”
+which is itself short for “data structure”.</p>
+<p>In this case we can make a <code class="docutils literal notranslate"><span class="pre">cursor</span></code> structure combining the
+two pieces of information using the <code class="docutils literal notranslate"><span class="pre">(struct</span> <span class="pre">...)</span></code> form.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="n">cursor</span><span class="w"> </span><span class="p">(</span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">(struct</span> <span class="pre">...)</span></code> tells us that we’re defining a new structure identifier,
+much like <code class="docutils literal notranslate"><span class="pre">(define</span> <span class="pre">...)</span></code>.</p>
+<p>The first identifier given (<code class="docutils literal notranslate"><span class="pre">cursor</span></code> in this case), becomes the <strong>name</strong> of the
+structure.</p>
+<p>The second argument is a sequence of identifiers which represent the various
+<strong>fields</strong> of the structure. In this case, this structure <code class="docutils literal notranslate"><span class="pre">cursor</span></code> has two
+fields named <code class="docutils literal notranslate"><span class="pre">str</span></code> and <code class="docutils literal notranslate"><span class="pre">pos</span></code>.</p>
+<p>Such a definition introduces a plethora of new words into the context
+for our use.</p>
+<ol class="arabic simple">
+<li><p>We can now use <code class="docutils literal notranslate"><span class="pre">(cursor</span> <span class="pre">&quot;hello&quot;</span> <span class="pre">3)</span></code> to represent that position
+we used in the example above. This makes a “cursor struct”.</p></li>
+<li><p>We can use <code class="docutils literal notranslate"><span class="pre">(cursor?</span> <span class="pre">thing)</span></code> to determine whether the argument stands
+for a <code class="docutils literal notranslate"><span class="pre">cursor</span></code> type value or not. So <code class="docutils literal notranslate"><span class="pre">(cursor?</span> <span class="pre">(cursor</span> <span class="pre">&lt;str&gt;</span> <span class="pre">&lt;pos&gt;))</span></code>
+will always evaluate to <code class="docutils literal notranslate"><span class="pre">#t</span></code> for valid value of the string and position.</p></li>
+<li><p>If we have a cursor like <code class="docutils literal notranslate"><span class="pre">(define</span> <span class="pre">c</span> <span class="pre">(cursor</span> <span class="pre">&quot;hello&quot;</span> <span class="pre">3))</span></code>, then we can get
+at the string and the position using <code class="docutils literal notranslate"><span class="pre">(cursor-str</span> <span class="pre">c)</span></code> and <code class="docutils literal notranslate"><span class="pre">(cursor-pos</span>
+<span class="pre">c)</span></code> respectively.</p></li>
+</ol>
+<section id="new-word-if">
+<h2>New word: <code class="docutils literal notranslate"><span class="pre">if</span></code><a class="headerlink" href="#new-word-if" title="Link to this heading">¶</a></h2>
+<p>Racket has a word <code class="docutils literal notranslate"><span class="pre">if</span></code> with 3 arguments which lets us choose an argument
+based on a condition. A generic <code class="docutils literal notranslate"><span class="pre">if</span></code> expression looks like this –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">&lt;condition&gt;</span><span class="w"> </span><span class="n">&lt;then-expr&gt;</span><span class="w"> </span><span class="n">&lt;else-expr&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If the <code class="docutils literal notranslate"><span class="pre">&lt;condition&gt;</span></code> expression (such as <code class="docutils literal notranslate"><span class="pre">(&lt;</span> <span class="pre">2</span> <span class="pre">3)</span></code>) evaluates to false (i.e. <code class="docutils literal notranslate"><span class="pre">#f</span></code>),
+then it is as though the whole expression is the same as <code class="docutils literal notranslate"><span class="pre">&lt;else-expr&gt;</span></code>. Otherwise
+it is the same as <code class="docutils literal notranslate"><span class="pre">&lt;then-expr&gt;</span></code>. That is, the following rules apply -</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="no">#f</span><span class="w"> </span><span class="n">&lt;then-expr&gt;</span><span class="w"> </span><span class="n">&lt;else-expr&gt;</span><span class="p">)</span><span class="w"> </span><span class="nb">=</span><span class="w"> </span><span class="n">&lt;else-expr&gt;</span>
+<span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">_anything_else_</span><span class="w"> </span><span class="n">&lt;then-expr&gt;</span><span class="w"> </span><span class="n">&lt;else-expr&gt;</span><span class="p">)</span><span class="w"> </span><span class="nb">=</span><span class="w"> </span><span class="n">&lt;then-expr&gt;</span>
+</pre></div>
+</div>
+<p>Here are some examples.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;meow&quot;</span><span class="w"> </span><span class="s2">&quot;woof&quot;</span><span class="p">)</span>
+<span class="s2">&quot;meow&quot;</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">4</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="mi">5</span><span class="p">))</span>
+<span class="w">      </span><span class="s2">&quot;wrong triangle&quot;</span>
+<span class="w">      </span><span class="s2">&quot;right triangle&quot;</span><span class="p">)</span>
+<span class="s2">&quot;right triangle&quot;</span>
+</pre></div>
+</div>
+<p>To evaluate a compound expression like <code class="docutils literal notranslate"><span class="pre">(&lt;</span> <span class="pre">(+</span> <span class="pre">(*</span> <span class="pre">3</span> <span class="pre">3)</span> <span class="pre">(*</span> <span class="pre">4</span> <span class="pre">4))</span> <span class="pre">(*</span> <span class="pre">5</span> <span class="pre">5))</span></code>, we
+can do it step by step, starting with the innermost expressions, like this -</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">4</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="mi">5</span><span class="p">))</span>
+<span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">9</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">4</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="mi">5</span><span class="p">))</span>
+<span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">9</span><span class="w"> </span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="mi">5</span><span class="p">))</span>
+<span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="mi">25</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="mi">5</span><span class="p">))</span>
+<span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="mi">25</span><span class="w"> </span><span class="mi">25</span><span class="p">)</span>
+<span class="no">#f</span>
+</pre></div>
+</div>
+<p>So the whole <code class="docutils literal notranslate"><span class="pre">(if...)</span></code> expression means (in our context) the same as <code class="docutils literal notranslate"><span class="pre">(if</span> <span class="pre">#f</span>
+<span class="pre">&quot;wrong</span> <span class="pre">triangle&quot;</span> <span class="pre">&quot;right</span> <span class="pre">triangle&quot;)</span></code>, which we can see according to our rules
+that it must be the same as <code class="docutils literal notranslate"><span class="pre">&quot;right</span> <span class="pre">triangle&quot;</span></code>.</p>
+</section>
+<section id="validity">
+<h2>Validity<a class="headerlink" href="#validity" title="Link to this heading">¶</a></h2>
+<p>Should we consider <code class="docutils literal notranslate"><span class="pre">(cursor</span> <span class="pre">&quot;hello&quot;</span> <span class="pre">500)</span></code> to be a valid cursor structure?
+Should <code class="docutils literal notranslate"><span class="pre">(cursor</span> <span class="pre">'cat</span> <span class="pre">'meow)</span></code> be a valid cursor structure?</p>
+<p>To ensure that when we make a cursor, we actually have a cursor, we need to place
+some constraints on the field values it can have. Towards that, we can write
+a <code class="docutils literal notranslate"><span class="pre">make-cursor</span></code> procedure like this.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">make-cursor</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">and</span><span class="w"> </span><span class="p">(</span><span class="nb">string?</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
+<span class="w">            </span><span class="p">(</span><span class="nb">integer?</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span>
+<span class="w">            </span><span class="p">(</span><span class="nb">&gt;=</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">            </span><span class="p">(</span><span class="nb">&lt;=</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">str</span><span class="p">)))</span>
+<span class="w">      </span><span class="p">(</span><span class="n">cursor</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span>
+<span class="w">      </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;Need a string and a position within the boundaries of the string to make a cursor&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>We’re using the <code class="docutils literal notranslate"><span class="pre">(error</span> <span class="pre">&lt;any-descriptive-value&gt;)</span></code> here to signal an error
+condition – i.e. <code class="docutils literal notranslate"><span class="pre">make-cursor</span></code> will not succeed, and will fail with the
+given error message if we didn’t meet the conditions required to make a valid
+cursor.</p>
+<p>Now let’s pick that definition apart and figure out how to “read” it.</p>
+<ul>
+<li><p>First off, <code class="docutils literal notranslate"><span class="pre">(define</span> <span class="pre">(make-cursor</span> <span class="pre">str</span> <span class="pre">pos)</span> <span class="pre">...)</span></code> tells us that the
+<code class="docutils literal notranslate"><span class="pre">make-cursor</span></code> is a procedure that takes two arguments. Within the context
+of the procedure’s definition, we can refer to these arguments using the
+words <code class="docutils literal notranslate"><span class="pre">str</span></code> and <code class="docutils literal notranslate"><span class="pre">pos</span></code> respectively.</p></li>
+<li><p>Since the whole expression in the body is an <code class="docutils literal notranslate"><span class="pre">(if..)</span></code>, we can see that
+<code class="docutils literal notranslate"><span class="pre">(make-cursor</span> <span class="pre">str</span> <span class="pre">pos)</span></code> will either become <code class="docutils literal notranslate"><span class="pre">(cursor</span> <span class="pre">str</span> <span class="pre">pos)</span></code> or
+<code class="docutils literal notranslate"><span class="pre">(error</span> <span class="pre">&quot;Need</span> <span class="pre">a</span> <span class="pre">string...&quot;)</span></code>. Thus we understand that <code class="docutils literal notranslate"><span class="pre">make-cursor</span></code>
+will either succeed with <code class="docutils literal notranslate"><span class="pre">(cursor</span> <span class="pre">str</span> <span class="pre">pos)</span></code> or raise an error if some
+conditions are not met. This fits our expectation of making only valid
+cursors.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(string?</span> <span class="pre">str)</span></code> will be <code class="docutils literal notranslate"><span class="pre">#t</span></code> if the given <code class="docutils literal notranslate"><span class="pre">str</span></code> is a string value and <code class="docutils literal notranslate"><span class="pre">#f</span></code>
+otherwise. Similarly <code class="docutils literal notranslate"><span class="pre">(integer?</span> <span class="pre">pos)</span></code> will check whether the given <code class="docutils literal notranslate"><span class="pre">pos</span></code> is
+an integer. Remember that procedure words that produce either <code class="docutils literal notranslate"><span class="pre">#t</span></code> or <code class="docutils literal notranslate"><span class="pre">#f</span></code>
+usually have names ending in <code class="docutils literal notranslate"><span class="pre">?</span></code> as though asking the questions “Is <code class="docutils literal notranslate"><span class="pre">str</span></code> a string?”
+and “Is <code class="docutils literal notranslate"><span class="pre">pos</span></code> an integer?”.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">(and</span> <span class="pre">cond1</span> <span class="pre">cond2</span> <span class="pre">cond3</span> <span class="pre">...)</span></code> can take one or more condition
+expressions. It will check each condition in that order one by one until one
+of them is <code class="docutils literal notranslate"><span class="pre">#f</span></code>. The <code class="docutils literal notranslate"><span class="pre">(and...)</span></code> is considered to succeed if none of the
+conditions fail. So we see that by placing <code class="docutils literal notranslate"><span class="pre">(string?</span> <span class="pre">str)</span></code> and <code class="docutils literal notranslate"><span class="pre">(integer?</span>
+<span class="pre">pos)</span></code> up front, by the time we get around to checking <code class="docutils literal notranslate"><span class="pre">(&gt;=</span> <span class="pre">pos</span> <span class="pre">0)</span></code>, we can
+be guaranteed that <code class="docutils literal notranslate"><span class="pre">pos</span></code> will be an integer in the context of the
+expression <code class="docutils literal notranslate"><span class="pre">(&gt;=</span> <span class="pre">pos</span> <span class="pre">0)</span></code>. Similarly, we know <code class="docutils literal notranslate"><span class="pre">str</span></code> will definitely be a
+string when <code class="docutils literal notranslate"><span class="pre">and</span></code> gets around to evaluating <code class="docutils literal notranslate"><span class="pre">(string-length</span> <span class="pre">str)</span></code>.
+<span class="yellow-highlight">This ordering is important</span> because <code class="docutils literal notranslate"><span class="pre">(&gt;=</span> <span class="pre">pos</span> <span class="pre">0)</span></code> will be an error if
+<code class="docutils literal notranslate"><span class="pre">pos</span></code> is not a number and <code class="docutils literal notranslate"><span class="pre">(string-length</span> <span class="pre">str)</span></code> will be an error if
+<code class="docutils literal notranslate"><span class="pre">str</span></code> is not a string.`</p></li>
+<li><p>So the combined <code class="docutils literal notranslate"><span class="pre">(and</span> <span class="pre">...)</span></code> expression is saying “<code class="docutils literal notranslate"><span class="pre">str</span></code> is a string and <code class="docutils literal notranslate"><span class="pre">pos</span></code> is an
+integer and <code class="docutils literal notranslate"><span class="pre">pos</span></code> is &gt;= 0 and <code class="docutils literal notranslate"><span class="pre">pos</span></code> is &lt;= the length of <code class="docutils literal notranslate"><span class="pre">str</span></code>”. As we read that,
+we can realize that the moment any one of the sub-conditions becomes false, there is no
+point even looking at any sub-conditions after that.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><strong>A closer reading</strong>: While we’re checking whether <code class="docutils literal notranslate"><span class="pre">pos</span></code> is <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>
+the number of characters in the strings <code class="docutils literal notranslate"><span class="pre">str</span></code>, what we’re <strong>really</strong>
+saying is that <code class="docutils literal notranslate"><span class="pre">pos</span></code> must be at or before the last possible cursor
+position .. and the last possible cursor position happens to be the same
+as the number of characters in the string. Thus we see that <span class="yellow-highlight">we need
+to interpret what is stated and being computed, in the context of what
+we’re trying to accomplish.</span> If as a writer of programs you reduce the
+disconnect between what is stated and how it is to be interpreted, then we
+make the job easier for the reader, which could be you in the future. The
+<strong>means</strong> we have to reduce this disconnect is by defining new words for
+the concept and using that definition. For example,</p>
+</div>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">last-cursor-position</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">str</span><span class="p">))</span>
+<span class="c1">; or equivalently ...</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">last-cursor-position</span><span class="w"> </span><span class="nb">string-length</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Putting all of that together, we can “read” the procedure definition as –</p>
+<blockquote>
+<div><p>Given a string <code class="docutils literal notranslate"><span class="pre">str</span></code> and integer position <code class="docutils literal notranslate"><span class="pre">pos</span></code>, such that <code class="docutils literal notranslate"><span class="pre">pos</span></code> is non-negative
+and is &lt;= the last cursor position of <code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">make-cursor</span></code> will make a valid
+cursor using <code class="docutils literal notranslate"><span class="pre">(cursor</span> <span class="pre">str</span> <span class="pre">pos)</span></code>. Otherwise it will raise an error.</p>
+</div></blockquote>
+</section>
+<section id="on-error-messages">
+<h2>On error messages<a class="headerlink" href="#on-error-messages" title="Link to this heading">¶</a></h2>
+<p>In our <code class="docutils literal notranslate"><span class="pre">make-cursor</span></code> definition, when any one of the four conditions in the
+<code class="docutils literal notranslate"><span class="pre">(and...)</span></code> turns out to be false, we’ll get the error message</p>
+<blockquote>
+<div><p>“Need a string and a position within the boundaries of the string to make a
+cursor”.</p>
+</div></blockquote>
+<p>This is not too bad and with a little bit of work, the user of our <code class="docutils literal notranslate"><span class="pre">make-cursor</span></code>
+can figure out which of the four conditions restated in the error message as plain text
+failed and can act accordingly.</p>
+<p>Can we do better though by also informing the user about <strong>which</strong> of the four
+conditions failed? Yes we can, by splitting out each condition like shown below –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">make-cursor</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">when</span><span class="w"> </span><span class="p">(</span><span class="nb">not</span><span class="w"> </span><span class="p">(</span><span class="nb">string?</span><span class="w"> </span><span class="n">str</span><span class="p">))</span>
+<span class="w">      </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;First argument must be a string&quot;</span><span class="p">))</span>
+<span class="w">   </span><span class="p">(</span><span class="k">when</span><span class="w"> </span><span class="p">(</span><span class="nb">not</span><span class="w"> </span><span class="p">(</span><span class="nb">integer?</span><span class="w"> </span><span class="n">pos</span><span class="p">))</span>
+<span class="w">      </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;Second argument must be an integer&quot;</span><span class="p">))</span>
+<span class="w">   </span><span class="p">(</span><span class="k">when</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">      </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;Second argument must be a non-negative integer&quot;</span><span class="p">))</span>
+<span class="w">   </span><span class="p">(</span><span class="k">when</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="p">(</span><span class="n">last-cursor-position</span><span class="w"> </span><span class="n">str</span><span class="p">))</span>
+<span class="w">      </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;Second argument must be at or before the last cursor position&quot;</span><span class="p">))</span>
+<span class="w">   </span><span class="p">(</span><span class="n">cursor</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">(when</span> <span class="pre">&lt;condition&gt;</span> <span class="pre">&lt;body&gt;)</span></code> is like an <code class="docutils literal notranslate"><span class="pre">(if</span> <span class="pre">..)</span></code> without an “else” part.
+When we see a sequence of such expressions in the body of a definition
+without any wrapping “operator word”, it just means that they will all be
+evaluated one by one until the last expression is reached. The value of the
+whole sequence is the same as the value of the final expression in the sequence.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">begin</span></code> word can be used to make this sequencing explicit like this –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">make-cursor</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">begin</span>
+<span class="w">      </span><span class="p">(</span><span class="k">when</span><span class="w"> </span><span class="p">(</span><span class="nb">not</span><span class="w"> </span><span class="p">(</span><span class="nb">string?</span><span class="w"> </span><span class="n">str</span><span class="p">))</span>
+<span class="w">         </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;First argument must be a string&quot;</span><span class="p">))</span>
+<span class="w">      </span><span class="p">(</span><span class="k">when</span><span class="w"> </span><span class="p">(</span><span class="nb">not</span><span class="w"> </span><span class="p">(</span><span class="nb">integer?</span><span class="w"> </span><span class="n">pos</span><span class="p">))</span>
+<span class="w">         </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;Second argument must be an integer&quot;</span><span class="p">))</span>
+<span class="w">      </span><span class="p">(</span><span class="k">when</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">         </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;Second argument must be a non-negative integer&quot;</span><span class="p">))</span>
+<span class="w">      </span><span class="p">(</span><span class="k">when</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="p">(</span><span class="n">last-cursor-position</span><span class="w"> </span><span class="n">str</span><span class="p">))</span>
+<span class="w">         </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;Second argument must be at or before the last cursor position&quot;</span><span class="p">))</span>
+<span class="w">      </span><span class="p">(</span><span class="n">cursor</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>Since <code class="docutils literal notranslate"><span class="pre">(cursor</span> <span class="pre">str</span> <span class="pre">pos)</span></code> is the last expression in <code class="docutils literal notranslate"><span class="pre">(begin</span> <span class="pre">...)</span></code>, the whole
+<code class="docutils literal notranslate"><span class="pre">(begin</span> <span class="pre">...)</span></code> expression will take on the value of <code class="docutils literal notranslate"><span class="pre">(cursor</span> <span class="pre">str</span> <span class="pre">pos)</span></code> after
+evaluating all the preceding expressions one by one. In our case, the preceding
+expressions may fail with an <code class="docutils literal notranslate"><span class="pre">(error</span> <span class="pre">...)</span></code>. When that happens, no further
+evaluations take place and the program is “aborted” and the program is said to
+“error out”.</p>
+<p>With this approach, the error message given is very specific and the user of
+our <code class="docutils literal notranslate"><span class="pre">make-cursor</span></code> needs to do less work to identify what was wrong about how
+they were using it.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>A program (or definition) is written once, but used by many people,
+many times over. So it makes sense to reduce the cumulative pain of all
+those cases through appropriate error reporting. Also, remember that this
+“other people” might turn out to be future you who’s forgotten what you’d
+written out in the past.</p>
+</div>
+<p>Thus we might expect that our procedure definitions will take on a common form –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">&lt;procedure-name&gt;</span><span class="w"> </span><span class="n">&lt;arg1&gt;</span><span class="w"> </span><span class="n">&lt;arg2&gt;</span><span class="w"> </span><span class="k">...</span><span class="p">)</span>
+<span class="w">   </span><span class="n">&lt;check</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">arguments</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="nb">values</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="n">types&gt;</span>
+<span class="w">   </span><span class="n">&lt;check</span><span class="w"> </span><span class="n">validity</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">argument</span><span class="w"> </span><span class="nb">values</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">any&gt;</span>
+<span class="w">   </span><span class="k">...</span>
+<span class="w">   </span><span class="n">&lt;body</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">procedure</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">assumes</span><span class="w"> </span><span class="n">valid</span><span class="w"> </span><span class="n">arguments&gt;</span>
+<span class="w">   </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For someone intending to just <strong>use</strong> the procedure, they may not want to read
+all of the body to understand what it does. In fact, we might argue that if the
+procedure has a clear enough purpose, then they shouldn’t have to worry about
+<strong>how</strong> it does it, when all they care about is <strong>what</strong> it computes.</p>
+<p>It is clear that we can further help the reader/user by directly telling them
+the <strong>purpose</strong> of the procedure. In code, we do this using a comment that
+immediately precedes the procedure definition.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="c1">; `make-cursor` Creates a `cursor` structure given a valid string and a</span>
+<span class="c1">; cursor position number within the string. Valid cursor positions range</span>
+<span class="c1">; from 0 to the number of characters in the string (inclusive).</span>
+<span class="c1">;</span>
+<span class="c1">; E.g. `(make-cursor &quot;hello world&quot; 6)` creates a cursor that represents</span>
+<span class="c1">; the position just before the &#39;w&#39; character.</span>
+<span class="c1">;</span>
+<span class="c1">; E.g. `(make-cursor &quot;hello world&quot; 42)` is an invalid cursor specification</span>
+<span class="c1">; since 42 is more than the number of characters in the given string. Therefore</span>
+<span class="c1">; this invocation produces an error message.</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">make-cursor</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span>
+<span class="w">   </span><span class="k">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-task admonition">
+<p class="admonition-title"><strong>Task</strong></p>
+<p>Write the documentation for the <code class="docutils literal notranslate"><span class="pre">make-cursor</span></code> procedure in the style
+of Racket. Plain text will do. Don’t worry about the HTML styling and
+highlighting that Racket documentation uses. Ensure as many facets of the
+documentation you’ve used are covered, except those which you do not
+understand yet. Provide a list of aspects you’ve covered.</p>
+</div>
+</section>
+<section id="interrogating-make-cursor">
+<h2>Interrogating <code class="docutils literal notranslate"><span class="pre">make-cursor</span></code><a class="headerlink" href="#interrogating-make-cursor" title="Link to this heading">¶</a></h2>
+<p>In the previous section we looked at how we can read and interpret the definition
+of <code class="docutils literal notranslate"><span class="pre">make-cursor</span></code>. In this section, we’ll look at how to gain the same understanding
+through <strong>interrogating</strong> the definition.</p>
+<p>To start, the definition of the <code class="docutils literal notranslate"><span class="pre">(struct</span> <span class="pre">..)</span></code> and the <code class="docutils literal notranslate"><span class="pre">(define</span> <span class="pre">(make-cursor</span> <span class="pre">..)</span> <span class="pre">..)</span></code>
+should both be in the definitions window. Once in, load the definitions into the interaction
+window by hitting “Run”. Your definitions window should look like this –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="kn">#lang </span><span class="nn">racket</span>
+
+<span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="n">cursor</span><span class="w"> </span><span class="p">(</span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">last-cursor-position</span><span class="w"> </span><span class="nb">string-length</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">make-cursor</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">and</span><span class="w"> </span><span class="p">(</span><span class="nb">string?</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
+<span class="w">            </span><span class="p">(</span><span class="nb">integer?</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span>
+<span class="w">            </span><span class="p">(</span><span class="nb">&gt;=</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">            </span><span class="p">(</span><span class="nb">&lt;=</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="p">(</span><span class="n">last-cursor-position</span><span class="w"> </span><span class="n">str</span><span class="p">)))</span>
+<span class="w">      </span><span class="p">(</span><span class="n">cursor</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span>
+<span class="w">      </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;make-cursor expects a string and a valid cursor position index.&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>First, we can see that the body of <code class="docutils literal notranslate"><span class="pre">make-cursor</span></code> introduces two identifiers for its
+arguments – <code class="docutils literal notranslate"><span class="pre">str</span></code> and <code class="docutils literal notranslate"><span class="pre">pos</span></code>. So we can define values for these in the interaction window
+to work with expressions used by the body.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="s2">&quot;hello word&quot;</span><span class="p">)</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="mi">42</span><span class="p">)</span><span class="w"> </span><span class="c1">; Invalid position index</span>
+</pre></div>
+</div>
+<p>We can now copy-paste any sub-expression in the body of <code class="docutils literal notranslate"><span class="pre">make-cursor</span></code> into the
+interaction window to see what it does.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="c1">; Does make-cursor work on these values?</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">make-cursor</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span>
+<span class="n">❌</span><span class="w"> </span><span class="n">make-cursor</span><span class="w"> </span><span class="n">expects</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="nb">string</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">valid</span><span class="w"> </span><span class="n">cursor</span><span class="w"> </span><span class="n">position</span><span class="w"> </span><span class="n">index.</span>
+<span class="c1">; Is str a string?</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string?</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
+<span class="no">#t</span>
+<span class="c1">; Is pos an integer?</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">integer?</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span>
+<span class="no">#t</span>
+<span class="c1">; Is pos non-negative?</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;=</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="no">#t</span>
+<span class="c1">; Is it within the bounds of the string?</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">last-cursor-position</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
+<span class="mi">10</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;=</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+<span class="no">#f</span>
+<span class="c1">; We see that (&lt;= pos 10) is false and therefore make-cursor fails too.</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">and</span><span class="w"> </span><span class="p">(</span><span class="nb">string?</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
+<span class="w">       </span><span class="p">(</span><span class="nb">integer?</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span>
+<span class="w">       </span><span class="p">(</span><span class="nb">&gt;=</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">       </span><span class="p">(</span><span class="nb">&lt;=</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="p">(</span><span class="n">last-cursor-position</span><span class="w"> </span><span class="n">str</span><span class="p">)))</span>
+<span class="no">#f</span>
+<span class="c1">; Now give a valid position.</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="c1">; The cursor position just before &#39;w&#39;</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;=</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="p">(</span><span class="n">last-cursor-position</span><span class="w"> </span><span class="n">str</span><span class="p">))</span>
+<span class="no">#t</span>
+<span class="c1">; Now that both str and pos are both valid, what does make-cursor do?</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">make-cursor</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span>
+<span class="n">#&lt;cursor&gt;</span>
+<span class="c1">; This indicates that a valid cursor structure value has been created.</span>
+</pre></div>
+</div>
+<p>With a process like that where each interrogation step is driven by a question
+we have about the code we’re interrogating, we can come to an understanding
+about the purpose of a procedure.</p>
+<p>This process of arriving at an understanding of a procedure can be made harder
+or easier depending on the availability of the comment describing the
+procedure.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Only relying on the comment to tell us what a procedure does can be a
+problem because we do encounter procedures without such comments in a lot of
+code and we need a way to make sense of what we’re seeing in those cases.
+Furthermore, someone could’ve edited the code to do something slightly
+different than what the comment says, having forgotten to update the comment
+to reflect that – a human error. This is often referred to as <strong>documentation
+drift</strong>.</p>
+</div>
+</section>
+<section id="make-cursor-in-typed-racket">
+<h2><code class="docutils literal notranslate"><span class="pre">make-cursor</span></code> in “typed racket”<a class="headerlink" href="#make-cursor-in-typed-racket" title="Link to this heading">¶</a></h2>
+<p>We can help ourselves and programmers who want to use our code by first
+checking whether both our programs are correct before it even gets to run. This
+is because in many circumstance such as with servers, finding out about an
+error when the server is already up and running can prove expensive,
+troublesome or a combination.</p>
+<p>Type systems which read some extra annotation you provide as part of your program
+and automatically check whether callers of procedures make consistent use of
+procedures are therefore very useful both to human readers and to ensure
+some basic correctness.</p>
+<p>We could’ve written the <code class="docutils literal notranslate"><span class="pre">cursor</span></code> struct using “typed racket” like this –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="kn">#lang </span><span class="nn">typed/racket</span>
+
+<span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="n">cursor</span>
+<span class="w">    </span><span class="p">([</span><span class="n">str</span><span class="w"> </span><span class="n">:</span><span class="w"> </span><span class="n">String</span><span class="p">]</span>
+<span class="w">     </span><span class="p">[</span><span class="n">pos</span><span class="w"> </span><span class="n">:</span><span class="w"> </span><span class="n">Nonnegative-Integer</span><span class="p">]))</span>
+
+<span class="p">(</span><span class="n">:</span><span class="w"> </span><span class="n">last-cursor-position</span><span class="w"> </span><span class="p">(</span><span class="k">-&gt;</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">Nonnegative-Integer</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">last-cursor-position</span><span class="w"> </span><span class="nb">string-length</span><span class="p">)</span>
+
+<span class="p">(</span><span class="n">:</span><span class="w"> </span><span class="n">make-cursor</span><span class="w"> </span><span class="p">(</span><span class="k">-&gt;</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">Nonnegative-Integer</span><span class="w"> </span><span class="n">cursor</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">make-cursor</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="k">when</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="p">(</span><span class="n">last-cursor-position</span><span class="w"> </span><span class="n">str</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;Position out of bounds&quot;</span><span class="p">))</span>
+<span class="w">    </span><span class="p">(</span><span class="n">cursor</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now when we evaluate, say, <code class="docutils literal notranslate"><span class="pre">(make-cursor</span> <span class="pre">&quot;hello&quot;</span> <span class="pre">-4)</span></code>, or <code class="docutils literal notranslate"><span class="pre">(make-cursor</span> <span class="pre">2</span>
+<span class="pre">3)</span></code>, Racket will tell us that we’re supply invalid arguments.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">CompLIT: Programming Literacy</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="words.html">Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interrogation.html">Interrogating programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strings.html">Strings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample-programs.html">Sample programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abstractions.html">A guessing game</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Structures</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#new-word-if">New word: <code class="docutils literal notranslate"><span class="pre">if</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#validity">Validity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#on-error-messages">On error messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#interrogating-make-cursor">Interrogating <code class="docutils literal notranslate"><span class="pre">make-cursor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#make-cursor-in-typed-racket"><code class="docutils literal notranslate"><span class="pre">make-cursor</span></code> in “typed racket”</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="abstractions.html" title="previous chapter">A guessing game</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Srikumar K. S..
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/structures.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Parsing &#8212; CompLIT: Programming Literacy v1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d8a2add5" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=17171a54" />
+    <script src="_static/documentation_options.js?v=5cb08e4e"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="parsing">
+<h1>Parsing<a class="headerlink" href="#parsing" title="Link to this heading">¶</a></h1>
+<p>We represent many kinds of data as text – i.e. as a sequence of characters.
+Computing with such data therefore involves two processes –</p>
+<ol class="arabic simple">
+<li><p>Given the data, represent it as a sequence of characters. What <code class="docutils literal notranslate"><span class="pre">display</span></code>
+does in Racket, for example.</p></li>
+<li><p>Given a sequence of characters and information about what structure it
+has, produce the data that it corresponds to.</p></li>
+</ol>
+<p>While we’re familiar with the first, the second type of computation is
+called “parsing” and is a very useful category of programs to examine.</p>
+<section id="list-of-words">
+<h2>List of words<a class="headerlink" href="#list-of-words" title="Link to this heading">¶</a></h2>
+<p>Let’s take a simple program that, when given a string (i.e. a sequence of
+characters), produces a “list of words” in the order they’re found in the
+string.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">list-of-words</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">when</span><span class="w"> </span><span class="p">(</span><span class="nb">not</span><span class="w"> </span><span class="p">(</span><span class="nb">string?</span><span class="w"> </span><span class="n">text</span><span class="p">))</span>
+<span class="w">      </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;Expected a string&quot;</span><span class="p">))</span>
+<span class="w">   </span><span class="p">(</span><span class="n">list-of-words-from</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">list-of-words-from</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="n">start-pos</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;=</span><span class="w"> </span><span class="n">start-pos</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">text</span><span class="p">))</span>
+<span class="w">       </span><span class="nb">empty</span>
+<span class="w">       </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">char-alphabetic?</span><span class="w"> </span><span class="p">(</span><span class="nb">string-ref</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="n">start-pos</span><span class="p">))</span>
+<span class="w">           </span><span class="p">(</span><span class="k">let*</span><span class="w"> </span><span class="p">([</span><span class="n">word</span><span class="w"> </span><span class="p">(</span><span class="n">next-word-from</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="n">start-pos</span><span class="w"> </span><span class="n">start-pos</span><span class="p">)]</span>
+<span class="w">                  </span><span class="p">[</span><span class="n">next-pos</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">start-pos</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">word</span><span class="p">))])</span>
+<span class="w">               </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="n">word</span><span class="w"> </span><span class="p">(</span><span class="n">list-of-words-from</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="n">next-pos</span><span class="p">)))</span>
+<span class="w">           </span><span class="p">(</span><span class="n">list-of-words-from</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">start-pos</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">next-word-from</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="nb">first</span><span class="w"> </span><span class="nb">last</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="nb">last</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">text</span><span class="p">))</span>
+<span class="w">       </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">char-alphabetic?</span><span class="w"> </span><span class="p">(</span><span class="nb">string-ref</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="nb">last</span><span class="p">))</span>
+<span class="w">           </span><span class="p">(</span><span class="n">next-word-from</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="nb">first</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="nb">last</span><span class="p">))</span>
+<span class="w">           </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="nb">first</span><span class="w"> </span><span class="nb">last</span><span class="p">))</span>
+<span class="w">       </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="nb">first</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>Again, no comments have been given to us and we have to figure it all
+out by “reading” this program.</p>
+<p>Btw, <code class="docutils literal notranslate"><span class="pre">let*</span></code> is just like <code class="docutils literal notranslate"><span class="pre">let</span></code>, except that the expression whose value is
+bound to the second identifier being introduced, can make use of the first
+identifier. Similarly the expression for the third identifier can use the first
+or second identifier and so on. This is not permitted in <code class="docutils literal notranslate"><span class="pre">let</span></code>, which
+introduces all the identifiers “at the same time”. In this example, the
+expression for <code class="docutils literal notranslate"><span class="pre">next-pos</span></code> depends on <code class="docutils literal notranslate"><span class="pre">word</span></code>. So we use <code class="docutils literal notranslate"><span class="pre">let*</span></code>.</p>
+</section>
+<section id="the-vocabulary-of-lists">
+<h2>The vocabulary of lists<a class="headerlink" href="#the-vocabulary-of-lists" title="Link to this heading">¶</a></h2>
+<p>When we scan the program, we find two words we haven’t yet encountered –
+<code class="docutils literal notranslate"><span class="pre">empty</span></code> and <code class="docutils literal notranslate"><span class="pre">cons</span></code>. You can look up their documentation, but here
+is a brief description of them –</p>
+<p>Now <code class="docutils literal notranslate"><span class="pre">cons</span></code> is a biggie. It is the first means to structure data that we’re
+encountering, so it deserves some attention. <code class="docutils literal notranslate"><span class="pre">cons</span></code> is short for “construct
+a pair”. We see that it is taking two arguments, so we might guess that
+the two arguments form the two parts of a “pair”. The value returned by the
+<code class="docutils literal notranslate"><span class="pre">cons</span></code> procedure is therefore called a “cons pair” somewhat redundantly.
+For historical reasons, the first of the pair is called the pair’s <code class="docutils literal notranslate"><span class="pre">car</span></code>
+and the second it’s <code class="docutils literal notranslate"><span class="pre">cdr</span></code>. <a class="footnote-reference brackets" href="#carcdr" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+<p>Here is a set of interactions that might help clarify what <code class="docutils literal notranslate"><span class="pre">cons</span></code> does for
+you.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+<span class="o">&#39;</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="c1">; This is the notation Racket used for a pair.</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">p12</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="p">))</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="n">p12</span>
+<span class="o">&#39;</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">car</span><span class="w"> </span><span class="n">p12</span><span class="p">)</span>
+<span class="mi">1</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">cdr</span><span class="w"> </span><span class="n">p12</span><span class="p">)</span>
+<span class="mi">2</span>
+</pre></div>
+</div>
+<p>Now, the interesting thing about pairs is that we can put pairs within pairs
+to make more complex structures. In particular, when we make a structure where
+the second part of a pair is always a pair, we call it a “list”.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="nb">empty</span><span class="p">))</span>
+<span class="o">&#39;</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">p3</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="nb">empty</span><span class="p">))))</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="n">p3</span>
+<span class="o">&#39;</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">length</span><span class="w"> </span><span class="n">p3</span><span class="p">)</span>
+<span class="mi">3</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">q3</span><span class="w"> </span><span class="p">(</span><span class="nb">list</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">))</span>
+<span class="o">&#39;</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">car</span><span class="w"> </span><span class="n">q3</span><span class="p">)</span>
+<span class="mi">1</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">cdr</span><span class="w"> </span><span class="n">q3</span><span class="p">)</span>
+<span class="o">&#39;</span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">list?</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="p">))</span>
+<span class="no">#f</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">list?</span><span class="w"> </span><span class="p">(</span><span class="nb">list</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="p">))</span>
+<span class="no">#t</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">cdr</span><span class="w"> </span><span class="n">p3</span><span class="p">)</span>
+<span class="o">&#39;</span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="p">(</span><span class="nb">cdr</span><span class="w"> </span><span class="n">p3</span><span class="p">))</span>
+<span class="o">&#39;</span><span class="p">(</span><span class="mi">100</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">cdr</span><span class="w"> </span><span class="p">(</span><span class="nb">cdr</span><span class="w"> </span><span class="n">p3</span><span class="p">))</span>
+<span class="o">&#39;</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">cdr</span><span class="w"> </span><span class="p">(</span><span class="nb">cdr</span><span class="w"> </span><span class="p">(</span><span class="nb">cdr</span><span class="w"> </span><span class="n">p3</span><span class="p">)))</span>
+<span class="o">&#39;</span><span class="p">()</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="nb">empty</span>
+<span class="o">&#39;</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>i.e., a list that contains nothing at all is called an “empty list” and
+that is exactly what <code class="docutils literal notranslate"><span class="pre">empty</span></code> is. So <code class="docutils literal notranslate"><span class="pre">(cons</span> <span class="pre">2</span> <span class="pre">empty)</span></code> makes a one
+element list with the value 2 at its “head”. Notice that both <code class="docutils literal notranslate"><span class="pre">p3</span></code> and
+<code class="docutils literal notranslate"><span class="pre">q3</span></code> are being shown exactly the same. In Racket, the two ways of making
+a list cannot be distinguished – i.e. once the list is constructed, there is
+no way to tell whether it was done using <code class="docutils literal notranslate"><span class="pre">cons</span></code> or using <code class="docutils literal notranslate"><span class="pre">list</span></code>. They
+are the same and they can both be “taken apart” using <code class="docutils literal notranslate"><span class="pre">car</span></code> and <code class="docutils literal notranslate"><span class="pre">cdr</span></code>.</p>
+<p>If you notice, Racket is printing out a list like <code class="docutils literal notranslate"><span class="pre">'(100</span> <span class="pre">2</span> <span class="pre">3)</span></code> with the
+items within parentheses. We’ve all along been writing expressions like
+<code class="docutils literal notranslate"><span class="pre">(list-of-words</span> <span class="pre">&quot;hello</span> <span class="pre">world&quot;)</span></code> within parenthesis as well. If you
+actually wondered about this, bravo! And yes, Racket represents all expressions
+and programs as ordinary lists! This is a big deal and it has consequences
+for what the language can accomplish. See the following interaction to
+understand how this works –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">ex</span><span class="w"> </span><span class="o">&#39;</span><span class="p">(</span><span class="ss">list-of-words</span><span class="w"> </span><span class="s2">&quot;hello world&quot;</span><span class="p">))</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="n">ex</span>
+<span class="o">&#39;</span><span class="p">(</span><span class="ss">list-of-words</span><span class="w"> </span><span class="s2">&quot;hello world&quot;</span><span class="p">)</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">cons?</span><span class="w"> </span><span class="n">ex</span><span class="p">)</span>
+<span class="no">#t</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">pair?</span><span class="w"> </span><span class="n">ex</span><span class="p">)</span>
+<span class="no">#t</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">length</span><span class="w"> </span><span class="n">ex</span><span class="p">)</span>
+<span class="mi">2</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">list?</span><span class="w"> </span><span class="n">ex</span><span class="p">)</span>
+<span class="no">#t</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">symbol?</span><span class="w"> </span><span class="p">(</span><span class="nb">car</span><span class="w"> </span><span class="n">ex</span><span class="p">))</span>
+<span class="no">#t</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">cdr</span><span class="w"> </span><span class="n">ex</span><span class="p">)</span>
+<span class="o">&#39;</span><span class="p">(</span><span class="s2">&quot;hello world&quot;</span><span class="p">)</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string?</span><span class="w"> </span><span class="p">(</span><span class="nb">car</span><span class="w"> </span><span class="p">(</span><span class="nb">cdr</span><span class="w"> </span><span class="n">ex</span><span class="p">)))</span>
+<span class="no">#t</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">cdr</span><span class="w"> </span><span class="p">(</span><span class="nb">cdr</span><span class="w"> </span><span class="n">ex</span><span class="p">))</span>
+<span class="o">&#39;</span><span class="p">()</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">list-of-words</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="s2">&quot;hello world&quot;</span><span class="w"> </span><span class="nb">empty</span><span class="p">))</span>
+<span class="o">&#39;</span><span class="p">(</span><span class="ss">list-of-words</span><span class="w"> </span><span class="s2">&quot;hello world&quot;</span><span class="p">)</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">list</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">list-of-words</span><span class="w"> </span><span class="s2">&quot;hello world&quot;</span><span class="p">)</span>
+<span class="o">&#39;</span><span class="p">(</span><span class="ss">list-of-words</span><span class="w"> </span><span class="s2">&quot;hello world&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In Racket, a “list” is therefore a special pair such that if you keep following
+the <code class="docutils literal notranslate"><span class="pre">cdr</span></code> of the pair, you’ll either get a pair or <code class="docutils literal notranslate"><span class="pre">empty</span></code>.</p>
+<div class="admonition-vocabulary admonition">
+<p class="admonition-title"><strong>Vocabulary</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">cons?</span></code> or <code class="docutils literal notranslate"><span class="pre">pair?</span></code> can be used to check whether something is a pair.
+<code class="docutils literal notranslate"><span class="pre">list?</span></code> can be used to check whether something is a valid list. Note that
+<code class="docutils literal notranslate"><span class="pre">list?</span></code> must necessarily examine all the <code class="docutils literal notranslate"><span class="pre">cdr``s</span> <span class="pre">to</span> <span class="pre">figure</span> <span class="pre">that</span> <span class="pre">out.</span>
+<span class="pre">``empty?</span></code> can tell you whether you have the special empty list on hand.
+All empty lists are the same and equal to each other. You can count the number
+of elements in a list <code class="docutils literal notranslate"><span class="pre">ls</span></code> using <code class="docutils literal notranslate"><span class="pre">(length</span> <span class="pre">ls)</span></code>.</p>
+</div>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="carcdr" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p><code class="docutils literal notranslate"><span class="pre">car</span></code> is short for “contents of address register” and <code class="docutils literal notranslate"><span class="pre">cdr</span></code> is
+short for “contents of decrement register”. These refer to two registers that
+formed the “pair” in the oldest machines on which LiSP ran, and the names
+stuck. In fact, programmers even got creative and decided that <code class="docutils literal notranslate"><span class="pre">(cadr</span> <span class="pre">x)</span></code>
+should mean <code class="docutils literal notranslate"><span class="pre">(car</span> <span class="pre">(cdr</span> <span class="pre">x))</span></code> and <code class="docutils literal notranslate"><span class="pre">(cadar</span> <span class="pre">x)</span></code> should mean <code class="docutils literal notranslate"><span class="pre">(car</span> <span class="pre">(cdr</span> <span class="pre">(car</span>
+<span class="pre">x)))</span></code> and so on. Don’t use these names directly in your code as they make
+understanding the code much harder.</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">CompLIT: Programming Literacy</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="words.html">Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interrogation.html">Interrogating programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strings.html">Strings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample-programs.html">Sample programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abstractions.html">A guessing game</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structures.html">Structures</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Srikumar K. S..
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/parsing.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

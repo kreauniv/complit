@@ -1,7 +1,7 @@
 .. CompLIT: Programming Literacy
 
-Welcome to CompLIT: Programming Literacy
-========================================
+CompLIT: Programming Literacy (WORK-IN-PROGRESS)
+================================================
 
 .. toctree::
    :maxdepth: 2
@@ -11,3 +11,7 @@ Welcome to CompLIT: Programming Literacy
    words
    interrogation
    strings
+   sample-programs
+   abstractions
+   structures
+   parsing
