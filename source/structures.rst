@@ -365,7 +365,7 @@ interaction window to see what it does.
    > (define pos 6) ; The cursor position just before 'w'
    > (<= pos (last-cursor-position str))
    #t
-   ; Now that both str and pos are both valid, what does make-cursor do?
+   ; Now that both str and pos are valid, what does make-cursor do?
    > (make-cursor str pos)
    #<cursor>
    ; This indicates that a valid cursor structure value has been created.
@@ -420,6 +420,10 @@ We could've written the ``cursor`` struct using "typed racket" like this --
         (cursor str pos))
 
 Now when we evaluate, say, ``(make-cursor "hello" -4)``, or ``(make-cursor 2
-3)``, Racket will tell us that we're supply invalid arguments.
+3)``, Racket will tell us that we've supply invalid arguments.
+
+Typed Racket is a much larger language than Racket that we won't be getting
+into for the purpose of this course, though the above illustrative example
+is given to give you a flavour of how having a type system is useful.
 
 

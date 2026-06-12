@@ -15,3 +15,6 @@ CompLIT: Programming Literacy (WORK-IN-PROGRESS)
    abstractions
    structures
    parsing
+   parsing2
+   representations
+

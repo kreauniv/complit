@@ -390,7 +390,7 @@ make the program accessible by eliminating this construct too and by turning
     (define (play-till-win secret next-guess attempts)
         (if (= next-guess secret)
             (declare-win attempts)
-            (begin (display (cloue next-guess secret)) (display " ")
+            (begin (display (clue next-guess secret)) (display " ")
                    (play-till-win secret
                                    (ask-next-guess "Guess again:")
                                    (+ 1 attempts)))))
@@ -400,10 +400,38 @@ of the loop, no longer becomes accessible and we need to pass it as an
 argument. Otherwise, the form looks nearly the same and we can understand
 the program even more easily.
 
+It is important to note that these kinds of steps are not unique and if you
+try it on your own you might end up with a slightly different form. That's ok,
+as long as the form makes sense to you and you think it clearly communicates
+your intent. For example, we might've done it slightly differently like this --
+
+.. code-block:: racket
+   :name: nggv5b
+   :caption: Another fifth version.
+   :linenos:
+
+    (define (play-number-guessing-game max-number)
+        (greet-player max-number)
+        (define secret (random 1 (+ 1 max-number)))
+        (define attempts 1)
+        (play-till-win secret "Your guess:" attempts))
+
+    (define (play-till-win secret prompt attempts)
+      (let ([next-guess (ask-next-guess prompt)])
+         (if (= next-guess secret)
+             (declare-win attempts)
+             (begin (display (clue next-guess secret)) (display " ")
+                    (play-till-win secret
+                                    "Guess again:"
+                                    (+ 1 attempts)))))
+
+Here, we've folded the ``ask-next-guess`` step into ``play-till-win`` and
+that's fine too.
+
 .. admonition:: **FYI**
 
    Wrapping a portion of code into an "abstraction" has a cognitive benefit
-   for the reader by using our ability of "chunking_". 
+   for the reader by using our "chunking_" ability. 
 
 .. _chunking: https://www.cognitivepsychology.com/Chunking
 
@@ -564,10 +592,10 @@ it will always produce an integer as the result.
         (must-be-a-string "prompt" prompt)
         (display prompt)
         (display " ")
-        (define user-input (read))
-        (if (integer? user-input)
-            user-input
-            (error "What to do here?")))
+        (let ([user-input (read)])
+           (if (integer? user-input)
+               user-input
+               (error "What to do here?"))))
 
 We now have some choices. We can simply error out with an appropriate error message,
 but we just saw why that's not a good idea. We need to do something else instead.
@@ -579,11 +607,11 @@ A reasonable choice would be to tell the user what is expected and to ask them a
         (must-be-a-string "prompt" prompt)
         (display prompt)
         (display " ")
-        (define user-input (read))
-        (if (integer? user-input)
-            user-input
-            (begin (display "Please give me an integer this time. ")
-                   (ask-next-guess prompt))))
+        (let ([user-input (read)])
+           (if (integer? user-input)
+               user-input
+               (begin (display "Please give me an integer this time. ")
+                      (ask-next-guess prompt)))))
 
 You see what we did there? We simply repeated the process ad nausem so the
 player gets tired or aborts the program, but the program won't crash because
@@ -630,3 +658,119 @@ and will see this in approach as a separate topic.
 .. [#fn] A "function" is a procedure whose result value depends only on the
    values of its arguments. This is not a property enforced by Racket, but
    is a useful distinction to keep in mind in many programs.
+
+Exercises
+---------
+
+Follow the same process as above for the programs given here to understand them.
+The programs, as they stand are poorly written. So you'll need to --
+
+1. Understand what each program does through interrogation
+   and reading necessary documentation.
+2. Transform the program to a form where its meaning can be
+   clearly read, possibly fixing clear deficiencies.
+3. The resultant procedures are documented using the recommendation
+   in the `HtDP preface`_ .
+
+Program 1
+~~~~~~~~~
+
+.. code-block:: racket
+   :linenos:
+   
+   (define (convert str)
+      (let loop ([n 0] [p 0])
+         (let ([c (string-ref str p)])
+            (if (char-numeric? c)
+                (loop (+ (* 10 n) (- (char->integer c) (char->integer #\0)))
+                      (+ p 1))
+                n))))
+
+Program 2
+~~~~~~~~~
+
+.. code-block:: racket
+   :linenos:
+
+   (define (transform str)
+      (let loop ([p1 0] [p2 (string-length str)])
+         (if (char-whitespace? (string-ref str p1))
+             (if (char-whitespace? (string-ref str (- p2 1)))
+                 (loop (+ p1 1) (- p2 1))
+                 (loop (+ p1 1) p2))
+             (if (char-whitespace? (string-ref str (- p2 1)))
+                 (loop p1 (- p2 1))
+                 (substring str p1 p2)))))
+
+Program 3
+~~~~~~~~~
+
+.. code-block:: racket
+   :linenos:
+
+   (define (splice str strs)
+      (let loop ([result ""] [strs strs])
+         (if (empty? strs)
+             result
+             (loop (string-append result str (first strs))
+                   (rest strs)))))
+
+Program 4
+~~~~~~~~~
+
+.. code-block:: racket
+   :linenos:
+
+   (define (split str)
+      (let loop ([result empty] [p1 0] [p2 0] [n (string-length str)])
+         (if (< p2 n)
+            (if (equal? #\newline (string-ref str p2))
+                (loop (cons (substring str p1 p2) result)
+                      (+ p2 1)
+                      (+ p2 1)
+                      n)
+                (loop result p1 (+ p2 1) n))
+            (reverse (cons (substring str p1 p2) result)))))
+      
+Program 5
+~~~~~~~~~
+
+.. code-block:: racket
+   :linenos:
+
+   (define (whereis pat str)
+      (let loop ([n (string-length str)]
+                 [pn (string-length pat)]
+                 [p 0])
+         (if (> (+ p pn) n)
+             #f
+             (if (equal? (substring str p (+ p pn)) pat)
+                 p
+                 (loop n pn (+ p 1))))))
+
+Program 6
+~~~~~~~~~
+
+.. code-block:: racket
+   :linenos:
+
+   (define emojis (list (list "😀" 'smile)
+                        (list "🙁" 'frown)
+                        (list "😡" 'angry)
+                        (list "🙄" 'roll)
+                        (list "😆" 'lol)))
+
+   (define (whatisit table)
+      (let ([e (list-ref table (random 0 (length table)))])
+          (display "What is ")
+          (display (first e))
+          (display "? ")
+          (let loop ([answer (read)])
+             (if (equal? answer (second e))
+                 (displayln "You got it!")
+                 (begin (displayln "Try again.")
+                        (loop (read)))))))
+
+
+                              
+      
