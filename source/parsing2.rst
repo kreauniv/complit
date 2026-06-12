@@ -147,6 +147,8 @@ matched, along with whatever it is the pattern did match.
 
 .. code:: racket
 
+   ; We keep the result and the unmatched string together
+   ; as a single value by defining a "structure".
    (struct pattern-match (result remainder))
 
    (define (character-in allowed-chars)
@@ -158,7 +160,10 @@ matched, along with whatever it is the pattern did match.
                 #f))
         pattern)
 
-This will permit us to define ``sequence`` like this --
+``sequence``
+------------
+
+We can now define ``sequence`` like this --
 
 .. code:: racket
 
@@ -183,6 +188,9 @@ This will permit us to define ``sequence`` like this --
 
 Now, when we do ``(parse (sequence (character-in "a-z") (character-in "0-9")) "a1b2c3")``,
 we can expect to get ``(pattern-match (cons #\a #\1) "b2c3")`` as the result.
+
+``alternatives``
+----------------
 
 Now let's see if we can use the same approach to define ``alternatives``.
 
@@ -242,11 +250,54 @@ Now let's see if we can use the same approach to define ``alternatives``.
                         (parse (alternatives (rest patterns)) text))))
             pattern)
                             
-                
+               
+Many-ness
+---------
+
+With the definition of ``alternatives``, our definition of ``zero-or-more``
+and ``one-or-more`` gains validity and completeness.
+
+.. code:: racket
+
+   (define (one-or-more pat)
+      (sequence par (zero-or-more pat)))
+
+   (define (zero-or-more pat)
+      (alternatives empty-pattern (one-or-more pat)))
+
+.. admonition:: **Think before proceeding**
+   
+   Given how we've defined ``alternatives``, is our definition of
+   ``zero-or-more`` acceptable? There is a subtle "bias" in how
+   we've dealt with ``alternatives`` that affects this.
+
+   Spoilers below.
+
+What exactly is ``empty-pattern``. Since there is always a region of any string
+that can be considered to be "empty of any characters", the ``empty-pattern``
+should succeed to match at any cursor position within a string.
+
+This is a problem for ``zero-or-more`` though. Because ``empty-pattern``
+will always succeed, ``(zero-or-more pat)`` is effectively the same as
+``empty-pattern``!! We need to give the second option priority before
+falling back on the empty pattern. So we ought to have defined it
+as --
+
+.. code:: racket
+
+   (define (zero-or-more pat)
+      (alternatives (one-or-more pat) empty-pattern))
+
+   (define (empty-pattern text)
+      (pattern-match empty text))
+
+Matching meaning
+----------------
+
 So now we can see that parsing a ``(zero-or-more (character-in "a-z"))`` can
 yield a list of alphabetical characters. However, we often don't want lists of
 characters and we'd rather just like a string. To do this, we can transform the
-parse result using a given procedure. Maybe we can write ``(transform
+parse result using a given procedure. Maybe we can write ``(reinterpret
 list->string (zero-or-more (character-in "a-z")))`` and expect it to work as a
 pattern that produces a matched string? Note how the procedure word
 ``list->string`` is mnemonic of converting a list to a string, but since a
@@ -256,20 +307,22 @@ characters. And yes, you might've guessed that there is a corresponding
 
 .. code:: racket
 
-    (define (transform change-form pat)
+    (define (reinterpret interpretation pat)
         (define (pattern text)
             (let ([res (parse pat text)])
                 (if res
-                    (pattern-match (change-form (pattern-match-result res))
+                    (pattern-match (interpretation (pattern-match-result res))
                                    (pattern-match-remainder res))
                     #f)))
         pattern)
 
-The way we're expecting meaning to be constructed out of the word ``change-form``
-informs what kinds of meanings we can supply to the first argument of ``transform``.
-In this case, ``change-form`` has one argument and its result should serve as a
-"pattern match value". ``list->string`` fits this form and is therefore a suitable
-"change form" word to use.
+The way we're expecting meaning to be constructed out of the word
+``interpretation`` informs what kinds of meanings (i.e. "values") we can supply
+to the first argument of ``reinterpret``. In this case, ``interpretation``
+has one argument and its result should serve as a "pattern match value".
+``list->string`` fits this form and is therefore a suitable "change form" word
+to use. In this context, we're using ``list->string`` to help "interpret" a
+list of characters as a string.
 
 We did something significant here. Instead of making a special word that treats
 a "list of characters" pattern as a string, we made a general word that can
@@ -283,7 +336,7 @@ argument. [#hof1]_
    word where the input type is the same as the output type -- both "pattern"
    in our case -- we'll have to consider how these definitions work with each
    other and ensure that they're all consistent. Words like ``sequence``,
-   ``alternatives``, ``one-or-more`` and ``transform`` unlike the basic
+   ``alternatives``, ``one-or-more`` and ``reinterpret`` unlike the basic
    patterns like ``character-in``.
 
 
