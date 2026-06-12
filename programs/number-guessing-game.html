@@ -381,7 +381,7 @@ make the program accessible by eliminating this construct too and by turning
 <span class="linenos"> 7</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-till-win</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">next-guess</span><span class="w"> </span><span class="n">attempts</span><span class="p">)</span>
 <span class="linenos"> 8</span><span class="w">     </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">next-guess</span><span class="w"> </span><span class="n">secret</span><span class="p">)</span>
 <span class="linenos"> 9</span><span class="w">         </span><span class="p">(</span><span class="n">declare-win</span><span class="w"> </span><span class="n">attempts</span><span class="p">)</span>
-<span class="linenos">10</span><span class="w">         </span><span class="p">(</span><span class="k">begin</span><span class="w"> </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="p">(</span><span class="n">cloue</span><span class="w"> </span><span class="n">next-guess</span><span class="w"> </span><span class="n">secret</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+<span class="linenos">10</span><span class="w">         </span><span class="p">(</span><span class="k">begin</span><span class="w"> </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="p">(</span><span class="n">clue</span><span class="w"> </span><span class="n">next-guess</span><span class="w"> </span><span class="n">secret</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot; &quot;</span><span class="p">)</span>
 <span class="linenos">11</span><span class="w">                </span><span class="p">(</span><span class="n">play-till-win</span><span class="w"> </span><span class="n">secret</span>
 <span class="linenos">12</span><span class="w">                                </span><span class="p">(</span><span class="n">ask-next-guess</span><span class="w"> </span><span class="s2">&quot;Guess again:&quot;</span><span class="p">)</span>
 <span class="linenos">13</span><span class="w">                                </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">attempts</span><span class="p">)))))</span>
@@ -392,10 +392,35 @@ make the program accessible by eliminating this construct too and by turning
 of the loop, no longer becomes accessible and we need to pass it as an
 argument. Otherwise, the form looks nearly the same and we can understand
 the program even more easily.</p>
+<p>It is important to note that these kinds of steps are not unique and if you
+try it on your own you might end up with a slightly different form. That’s ok,
+as long as the form makes sense to you and you think it clearly communicates
+your intent. For example, we might’ve done it slightly differently like this –</p>
+<div class="literal-block-wrapper docutils container" id="nggv5b">
+<div class="code-block-caption"><span class="caption-number">Listing 6 </span><span class="caption-text">Another fifth version.</span><a class="headerlink" href="#nggv5b" title="Link to this code">¶</a></div>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-number-guessing-game</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="linenos"> 2</span><span class="w">     </span><span class="p">(</span><span class="n">greet-player</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="linenos"> 3</span><span class="w">     </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="p">(</span><span class="nb">random</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
+<span class="linenos"> 4</span><span class="w">     </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">attempts</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos"> 5</span><span class="w">     </span><span class="p">(</span><span class="n">play-till-win</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="s2">&quot;Your guess:&quot;</span><span class="w"> </span><span class="n">attempts</span><span class="p">))</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-till-win</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">prompt</span><span class="w"> </span><span class="n">attempts</span><span class="p">)</span>
+<span class="linenos"> 8</span><span class="w">   </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">next-guess</span><span class="w"> </span><span class="p">(</span><span class="n">ask-next-guess</span><span class="w"> </span><span class="n">prompt</span><span class="p">)])</span>
+<span class="linenos"> 9</span><span class="w">      </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">next-guess</span><span class="w"> </span><span class="n">secret</span><span class="p">)</span>
+<span class="linenos">10</span><span class="w">          </span><span class="p">(</span><span class="n">declare-win</span><span class="w"> </span><span class="n">attempts</span><span class="p">)</span>
+<span class="linenos">11</span><span class="w">          </span><span class="p">(</span><span class="k">begin</span><span class="w"> </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="p">(</span><span class="n">clue</span><span class="w"> </span><span class="n">next-guess</span><span class="w"> </span><span class="n">secret</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+<span class="linenos">12</span><span class="w">                 </span><span class="p">(</span><span class="n">play-till-win</span><span class="w"> </span><span class="n">secret</span>
+<span class="linenos">13</span><span class="w">                                 </span><span class="s2">&quot;Guess again:&quot;</span>
+<span class="linenos">14</span><span class="w">                                 </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">attempts</span><span class="p">)))))</span>
+</pre></div>
+</div>
+</div>
+<p>Here, we’ve folded the <code class="docutils literal notranslate"><span class="pre">ask-next-guess</span></code> step into <code class="docutils literal notranslate"><span class="pre">play-till-win</span></code> and
+that’s fine too.</p>
 <div class="admonition-fyi admonition">
 <p class="admonition-title"><strong>FYI</strong></p>
 <p>Wrapping a portion of code into an “abstraction” has a cognitive benefit
-for the reader by using our ability of “<a class="reference external" href="https://www.cognitivepsychology.com/Chunking">chunking</a>”.</p>
+for the reader by using our “<a class="reference external" href="https://www.cognitivepsychology.com/Chunking">chunking</a>” ability.</p>
 </div>
 </section>
 <section id="taking-stock">
@@ -540,10 +565,10 @@ it will always produce an integer as the result.</p>
 <span class="w">    </span><span class="p">(</span><span class="n">must-be-a-string</span><span class="w"> </span><span class="s2">&quot;prompt&quot;</span><span class="w"> </span><span class="n">prompt</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">prompt</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot; &quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">user-input</span><span class="w"> </span><span class="p">(</span><span class="nb">read</span><span class="p">))</span>
-<span class="w">    </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">integer?</span><span class="w"> </span><span class="n">user-input</span><span class="p">)</span>
-<span class="w">        </span><span class="n">user-input</span>
-<span class="w">        </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;What to do here?&quot;</span><span class="p">)))</span>
+<span class="w">    </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">user-input</span><span class="w"> </span><span class="p">(</span><span class="nb">read</span><span class="p">)])</span>
+<span class="w">       </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">integer?</span><span class="w"> </span><span class="n">user-input</span><span class="p">)</span>
+<span class="w">           </span><span class="n">user-input</span>
+<span class="w">           </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;What to do here?&quot;</span><span class="p">))))</span>
 </pre></div>
 </div>
 <p>We now have some choices. We can simply error out with an appropriate error message,
@@ -553,11 +578,11 @@ A reasonable choice would be to tell the user what is expected and to ask them a
 <span class="w">    </span><span class="p">(</span><span class="n">must-be-a-string</span><span class="w"> </span><span class="s2">&quot;prompt&quot;</span><span class="w"> </span><span class="n">prompt</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">prompt</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot; &quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">user-input</span><span class="w"> </span><span class="p">(</span><span class="nb">read</span><span class="p">))</span>
-<span class="w">    </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">integer?</span><span class="w"> </span><span class="n">user-input</span><span class="p">)</span>
-<span class="w">        </span><span class="n">user-input</span>
-<span class="w">        </span><span class="p">(</span><span class="k">begin</span><span class="w"> </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;Please give me an integer this time. &quot;</span><span class="p">)</span>
-<span class="w">               </span><span class="p">(</span><span class="n">ask-next-guess</span><span class="w"> </span><span class="n">prompt</span><span class="p">))))</span>
+<span class="w">    </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">user-input</span><span class="w"> </span><span class="p">(</span><span class="nb">read</span><span class="p">)])</span>
+<span class="w">       </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">integer?</span><span class="w"> </span><span class="n">user-input</span><span class="p">)</span>
+<span class="w">           </span><span class="n">user-input</span>
+<span class="w">           </span><span class="p">(</span><span class="k">begin</span><span class="w"> </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;Please give me an integer this time. &quot;</span><span class="p">)</span>
+<span class="w">                  </span><span class="p">(</span><span class="n">ask-next-guess</span><span class="w"> </span><span class="n">prompt</span><span class="p">)))))</span>
 </pre></div>
 </div>
 <p>You see what we did there? We simply repeated the process ad nausem so the
@@ -603,6 +628,106 @@ values of its arguments. This is not a property enforced by Racket, but
 is a useful distinction to keep in mind in many programs.</p>
 </aside>
 </aside>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">¶</a></h2>
+<p>Follow the same process as above for the programs given here to understand them.
+The programs, as they stand are poorly written. So you’ll need to –</p>
+<ol class="arabic simple">
+<li><p>Understand what each program does through interrogation
+and reading necessary documentation.</p></li>
+<li><p>Transform the program to a form where its meaning can be
+clearly read, possibly fixing clear deficiencies.</p></li>
+<li><p>The resultant procedures are documented using the recommendation
+in the <a class="reference external" href="https://htdp.org/2024-11-6/Book/part_preface.html">HtDP preface</a> .</p></li>
+</ol>
+<section id="program-1">
+<h3>Program 1<a class="headerlink" href="#program-1" title="Link to this heading">¶</a></h3>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">convert</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
+<span class="linenos">2</span><span class="w">   </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="n">loop</span><span class="w"> </span><span class="p">([</span><span class="n">n</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">p</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span>
+<span class="linenos">3</span><span class="w">      </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">c</span><span class="w"> </span><span class="p">(</span><span class="nb">string-ref</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">p</span><span class="p">)])</span>
+<span class="linenos">4</span><span class="w">         </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">char-numeric?</span><span class="w"> </span><span class="n">c</span><span class="p">)</span>
+<span class="linenos">5</span><span class="w">             </span><span class="p">(</span><span class="n">loop</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="p">(</span><span class="nb">char-&gt;integer</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">char-&gt;integer</span><span class="w"> </span><span class="sc">#\0</span><span class="p">)))</span>
+<span class="linenos">6</span><span class="w">                   </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span>
+<span class="linenos">7</span><span class="w">             </span><span class="n">n</span><span class="p">))))</span>
+</pre></div>
+</div>
+</section>
+<section id="program-2">
+<h3>Program 2<a class="headerlink" href="#program-2" title="Link to this heading">¶</a></h3>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">transform</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
+<span class="linenos">2</span><span class="w">   </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="n">loop</span><span class="w"> </span><span class="p">([</span><span class="n">p1</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">p2</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">str</span><span class="p">)])</span>
+<span class="linenos">3</span><span class="w">      </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">char-whitespace?</span><span class="w"> </span><span class="p">(</span><span class="nb">string-ref</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">p1</span><span class="p">))</span>
+<span class="linenos">4</span><span class="w">          </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">char-whitespace?</span><span class="w"> </span><span class="p">(</span><span class="nb">string-ref</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">p2</span><span class="w"> </span><span class="mi">1</span><span class="p">)))</span>
+<span class="linenos">5</span><span class="w">              </span><span class="p">(</span><span class="n">loop</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">p2</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span>
+<span class="linenos">6</span><span class="w">              </span><span class="p">(</span><span class="n">loop</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">p2</span><span class="p">))</span>
+<span class="linenos">7</span><span class="w">          </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">char-whitespace?</span><span class="w"> </span><span class="p">(</span><span class="nb">string-ref</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">p2</span><span class="w"> </span><span class="mi">1</span><span class="p">)))</span>
+<span class="linenos">8</span><span class="w">              </span><span class="p">(</span><span class="n">loop</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">p2</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span>
+<span class="linenos">9</span><span class="w">              </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="n">p2</span><span class="p">)))))</span>
+</pre></div>
+</div>
+</section>
+<section id="program-3">
+<h3>Program 3<a class="headerlink" href="#program-3" title="Link to this heading">¶</a></h3>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">splice</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">strs</span><span class="p">)</span>
+<span class="linenos">2</span><span class="w">   </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="n">loop</span><span class="w"> </span><span class="p">([</span><span class="n">result</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">strs</span><span class="w"> </span><span class="n">strs</span><span class="p">])</span>
+<span class="linenos">3</span><span class="w">      </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">strs</span><span class="p">)</span>
+<span class="linenos">4</span><span class="w">          </span><span class="n">result</span>
+<span class="linenos">5</span><span class="w">          </span><span class="p">(</span><span class="n">loop</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">strs</span><span class="p">))</span>
+<span class="linenos">6</span><span class="w">                </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">strs</span><span class="p">)))))</span>
+</pre></div>
+</div>
+</section>
+<section id="program-4">
+<h3>Program 4<a class="headerlink" href="#program-4" title="Link to this heading">¶</a></h3>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">split</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
+<span class="linenos"> 2</span><span class="w">   </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="n">loop</span><span class="w"> </span><span class="p">([</span><span class="n">result</span><span class="w"> </span><span class="nb">empty</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">p1</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">p2</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">str</span><span class="p">)])</span>
+<span class="linenos"> 3</span><span class="w">      </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="n">p2</span><span class="w"> </span><span class="n">n</span><span class="p">)</span>
+<span class="linenos"> 4</span><span class="w">         </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">equal?</span><span class="w"> </span><span class="sc">#\newline</span><span class="w"> </span><span class="p">(</span><span class="nb">string-ref</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">p2</span><span class="p">))</span>
+<span class="linenos"> 5</span><span class="w">             </span><span class="p">(</span><span class="n">loop</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="n">p2</span><span class="p">)</span><span class="w"> </span><span class="n">result</span><span class="p">)</span>
+<span class="linenos"> 6</span><span class="w">                   </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">p2</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos"> 7</span><span class="w">                   </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">p2</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos"> 8</span><span class="w">                   </span><span class="n">n</span><span class="p">)</span>
+<span class="linenos"> 9</span><span class="w">             </span><span class="p">(</span><span class="n">loop</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">p2</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">n</span><span class="p">))</span>
+<span class="linenos">10</span><span class="w">         </span><span class="p">(</span><span class="nb">reverse</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="n">p2</span><span class="p">)</span><span class="w"> </span><span class="n">result</span><span class="p">)))))</span>
+</pre></div>
+</div>
+</section>
+<section id="program-5">
+<h3>Program 5<a class="headerlink" href="#program-5" title="Link to this heading">¶</a></h3>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">whereis</span><span class="w"> </span><span class="n">pat</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
+<span class="linenos">2</span><span class="w">   </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="n">loop</span><span class="w"> </span><span class="p">([</span><span class="n">n</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">str</span><span class="p">)]</span>
+<span class="linenos">3</span><span class="w">              </span><span class="p">[</span><span class="n">pn</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">pat</span><span class="p">)]</span>
+<span class="linenos">4</span><span class="w">              </span><span class="p">[</span><span class="n">p</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span>
+<span class="linenos">5</span><span class="w">      </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="n">pn</span><span class="p">)</span><span class="w"> </span><span class="n">n</span><span class="p">)</span>
+<span class="linenos">6</span><span class="w">          </span><span class="no">#f</span>
+<span class="linenos">7</span><span class="w">          </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">equal?</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="n">pn</span><span class="p">))</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span>
+<span class="linenos">8</span><span class="w">              </span><span class="n">p</span>
+<span class="linenos">9</span><span class="w">              </span><span class="p">(</span><span class="n">loop</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">pn</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="mi">1</span><span class="p">))))))</span>
+</pre></div>
+</div>
+</section>
+<section id="program-6">
+<h3>Program 6<a class="headerlink" href="#program-6" title="Link to this heading">¶</a></h3>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">emojis</span><span class="w"> </span><span class="p">(</span><span class="nb">list</span><span class="w"> </span><span class="p">(</span><span class="nb">list</span><span class="w"> </span><span class="s2">&quot;😀&quot;</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">smile</span><span class="p">)</span>
+<span class="linenos"> 2</span><span class="w">                     </span><span class="p">(</span><span class="nb">list</span><span class="w"> </span><span class="s2">&quot;🙁&quot;</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">frown</span><span class="p">)</span>
+<span class="linenos"> 3</span><span class="w">                     </span><span class="p">(</span><span class="nb">list</span><span class="w"> </span><span class="s2">&quot;😡&quot;</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">angry</span><span class="p">)</span>
+<span class="linenos"> 4</span><span class="w">                     </span><span class="p">(</span><span class="nb">list</span><span class="w"> </span><span class="s2">&quot;🙄&quot;</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">roll</span><span class="p">)</span>
+<span class="linenos"> 5</span><span class="w">                     </span><span class="p">(</span><span class="nb">list</span><span class="w"> </span><span class="s2">&quot;😆&quot;</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">lol</span><span class="p">)))</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">whatisit</span><span class="w"> </span><span class="n">table</span><span class="p">)</span>
+<span class="linenos"> 8</span><span class="w">   </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">e</span><span class="w"> </span><span class="p">(</span><span class="nb">list-ref</span><span class="w"> </span><span class="n">table</span><span class="w"> </span><span class="p">(</span><span class="nb">random</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">(</span><span class="nb">length</span><span class="w"> </span><span class="n">table</span><span class="p">)))])</span>
+<span class="linenos"> 9</span><span class="w">       </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;What is &quot;</span><span class="p">)</span>
+<span class="linenos">10</span><span class="w">       </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">e</span><span class="p">))</span>
+<span class="linenos">11</span><span class="w">       </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;? &quot;</span><span class="p">)</span>
+<span class="linenos">12</span><span class="w">       </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="n">loop</span><span class="w"> </span><span class="p">([</span><span class="n">answer</span><span class="w"> </span><span class="p">(</span><span class="nb">read</span><span class="p">)])</span>
+<span class="linenos">13</span><span class="w">          </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">equal?</span><span class="w"> </span><span class="n">answer</span><span class="w"> </span><span class="p">(</span><span class="nb">second</span><span class="w"> </span><span class="n">e</span><span class="p">))</span>
+<span class="linenos">14</span><span class="w">              </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;You got it!&quot;</span><span class="p">)</span>
+<span class="linenos">15</span><span class="w">              </span><span class="p">(</span><span class="k">begin</span><span class="w"> </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;Try again.&quot;</span><span class="p">)</span>
+<span class="linenos">16</span><span class="w">                     </span><span class="p">(</span><span class="n">loop</span><span class="w"> </span><span class="p">(</span><span class="nb">read</span><span class="p">)))))))</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 

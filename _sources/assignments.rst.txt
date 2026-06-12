@@ -1,0 +1,47 @@
+Programming problems
+====================
+
+Things to do with strings
+-------------------------
+
+1. Split a string into lines. (simple)
+2. Split text into sentences. (simple+)
+3. Get a list of words in a string. (involved)
+4. Find where a particular substring occurs in a given string. (simple)
+5. Find all occurrences of a substring in a given string. (involved)
+6. Given a string containing brackets, check that the brackets match correctly. (involved)
+7. Extract hashtags from a string. (involved)
+8. Find email addresses in a string (complex)
+9. Find all URLs in a string (complex)
+10. Automatically hyperlink all URLs in a string by translating the string to HTML. (complex, but close to 9)
+11. Given a string containing HTML, check that the tags are properly structured. (complex)
+12. Turn a HTML string into a "tree". (advanced)
+13. Convert a number given in digit representation into a numeric value (involved)
+14. Extract list of all numbers in the given string (involved)
+15. Convert a string into title case (simple+)
+16. Convert a string into upper/lower case (simple)
+17. Check if a given string is a valid identifier in a programming language of your choice. (involved)
+18. Split a string into parts separated by a given string. (involved)
+19. Join a string given parts and a separator (simple)
+20. Count number of times each word in a string occurs. (complex)
+
+Mathy stuff
+-----------
+
+1. Number guessing game (simple)
+2. Compute approximate square root (simple)
+3. Generalize (2) to n-th root. (involved)
+4. Model a rocket launch. (advanced)
+5. Draw the paths of a double pendulum. (advanced)
+6. Given a function, plot as a graph using 2htdp/image (involved)
+
+Language
+--------
+
+Sound and music
+---------------
+
+1. Produce a sine tone.
+
+
+
