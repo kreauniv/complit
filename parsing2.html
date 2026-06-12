@@ -380,8 +380,9 @@ interesting territory here. When we introduce such a definition for a new
 word where the input type is the same as the output type – both “pattern”
 in our case – we’ll have to consider how these definitions work with each
 other and ensure that they’re all consistent. Words like <code class="docutils literal notranslate"><span class="pre">sequence</span></code>,
-<code class="docutils literal notranslate"><span class="pre">alternatives</span></code>, <code class="docutils literal notranslate"><span class="pre">one-or-more</span></code> and <code class="docutils literal notranslate"><span class="pre">reinterpret</span></code> unlike the basic
-patterns like <code class="docutils literal notranslate"><span class="pre">character-in</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">alternatives</span></code>, <code class="docutils literal notranslate"><span class="pre">one-or-more</span></code> and <code class="docutils literal notranslate"><span class="pre">reinterpret</span></code> take patterns and
+construct new patterns with them, unlike the basic patterns like
+<code class="docutils literal notranslate"><span class="pre">character-in</span></code>.</p>
 </div>
 </section>
 <section id="languages-within-languages">
@@ -420,7 +421,9 @@ that happen when we parse a string with it.</p>
 <ol class="arabic simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">(alternatives</span> <span class="pre">pat1</span> <span class="pre">pat2</span> <span class="pre">...</span> <span class="pre">patN)</span></code> should be replaceable with <code class="docutils literal notranslate"><span class="pre">patK</span></code>
 in a particular situation if <code class="docutils literal notranslate"><span class="pre">patK</span></code> were the first pattern to successfully
-match against the given text.</p></li>
+match against the given text. In fact, in any pattern expression containing
+the <code class="docutils literal notranslate"><span class="pre">alternatives</span></code> form, the form should be replaceable with any one of
+the patterns and still preserve the integrity of the total expression.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">(sequence</span> <span class="pre">pat1</span> <span class="pre">(sequence</span> <span class="pre">pat2</span> <span class="pre">empty-pattern))</span></code> is the same as
 <code class="docutils literal notranslate"><span class="pre">(sequence*</span> <span class="pre">pat1</span> <span class="pre">pat2)</span></code>. This is similar to <code class="docutils literal notranslate"><span class="pre">(cons</span> <span class="pre">a</span> <span class="pre">(cons</span> <span class="pre">b</span> <span class="pre">empty))</span></code>
 being the same as <code class="docutils literal notranslate"><span class="pre">(list</span> <span class="pre">a</span> <span class="pre">b)</span></code>.</p></li>
