@@ -383,8 +383,9 @@ translates to the **process** of matching patterns in strings.
    word where the input type is the same as the output type -- both "pattern"
    in our case -- we'll have to consider how these definitions work with each
    other and ensure that they're all consistent. Words like ``sequence``,
-   ``alternatives``, ``one-or-more`` and ``reinterpret`` unlike the basic
-   patterns like ``character-in``.
+   ``alternatives``, ``one-or-more`` and ``reinterpret`` take patterns and
+   construct new patterns with them, unlike the basic patterns like
+   ``character-in``.
 
 
 Languages within languages
@@ -428,7 +429,9 @@ Here are some such expectations -
 
 1. ``(alternatives pat1 pat2 ... patN)`` should be replaceable with ``patK``
    in a particular situation if ``patK`` were the first pattern to successfully
-   match against the given text.
+   match against the given text. In fact, in any pattern expression containing
+   the ``alternatives`` form, the form should be replaceable with any one of
+   the patterns and still preserve the integrity of the total expression.
 
 2. ``(sequence pat1 (sequence pat2 empty-pattern))`` is the same as
    ``(sequence* pat1 pat2)``. This is similar to ``(cons a (cons b empty))``
