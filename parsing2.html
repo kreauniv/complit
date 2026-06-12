@@ -191,17 +191,17 @@ matched, along with whatever it is the pattern did match.</p>
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">sequence</span><span class="w"> </span><span class="n">pat1</span><span class="w"> </span><span class="n">pat2</span><span class="p">)</span>
 <span class="w">  </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
 <span class="w">    </span><span class="c1">; Try the first pattern on the given text.</span>
-<span class="w">    </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">r1</span><span class="w"> </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="n">pat1</span><span class="w"> </span><span class="n">text</span><span class="p">)])</span>
-<span class="w">      </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">r1</span>
+<span class="w">    </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">p1</span><span class="w"> </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="n">pat1</span><span class="w"> </span><span class="n">text</span><span class="p">)])</span>
+<span class="w">      </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">p1</span>
 <span class="w">         </span><span class="c1">; If the first pattern succeeded, try the second</span>
 <span class="w">         </span><span class="c1">; pattern on the remainder.</span>
-<span class="w">         </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">r2</span><span class="w"> </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="n">pat2</span><span class="w"> </span><span class="p">(</span><span class="n">pattern-match-remainder</span><span class="w"> </span><span class="n">r1</span><span class="p">))])</span>
-<span class="w">           </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">r2</span>
+<span class="w">         </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">p2</span><span class="w"> </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="n">pat2</span><span class="w"> </span><span class="p">(</span><span class="n">pattern-match-remainder</span><span class="w"> </span><span class="n">p1</span><span class="p">))])</span>
+<span class="w">           </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">p2</span>
 <span class="w">              </span><span class="c1">; Collect both the results as a cons pair.</span>
 <span class="w">              </span><span class="c1">; We can collect them in any other way we choose too.</span>
-<span class="w">              </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="p">(</span><span class="n">pattern-match-result</span><span class="w"> </span><span class="n">r1</span><span class="p">)</span>
-<span class="w">                                   </span><span class="p">(</span><span class="n">pattern-match-result</span><span class="w"> </span><span class="n">r2</span><span class="p">))</span>
-<span class="w">                             </span><span class="p">(</span><span class="n">pattern-match-remainder</span><span class="w"> </span><span class="n">r2</span><span class="p">))</span>
+<span class="w">              </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="p">(</span><span class="n">pattern-match-result</span><span class="w"> </span><span class="n">p1</span><span class="p">)</span>
+<span class="w">                                   </span><span class="p">(</span><span class="n">pattern-match-result</span><span class="w"> </span><span class="n">p2</span><span class="p">))</span>
+<span class="w">                             </span><span class="p">(</span><span class="n">pattern-match-remainder</span><span class="w"> </span><span class="n">p2</span><span class="p">))</span>
 <span class="w">              </span><span class="no">#f</span><span class="p">))</span>
 <span class="w">         </span><span class="no">#f</span><span class="p">)))</span>
 <span class="w">  </span><span class="n">pattern</span><span class="p">)</span>
@@ -242,12 +242,12 @@ number of arguments like this –</p>
 <span class="w">            </span><span class="c1">; Note that a sequence with no patterns will always</span>
 <span class="w">            </span><span class="c1">; successfully be an empty match.</span>
 <span class="w">            </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="nb">empty</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
-<span class="w">            </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">r1</span><span class="w"> </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">patterns</span><span class="p">)</span><span class="w"> </span><span class="n">text</span><span class="p">)])</span>
-<span class="w">                </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">r1</span>
+<span class="w">            </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">p1</span><span class="w"> </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">patterns</span><span class="p">)</span><span class="w"> </span><span class="n">text</span><span class="p">)])</span>
+<span class="w">                </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">p1</span>
 <span class="w">                    </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">rs</span><span class="w"> </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="p">(</span><span class="n">sequence</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">patterns</span><span class="p">))</span>
-<span class="w">                                     </span><span class="p">(</span><span class="n">pattern-match-remainder</span><span class="w"> </span><span class="n">r1</span><span class="p">))])</span>
+<span class="w">                                     </span><span class="p">(</span><span class="n">pattern-match-remainder</span><span class="w"> </span><span class="n">p1</span><span class="p">))])</span>
 <span class="w">                        </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">rs</span>
-<span class="w">                            </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="p">(</span><span class="n">pattern-match-result</span><span class="w"> </span><span class="n">r1</span><span class="p">)</span>
+<span class="w">                            </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="p">(</span><span class="n">pattern-match-result</span><span class="w"> </span><span class="n">p1</span><span class="p">)</span>
 <span class="w">                                                 </span><span class="p">(</span><span class="n">pattern-match-result</span><span class="w"> </span><span class="n">rs</span><span class="p">))</span>
 <span class="w">                                           </span><span class="p">(</span><span class="n">pattern-match-remainder</span><span class="w"> </span><span class="n">rs</span><span class="p">))</span>
 <span class="w">                            </span><span class="no">#f</span><span class="p">))</span>
@@ -311,13 +311,16 @@ pattern that produces a matched string? Note how the procedure word
 <code class="docutils literal notranslate"><span class="pre">list-&gt;string</span></code> is mnemonic of converting a list to a string, but since a
 string consists of a sequence of characters, the list also must be a list of
 characters. And yes, you might’ve guessed that there is a corresponding
-<code class="docutils literal notranslate"><span class="pre">string-&gt;list</span></code> word as well.</p>
+<code class="docutils literal notranslate"><span class="pre">string-&gt;list</span></code> word as well. In this context, you can also read
+<code class="docutils literal notranslate"><span class="pre">list-&gt;string</span></code> as “list as string” instead of “list to string”. The former
+aligns better with the notion of “reinterpretation” whereas the latter has a
+more “operational” quality to it.</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">reinterpret</span><span class="w"> </span><span class="n">interpretation</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
-<span class="w">        </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">res</span><span class="w"> </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="n">pat</span><span class="w"> </span><span class="n">text</span><span class="p">)])</span>
-<span class="w">            </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">res</span>
-<span class="w">                </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="p">(</span><span class="n">interpretation</span><span class="w"> </span><span class="p">(</span><span class="n">pattern-match-result</span><span class="w"> </span><span class="n">res</span><span class="p">))</span>
-<span class="w">                               </span><span class="p">(</span><span class="n">pattern-match-remainder</span><span class="w"> </span><span class="n">res</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">p1</span><span class="w"> </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="n">pat</span><span class="w"> </span><span class="n">text</span><span class="p">)])</span>
+<span class="w">            </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">p1</span>
+<span class="w">                </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="p">(</span><span class="n">interpretation</span><span class="w"> </span><span class="p">(</span><span class="n">pattern-match-result</span><span class="w"> </span><span class="n">p1</span><span class="p">))</span>
+<span class="w">                               </span><span class="p">(</span><span class="n">pattern-match-remainder</span><span class="w"> </span><span class="n">p1</span><span class="p">))</span>
 <span class="w">                </span><span class="no">#f</span><span class="p">)))</span>
 <span class="w">    </span><span class="n">pattern</span><span class="p">)</span>
 </pre></div>
@@ -329,9 +332,24 @@ has one argument and its result should serve as a “pattern match value”.
 <code class="docutils literal notranslate"><span class="pre">list-&gt;string</span></code> fits this form and is therefore a suitable “change form” word
 to use. In this context, we’re using <code class="docutils literal notranslate"><span class="pre">list-&gt;string</span></code> to help “interpret” a
 list of characters as a string.</p>
-<p>We did something significant here. Instead of making a special word that treats
-a “list of characters” pattern as a string, we made a general word that can
-change the interpretation of any pattern result using a word given as an
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>How can we read and understand <code class="docutils literal notranslate"><span class="pre">(interpretation</span>
+<span class="pre">(pattern-match-result</span> <span class="pre">p1))</span></code>? Firstly, we’re temporarily giving the matching
+of <code class="docutils literal notranslate"><span class="pre">pat</span></code> against <code class="docutils literal notranslate"><span class="pre">text</span></code> a local name <code class="docutils literal notranslate"><span class="pre">p1</span></code>. As long as such a name is
+local within a few lines, giving such an otherwise cryptic name is often not
+a problem. Beyond such local text though, we’d need a better name. So each
+occurrence of <code class="docutils literal notranslate"><span class="pre">p1</span></code> within the <code class="docutils literal notranslate"><span class="pre">(let...)</span></code> form now refers to the same
+pattern match. By wrapping <code class="docutils literal notranslate"><span class="pre">(interpretation</span> <span class="pre">..)</span></code> around the
+<code class="docutils literal notranslate"><span class="pre">(pattern-match-result</span> <span class="pre">p1)</span></code>, we’re indicating that the given
+interpretation now governs whatever <code class="docutils literal notranslate"><span class="pre">(pattern-match-result</span> <span class="pre">p1)</span></code> means –
+it may be a character in some cases, a string in other cases, or a number or
+a list of strings, etc. Whatever it is, <code class="docutils literal notranslate"><span class="pre">interpretation</span></code> is expected to be
+appropriate to that context for that expression to be meaningful.</p>
+</div>
+<p>We did something else significant here. Instead of making a special word that
+treats a “list of characters” pattern as a string, we made a general word that
+can change the interpretation of any pattern result using a word given as an
 argument. <a class="footnote-reference brackets" href="#hof1" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
 <div class="admonition-think admonition">
 <p class="admonition-title"><strong>Think</strong></p>

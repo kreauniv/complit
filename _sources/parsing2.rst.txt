@@ -171,17 +171,17 @@ We can now define ``sequence`` like this --
    (define (sequence pat1 pat2)
      (define (pattern text)
        ; Try the first pattern on the given text.
-       (let ([r1 (parse pat1 text)])
-         (if r1
+       (let ([p1 (parse pat1 text)])
+         (if p1
             ; If the first pattern succeeded, try the second
             ; pattern on the remainder.
-            (let ([r2 (parse pat2 (pattern-match-remainder r1))])
-              (if r2
+            (let ([p2 (parse pat2 (pattern-match-remainder p1))])
+              (if p2
                  ; Collect both the results as a cons pair.
                  ; We can collect them in any other way we choose too.
-                 (pattern-match (cons (pattern-match-result r1)
-                                      (pattern-match-result r2))
-                                (pattern-match-remainder r2))
+                 (pattern-match (cons (pattern-match-result p1)
+                                      (pattern-match-result p2))
+                                (pattern-match-remainder p2))
                  #f))
             #f)))
      pattern)
@@ -229,12 +229,12 @@ Now let's see if we can use the same approach to define ``alternatives``.
                     ; Note that a sequence with no patterns will always
                     ; successfully be an empty match.
                     (pattern-match empty text)
-                    (let ([r1 (parse (first patterns) text)])
-                        (if r1
+                    (let ([p1 (parse (first patterns) text)])
+                        (if p1
                             (let ([rs (parse (sequence (rest patterns))
-                                             (pattern-match-remainder r1))])
+                                             (pattern-match-remainder p1))])
                                 (if rs
-                                    (pattern-match (cons (pattern-match-result r1)
+                                    (pattern-match (cons (pattern-match-result p1)
                                                          (pattern-match-result rs))
                                                    (pattern-match-remainder rs))
                                     #f))
@@ -303,16 +303,19 @@ pattern that produces a matched string? Note how the procedure word
 ``list->string`` is mnemonic of converting a list to a string, but since a
 string consists of a sequence of characters, the list also must be a list of
 characters. And yes, you might've guessed that there is a corresponding
-``string->list`` word as well.
+``string->list`` word as well. In this context, you can also read
+``list->string`` as "list as string" instead of "list to string". The former
+aligns better with the notion of "reinterpretation" whereas the latter has a
+more "operational" quality to it.
 
 .. code:: racket
 
     (define (reinterpret interpretation pat)
         (define (pattern text)
-            (let ([res (parse pat text)])
-                (if res
-                    (pattern-match (interpretation (pattern-match-result res))
-                                   (pattern-match-remainder res))
+            (let ([p1 (parse pat text)])
+                (if p1
+                    (pattern-match (interpretation (pattern-match-result p1))
+                                   (pattern-match-remainder p1))
                     #f)))
         pattern)
 
@@ -324,10 +327,23 @@ has one argument and its result should serve as a "pattern match value".
 to use. In this context, we're using ``list->string`` to help "interpret" a
 list of characters as a string.
 
-We did something significant here. Instead of making a special word that treats
-a "list of characters" pattern as a string, we made a general word that can
-change the interpretation of any pattern result using a word given as an
-argument. [#hof1]_
+.. hint:: How can we read and understand ``(interpretation
+   (pattern-match-result p1))``? Firstly, we're temporarily giving the matching
+   of ``pat`` against ``text`` a local name ``p1``. As long as such a name is
+   local within a few lines, giving such an otherwise cryptic name is often not
+   a problem. Beyond such local text though, we'd need a better name. So each
+   occurrence of ``p1`` within the ``(let...)`` form now refers to the same
+   pattern match. By wrapping ``(interpretation ..)`` around the
+   ``(pattern-match-result p1)``, we're indicating that the given
+   interpretation now governs whatever ``(pattern-match-result p1)`` means --
+   it may be a character in some cases, a string in other cases, or a number or
+   a list of strings, etc. Whatever it is, ``interpretation`` is expected to be
+   appropriate to that context for that expression to be meaningful.
+
+We did something else significant here. Instead of making a special word that
+treats a "list of characters" pattern as a string, we made a general word that
+can change the interpretation of any pattern result using a word given as an
+argument. [#hof1]_ 
 
 .. admonition:: **Think**
 
