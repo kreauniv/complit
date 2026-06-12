@@ -256,14 +256,20 @@ characters. And yes, you might've guessed that there is a corresponding
 
 .. code:: racket
 
-    (define (transform mapping-function pat)
+    (define (transform change-form pat)
         (define (pattern text)
             (let ([res (parse pat text)])
                 (if res
-                    (pattern-match (mapping-function (pattern-match-result res))
+                    (pattern-match (change-form (pattern-match-result res))
                                    (pattern-match-remainder res))
                     #f)))
         pattern)
+
+The way we're expecting meaning to be constructed out of the word ``change-form``
+informs what kinds of meanings we can supply to the first argument of ``transform``.
+In this case, ``change-form`` has one argument and its result should serve as a
+"pattern match value". ``list->string`` fits this form and is therefore a suitable
+"change form" word to use.
 
 We did something significant here. Instead of making a special word that treats
 a "list of characters" pattern as a string, we made a general word that can
@@ -276,7 +282,9 @@ argument. [#hof1]_
    interesting territory here. When we introduce such a definition for a new
    word where the input type is the same as the output type -- both "pattern"
    in our case -- we'll have to consider how these definitions work with each
-   other and ensure that they're all consistent.
+   other and ensure that they're all consistent. Words like ``sequence``,
+   ``alternatives``, ``one-or-more`` and ``transform`` unlike the basic
+   patterns like ``character-in``.
 
 
 Languages within languages
@@ -301,8 +309,9 @@ specific ways to derive meaning. Computer people also like to use the term
 "domain specific language" to talk about these languages within languages
 that cater to a "domain" (which in our case is patterns in text).
 
-Indeed, with modern computing infrastructure, it is pretty much **Languages
-all the way through**.
+Indeed, with modern computing infrastructure, it is pretty much **Languages all
+the way through**. This is also why large language models that's trained on all
+public source code available can be very useful in computing.
 
 .. [#hof1] Such a procedure that can use another given procedure to determine
    meaning in some usage context is usually referred to as a "higher order
