@@ -267,16 +267,21 @@ pattern that produces a matched string? Note how the procedure word
 string consists of a sequence of characters, the list also must be a list of
 characters. And yes, you might’ve guessed that there is a corresponding
 <code class="docutils literal notranslate"><span class="pre">string-&gt;list</span></code> word as well.</p>
-<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">transform</span><span class="w"> </span><span class="n">mapping-function</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">transform</span><span class="w"> </span><span class="n">change-form</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
 <span class="w">        </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">res</span><span class="w"> </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="n">pat</span><span class="w"> </span><span class="n">text</span><span class="p">)])</span>
 <span class="w">            </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">res</span>
-<span class="w">                </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="p">(</span><span class="n">mapping-function</span><span class="w"> </span><span class="p">(</span><span class="n">pattern-match-result</span><span class="w"> </span><span class="n">res</span><span class="p">))</span>
+<span class="w">                </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="p">(</span><span class="n">change-form</span><span class="w"> </span><span class="p">(</span><span class="n">pattern-match-result</span><span class="w"> </span><span class="n">res</span><span class="p">))</span>
 <span class="w">                               </span><span class="p">(</span><span class="n">pattern-match-remainder</span><span class="w"> </span><span class="n">res</span><span class="p">))</span>
 <span class="w">                </span><span class="no">#f</span><span class="p">)))</span>
 <span class="w">    </span><span class="n">pattern</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>The way we’re expecting meaning to be constructed out of the word <code class="docutils literal notranslate"><span class="pre">change-form</span></code>
+informs what kinds of meanings we can supply to the first argument of <code class="docutils literal notranslate"><span class="pre">transform</span></code>.
+In this case, <code class="docutils literal notranslate"><span class="pre">change-form</span></code> has one argument and its result should serve as a
+“pattern match value”. <code class="docutils literal notranslate"><span class="pre">list-&gt;string</span></code> fits this form and is therefore a suitable
+“change form” word to use.</p>
 <p>We did something significant here. Instead of making a special word that treats
 a “list of characters” pattern as a string, we made a general word that can
 change the interpretation of any pattern result using a word given as an
@@ -287,7 +292,9 @@ argument. <a class="footnote-reference brackets" href="#hof1" id="id2" role="doc
 interesting territory here. When we introduce such a definition for a new
 word where the input type is the same as the output type – both “pattern”
 in our case – we’ll have to consider how these definitions work with each
-other and ensure that they’re all consistent.</p>
+other and ensure that they’re all consistent. Words like <code class="docutils literal notranslate"><span class="pre">sequence</span></code>,
+<code class="docutils literal notranslate"><span class="pre">alternatives</span></code>, <code class="docutils literal notranslate"><span class="pre">one-or-more</span></code> and <code class="docutils literal notranslate"><span class="pre">transform</span></code> unlike the basic
+patterns like <code class="docutils literal notranslate"><span class="pre">character-in</span></code>.</p>
 </div>
 </section>
 <section id="languages-within-languages">
@@ -309,8 +316,9 @@ all been built this way in terms of a vocabulary that can be combined in
 specific ways to derive meaning. Computer people also like to use the term
 “domain specific language” to talk about these languages within languages
 that cater to a “domain” (which in our case is patterns in text).</p>
-<p>Indeed, with modern computing infrastructure, it is pretty much <strong>Languages
-all the way through</strong>.</p>
+<p>Indeed, with modern computing infrastructure, it is pretty much <strong>Languages all
+the way through</strong>. This is also why large language models that’s trained on all
+public source code available can be very useful in computing.</p>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="hof1" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
