@@ -61,9 +61,6 @@ We might then imagine being able to write something like this --
    (define string-pattern (zero-or-more word-occurrence))
    (define (list-of-words text) (parse string-pattern text))
 
-.. [#viewsrc] The specific command to use to view the page source
-   will depend on the operating system and browser.
-
 Notice that we're just inventing words and using the parenthesis grouping to
 communicate **small ideas** that are expected to be **combine** to create
 **larger ideas**. Contrary to a view of software as "instructions for
@@ -381,6 +378,9 @@ that cater to a "domain" (which in our case is patterns in text).
 Indeed, with modern computing infrastructure, it is pretty much **Languages all
 the way through**. This is also why large language models that's trained on all
 public source code available can be very useful in computing.
+
+.. [#viewsrc] The specific command to use to view the page source
+   will depend on the operating system and browser.
 
 .. [#hof1] Such a procedure that can use another given procedure to determine
    meaning in some usage context is usually referred to as a "higher order
