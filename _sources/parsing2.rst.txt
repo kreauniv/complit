@@ -80,10 +80,10 @@ of ours to clarify what they mean.
 .. code-block:: racket
 
    (define (one-or-more pattern) 
-        (sequence pattern (zero-or-more pattern)))
+      (sequence pattern (zero-or-more pattern)))
 
    (define (zero-or-more pattern)
-        (alternatives empty-pattern (one-or-more pattern)))
+      (alternatives empty-pattern (one-or-more pattern)))
 
 While we're introducing a new word ``alternatives`` here, our words
 have nearly all gained some good definitions and we're only left 
@@ -176,6 +176,7 @@ We can now define ``sequence`` like this --
               (if p2
                  ; Collect both the results as a cons pair.
                  ; We can collect them in any other way we choose too.
+                 ; Q: Can you think of advantages to using `cons` here?
                  (pattern-match (cons (pattern-match-result p1)
                                       (pattern-match-result p2))
                                 (pattern-match-remainder p2))
@@ -213,41 +214,33 @@ Now let's see if we can use the same approach to define ``alternatives``.
             )
 
     Using this, we can generalize ``sequence`` and ``alternatives`` to an arbitrary
-    number of arguments like this --
+    number of arguments. We'll use a different word ``sequence*`` for this, since
+    it actually has a different meaning for the two-argument case than ``sequence``.
 
     .. code:: racket
 
-        ; Sequence will match and provide a list of patterns.
-        ; It constructs the list by making pairs using `cons`.
-        (define (sequence . patterns)
-            (define (pattern text)
-                (if (empty? patterns)
-                    ; We mean an empty list in this case.
-                    ; Note that a sequence with no patterns will always
-                    ; successfully be an empty match.
-                    (pattern-match empty text)
-                    (let ([p1 (parse (first patterns) text)])
-                        (if p1
-                            (let ([rs (parse (sequence (rest patterns))
-                                             (pattern-match-remainder p1))])
-                                (if rs
-                                    (pattern-match (cons (pattern-match-result p1)
-                                                         (pattern-match-result rs))
-                                                   (pattern-match-remainder rs))
-                                    #f))
-                            #f))))
-            pattern)
+        ; sequence* will match and provide a list of patterns.
+        ; Notice that we're defining it in terms of `sequence`
+        ; without explicitly constructing a ``pattern`` procedure.
+        (define (sequence* . patterns)
+            (if (empty? patterns)
+                empty-pattern
+                (sequence (first patterns)
+                          (apply sequence* (rest patterns)))))
 
         ; Will match the first alternative that succeeds.
         (define (alternatives . patterns)
             (define (pattern text)
                 (if (empty? patterns)
-                    #f ; None succeeded
+                    ; None succeeded
+                    #f
+                    ; `or` here will try the remaining alternatives
+                    ; only if the first pattern failed.
                     (or (parse (first pattern) text)
-                        (parse (alternatives (rest patterns)) text))))
+                        (parse (apply alternatives (rest patterns)) text))))
             pattern)
                             
-               
+
 Many-ness
 ---------
 
@@ -288,8 +281,10 @@ as --
    (define (empty-pattern text)
       (pattern-match empty text))
 
-Matching meaning
-----------------
+    (define (failed-pattern text) #f)
+
+Meaning through reinterpretation
+--------------------------------
 
 So now we can see that parsing a ``(zero-or-more (character-in "a-z"))`` can
 yield a list of alphabetical characters. However, we often don't want lists of
@@ -342,6 +337,45 @@ treats a "list of characters" pattern as a string, we made a general word that
 can change the interpretation of any pattern result using a word given as an
 argument. [#hof1]_ 
 
+With this collection of words, we can now express the textual form of a simple
+string like this --
+
+.. code:: racket
+
+    (define simple-string 
+        (reinterpret without-quotes
+                     (sequence* (character-in "\"")
+                                (reinterpret list->string
+                                             (zero-or-more (character-not-in "\"")))
+                                (character-in "\""))))
+
+    ; In our context where a sequence we have produces a list
+    ; of three items with the middle (second) one being the string
+    ; that's of interest to us, `without-quotes` just means `second`.
+    (define without-quotes second)
+    
+We can also express a simple decimal fractional number like ``-3.1415`` --
+
+.. code:: racket
+
+    (define decimal-number
+        (sequence* (optional (character-in "-+"))
+                   (one-or-more digit)
+                   (optional (sequence (character-in ".")
+                                       (one-or-more digit)))))
+
+    (define digit (character-in "0123456789"))
+
+    (define (optional pat)
+        (alternatives pat empty-pattern))
+
+
+Now you can start to see how these definitions relate to the Backus-Naur grammar
+we introduced when we started talking about parsing. When we read the definition
+of the ``decimal-number`` we just stay within the language of the domain of
+patterns we're interested in describing with no indication of how all this
+translates to the **process** of matching patterns in strings. 
+
 .. admonition:: **Think**
 
    Think about it for a few minutes before proceeding. We're entering an
@@ -379,6 +413,51 @@ Indeed, with modern computing infrastructure, it is pretty much **Languages all
 the way through**. This is also why large language models that's trained on all
 public source code available can be very useful in computing.
 
+Algebra
+-------
+
+When we define such a suite of words that produce and consume values of a
+certain kind, we have expectations of some patterns of consistency amongst
+them so we can **reason** about the language without getting into the
+operational details. In the case of string patterns, we want to be able
+to look at the definition of, say, ``decimal-number`` and immediately
+know how to use it without having to think about the exact computations
+that happen when we parse a string with it.
+
+Here are some such expectations -
+
+1. ``(alternatives pat1 pat2 ... patN)`` should be replaceable with ``patK``
+   in a particular situation if ``patK`` were the first pattern to successfully
+   match against the given text.
+
+2. ``(sequence pat1 (sequence pat2 empty-pattern))`` is the same as
+   ``(sequence* pat1 pat2)``. This is similar to ``(cons a (cons b empty))``
+   being the same as ``(list a b)``.
+
+3. ``(sequence pat empty-pattern)`` is expected to be equivalent to
+   ``(reinterpret list pat)``.
+
+4. ``(alternatives pat empty-pattern)`` is always expected to succeed since
+   ``empty-pattern`` will always succeed.
+
+.. admonition:: **Task**
+
+   Think through and convince yourself that these hold. Can you think of
+   any other such equivalences?
+
+We're determining conditions under which one expression can be **substituted**
+for another. This substitution should remind you of high school algebra
+classes where you manipulated abstract expressions by replacing one
+expression with another equivalent expression. For example, when expanding
+:math:`(a + b)^2 - 4ab`, you first write it as :math:`a^2 + b^2 + 2ab - 4ab`,
+in which you rewrite :math:`2ab - 4ab` as :math:`-2ab` to get 
+:math:`a^2 + b^2 - 2ab` which you might further rewrite as :math:`(a - b)^2`.
+
+Operators which obey such a collection of equivalences under various circumstances
+are said to have an "algebra". [#algebra]_ Identifying such equivalences gives
+us powerful high level thinking tools when working in special domains like
+in this case.
+
 .. [#viewsrc] The specific command to use to view the page source
    will depend on the operating system and browser.
 
@@ -390,3 +469,7 @@ public source code available can be very useful in computing.
    still fits within our metaphor of the word referring to a concept in our
    mind.
 
+.. [#algebra] Mathematically, there is a more precise definition. For now though,
+   it is sufficient for you to make a connection between these expectations in
+   the case of string parsing with what you're familiar with from high school
+   mathematics.

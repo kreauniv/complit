@@ -15,6 +15,7 @@
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Recap" href="recap.html" />
@@ -107,10 +108,10 @@ words like <code class="docutils literal notranslate"><span class="pre">zero-or-
 patterns to define new patterns. We can still continue this word defining game
 of ours to clarify what they mean.</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">one-or-more</span><span class="w"> </span><span class="n">pattern</span><span class="p">)</span>
-<span class="w">     </span><span class="p">(</span><span class="n">sequence</span><span class="w"> </span><span class="n">pattern</span><span class="w"> </span><span class="p">(</span><span class="n">zero-or-more</span><span class="w"> </span><span class="n">pattern</span><span class="p">)))</span>
+<span class="w">   </span><span class="p">(</span><span class="n">sequence</span><span class="w"> </span><span class="n">pattern</span><span class="w"> </span><span class="p">(</span><span class="n">zero-or-more</span><span class="w"> </span><span class="n">pattern</span><span class="p">)))</span>
 
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">zero-or-more</span><span class="w"> </span><span class="n">pattern</span><span class="p">)</span>
-<span class="w">     </span><span class="p">(</span><span class="n">alternatives</span><span class="w"> </span><span class="n">empty-pattern</span><span class="w"> </span><span class="p">(</span><span class="n">one-or-more</span><span class="w"> </span><span class="n">pattern</span><span class="p">)))</span>
+<span class="w">   </span><span class="p">(</span><span class="n">alternatives</span><span class="w"> </span><span class="n">empty-pattern</span><span class="w"> </span><span class="p">(</span><span class="n">one-or-more</span><span class="w"> </span><span class="n">pattern</span><span class="p">)))</span>
 </pre></div>
 </div>
 <p>While we’re introducing a new word <code class="docutils literal notranslate"><span class="pre">alternatives</span></code> here, our words
@@ -192,6 +193,7 @@ matched, along with whatever it is the pattern did match.</p>
 <span class="w">           </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">p2</span>
 <span class="w">              </span><span class="c1">; Collect both the results as a cons pair.</span>
 <span class="w">              </span><span class="c1">; We can collect them in any other way we choose too.</span>
+<span class="w">              </span><span class="c1">; Q: Can you think of advantages to using `cons` here?</span>
 <span class="w">              </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="p">(</span><span class="n">pattern-match-result</span><span class="w"> </span><span class="n">p1</span><span class="p">)</span>
 <span class="w">                                   </span><span class="p">(</span><span class="n">pattern-match-result</span><span class="w"> </span><span class="n">p2</span><span class="p">))</span>
 <span class="w">                             </span><span class="p">(</span><span class="n">pattern-match-remainder</span><span class="w"> </span><span class="n">p2</span><span class="p">))</span>
@@ -225,35 +227,27 @@ the “list of arguments” instead of each individual argument, like this –</
 </pre></div>
 </div>
 <p>Using this, we can generalize <code class="docutils literal notranslate"><span class="pre">sequence</span></code> and <code class="docutils literal notranslate"><span class="pre">alternatives</span></code> to an arbitrary
-number of arguments like this –</p>
-<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="c1">; Sequence will match and provide a list of patterns.</span>
-<span class="c1">; It constructs the list by making pairs using `cons`.</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">sequence</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="n">patterns</span><span class="p">)</span>
-<span class="w">    </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
-<span class="w">        </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">patterns</span><span class="p">)</span>
-<span class="w">            </span><span class="c1">; We mean an empty list in this case.</span>
-<span class="w">            </span><span class="c1">; Note that a sequence with no patterns will always</span>
-<span class="w">            </span><span class="c1">; successfully be an empty match.</span>
-<span class="w">            </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="nb">empty</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
-<span class="w">            </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">p1</span><span class="w"> </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">patterns</span><span class="p">)</span><span class="w"> </span><span class="n">text</span><span class="p">)])</span>
-<span class="w">                </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">p1</span>
-<span class="w">                    </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">rs</span><span class="w"> </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="p">(</span><span class="n">sequence</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">patterns</span><span class="p">))</span>
-<span class="w">                                     </span><span class="p">(</span><span class="n">pattern-match-remainder</span><span class="w"> </span><span class="n">p1</span><span class="p">))])</span>
-<span class="w">                        </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">rs</span>
-<span class="w">                            </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="p">(</span><span class="n">pattern-match-result</span><span class="w"> </span><span class="n">p1</span><span class="p">)</span>
-<span class="w">                                                 </span><span class="p">(</span><span class="n">pattern-match-result</span><span class="w"> </span><span class="n">rs</span><span class="p">))</span>
-<span class="w">                                           </span><span class="p">(</span><span class="n">pattern-match-remainder</span><span class="w"> </span><span class="n">rs</span><span class="p">))</span>
-<span class="w">                            </span><span class="no">#f</span><span class="p">))</span>
-<span class="w">                    </span><span class="no">#f</span><span class="p">))))</span>
-<span class="w">    </span><span class="n">pattern</span><span class="p">)</span>
+number of arguments. We’ll use a different word <code class="docutils literal notranslate"><span class="pre">sequence*</span></code> for this, since
+it actually has a different meaning for the two-argument case than <code class="docutils literal notranslate"><span class="pre">sequence</span></code>.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="c1">; sequence* will match and provide a list of patterns.</span>
+<span class="c1">; Notice that we&#39;re defining it in terms of `sequence`</span>
+<span class="c1">; without explicitly constructing a ``pattern`` procedure.</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">sequence*</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="n">patterns</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">patterns</span><span class="p">)</span>
+<span class="w">        </span><span class="n">empty-pattern</span>
+<span class="w">        </span><span class="p">(</span><span class="n">sequence</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">patterns</span><span class="p">)</span>
+<span class="w">                  </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">sequence*</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">patterns</span><span class="p">)))))</span>
 
 <span class="c1">; Will match the first alternative that succeeds.</span>
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">alternatives</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="n">patterns</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
 <span class="w">        </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">patterns</span><span class="p">)</span>
-<span class="w">            </span><span class="no">#f</span><span class="w"> </span><span class="c1">; None succeeded</span>
+<span class="w">            </span><span class="c1">; None succeeded</span>
+<span class="w">            </span><span class="no">#f</span>
+<span class="w">            </span><span class="c1">; `or` here will try the remaining alternatives</span>
+<span class="w">            </span><span class="c1">; only if the first pattern failed.</span>
 <span class="w">            </span><span class="p">(</span><span class="k">or</span><span class="w"> </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">pattern</span><span class="p">)</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
-<span class="w">                </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="p">(</span><span class="n">alternatives</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">patterns</span><span class="p">))</span><span class="w"> </span><span class="n">text</span><span class="p">))))</span>
+<span class="w">                </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">alternatives</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">patterns</span><span class="p">))</span><span class="w"> </span><span class="n">text</span><span class="p">))))</span>
 <span class="w">    </span><span class="n">pattern</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -290,11 +284,13 @@ as –</p>
 
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">empty-pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
 <span class="w">   </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="nb">empty</span><span class="w"> </span><span class="n">text</span><span class="p">))</span>
+
+<span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">failed-pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="no">#f</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
-<section id="matching-meaning">
-<h2>Matching meaning<a class="headerlink" href="#matching-meaning" title="Link to this heading">¶</a></h2>
+<section id="meaning-through-reinterpretation">
+<h2>Meaning through reinterpretation<a class="headerlink" href="#meaning-through-reinterpretation" title="Link to this heading">¶</a></h2>
 <p>So now we can see that parsing a <code class="docutils literal notranslate"><span class="pre">(zero-or-more</span> <span class="pre">(character-in</span> <span class="pre">&quot;a-z&quot;))</span></code> can
 yield a list of alphabetical characters. However, we often don’t want lists of
 characters and we’d rather just like a string. To do this, we can transform the
@@ -344,6 +340,39 @@ appropriate to that context for that expression to be meaningful.</p>
 treats a “list of characters” pattern as a string, we made a general word that
 can change the interpretation of any pattern result using a word given as an
 argument. <a class="footnote-reference brackets" href="#hof1" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+<p>With this collection of words, we can now express the textual form of a simple
+string like this –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">simple-string</span>
+<span class="w">    </span><span class="p">(</span><span class="n">reinterpret</span><span class="w"> </span><span class="n">without-quotes</span>
+<span class="w">                 </span><span class="p">(</span><span class="n">sequence*</span><span class="w"> </span><span class="p">(</span><span class="n">character-in</span><span class="w"> </span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="w">                            </span><span class="p">(</span><span class="n">reinterpret</span><span class="w"> </span><span class="nb">list-&gt;string</span>
+<span class="w">                                         </span><span class="p">(</span><span class="n">zero-or-more</span><span class="w"> </span><span class="p">(</span><span class="n">character-not-in</span><span class="w"> </span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">)))</span>
+<span class="w">                            </span><span class="p">(</span><span class="n">character-in</span><span class="w"> </span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">))))</span>
+
+<span class="c1">; In our context where a sequence we have produces a list</span>
+<span class="c1">; of three items with the middle (second) one being the string</span>
+<span class="c1">; that&#39;s of interest to us, `without-quotes` just means `second`.</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">without-quotes</span><span class="w"> </span><span class="nb">second</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can also express a simple decimal fractional number like <code class="docutils literal notranslate"><span class="pre">-3.1415</span></code> –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">decimal-number</span>
+<span class="w">    </span><span class="p">(</span><span class="n">sequence*</span><span class="w"> </span><span class="p">(</span><span class="n">optional</span><span class="w"> </span><span class="p">(</span><span class="n">character-in</span><span class="w"> </span><span class="s2">&quot;-+&quot;</span><span class="p">))</span>
+<span class="w">               </span><span class="p">(</span><span class="n">one-or-more</span><span class="w"> </span><span class="n">digit</span><span class="p">)</span>
+<span class="w">               </span><span class="p">(</span><span class="n">optional</span><span class="w"> </span><span class="p">(</span><span class="n">sequence</span><span class="w"> </span><span class="p">(</span><span class="n">character-in</span><span class="w"> </span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="w">                                   </span><span class="p">(</span><span class="n">one-or-more</span><span class="w"> </span><span class="n">digit</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">digit</span><span class="w"> </span><span class="p">(</span><span class="n">character-in</span><span class="w"> </span><span class="s2">&quot;0123456789&quot;</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">optional</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="n">alternatives</span><span class="w"> </span><span class="n">pat</span><span class="w"> </span><span class="n">empty-pattern</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now you can start to see how these definitions relate to the Backus-Naur grammar
+we introduced when we started talking about parsing. When we read the definition
+of the <code class="docutils literal notranslate"><span class="pre">decimal-number</span></code> we just stay within the language of the domain of
+patterns we’re interested in describing with no indication of how all this
+translates to the <strong>process</strong> of matching patterns in strings.</p>
 <div class="admonition-think admonition">
 <p class="admonition-title"><strong>Think</strong></p>
 <p>Think about it for a few minutes before proceeding. We’re entering an
@@ -377,6 +406,45 @@ that cater to a “domain” (which in our case is patterns in text).</p>
 <p>Indeed, with modern computing infrastructure, it is pretty much <strong>Languages all
 the way through</strong>. This is also why large language models that’s trained on all
 public source code available can be very useful in computing.</p>
+</section>
+<section id="algebra">
+<h2>Algebra<a class="headerlink" href="#algebra" title="Link to this heading">¶</a></h2>
+<p>When we define such a suite of words that produce and consume values of a
+certain kind, we have expectations of some patterns of consistency amongst
+them so we can <strong>reason</strong> about the language without getting into the
+operational details. In the case of string patterns, we want to be able
+to look at the definition of, say, <code class="docutils literal notranslate"><span class="pre">decimal-number</span></code> and immediately
+know how to use it without having to think about the exact computations
+that happen when we parse a string with it.</p>
+<p>Here are some such expectations -</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">(alternatives</span> <span class="pre">pat1</span> <span class="pre">pat2</span> <span class="pre">...</span> <span class="pre">patN)</span></code> should be replaceable with <code class="docutils literal notranslate"><span class="pre">patK</span></code>
+in a particular situation if <code class="docutils literal notranslate"><span class="pre">patK</span></code> were the first pattern to successfully
+match against the given text.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(sequence</span> <span class="pre">pat1</span> <span class="pre">(sequence</span> <span class="pre">pat2</span> <span class="pre">empty-pattern))</span></code> is the same as
+<code class="docutils literal notranslate"><span class="pre">(sequence*</span> <span class="pre">pat1</span> <span class="pre">pat2)</span></code>. This is similar to <code class="docutils literal notranslate"><span class="pre">(cons</span> <span class="pre">a</span> <span class="pre">(cons</span> <span class="pre">b</span> <span class="pre">empty))</span></code>
+being the same as <code class="docutils literal notranslate"><span class="pre">(list</span> <span class="pre">a</span> <span class="pre">b)</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(sequence</span> <span class="pre">pat</span> <span class="pre">empty-pattern)</span></code> is expected to be equivalent to
+<code class="docutils literal notranslate"><span class="pre">(reinterpret</span> <span class="pre">list</span> <span class="pre">pat)</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(alternatives</span> <span class="pre">pat</span> <span class="pre">empty-pattern)</span></code> is always expected to succeed since
+<code class="docutils literal notranslate"><span class="pre">empty-pattern</span></code> will always succeed.</p></li>
+</ol>
+<div class="admonition-task admonition">
+<p class="admonition-title"><strong>Task</strong></p>
+<p>Think through and convince yourself that these hold. Can you think of
+any other such equivalences?</p>
+</div>
+<p>We’re determining conditions under which one expression can be <strong>substituted</strong>
+for another. This substitution should remind you of high school algebra
+classes where you manipulated abstract expressions by replacing one
+expression with another equivalent expression. For example, when expanding
+<span class="math notranslate nohighlight">\((a + b)^2 - 4ab\)</span>, you first write it as <span class="math notranslate nohighlight">\(a^2 + b^2 + 2ab - 4ab\)</span>,
+in which you rewrite <span class="math notranslate nohighlight">\(2ab - 4ab\)</span> as <span class="math notranslate nohighlight">\(-2ab\)</span> to get
+<span class="math notranslate nohighlight">\(a^2 + b^2 - 2ab\)</span> which you might further rewrite as <span class="math notranslate nohighlight">\((a - b)^2\)</span>.</p>
+<p>Operators which obey such a collection of equivalences under various circumstances
+are said to have an “algebra”. <a class="footnote-reference brackets" href="#id4" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a> Identifying such equivalences gives
+us powerful high level thinking tools when working in special domains like
+in this case.</p>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="viewsrc" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
@@ -392,6 +460,13 @@ this though since we saw right from the beginning that when a word stands
 for a procedure, it is also an ordinary value like anything else because it
 still fits within our metaphor of the word referring to a concept in our
 mind.</p>
+</aside>
+<aside class="footnote brackets" id="id4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
+<p>Mathematically, there is a more precise definition. For now though,
+it is sufficient for you to make a connection between these expectations in
+the case of string parsing with what you’re familiar with from high school
+mathematics.</p>
 </aside>
 </aside>
 </section>
@@ -438,8 +513,9 @@ mind.</p>
 <li class="toctree-l2"><a class="reference internal" href="#sequence"><code class="docutils literal notranslate"><span class="pre">sequence</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#alternatives"><code class="docutils literal notranslate"><span class="pre">alternatives</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#many-ness">Many-ness</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#matching-meaning">Matching meaning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#meaning-through-reinterpretation">Meaning through reinterpretation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#languages-within-languages">Languages within languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#algebra">Algebra</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="recap.html">Recap</a></li>
