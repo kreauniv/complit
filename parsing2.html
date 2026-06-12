@@ -169,7 +169,9 @@ collected by the first <code class="docutils literal notranslate"><span class="p
 like <code class="docutils literal notranslate"><span class="pre">&quot;a5&quot;</span></code>. Somehow, when <code class="docutils literal notranslate"><span class="pre">sequence</span></code> looks for the first pattern, it must
 also receive information about what the <em>remaining</em> text is after the pattern
 matched, along with whatever it is the pattern did match.</p>
-<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="n">pattern-match</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="nb">remainder</span><span class="p">))</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="c1">; We keep the result and the unmatched string together</span>
+<span class="c1">; as a single value by defining a &quot;structure&quot;.</span>
+<span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="n">pattern-match</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="nb">remainder</span><span class="p">))</span>
 
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">character-in</span><span class="w"> </span><span class="n">allowed-chars</span><span class="p">)</span>
 <span class="w">     </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
@@ -181,7 +183,10 @@ matched, along with whatever it is the pattern did match.</p>
 <span class="w">     </span><span class="n">pattern</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>This will permit us to define <code class="docutils literal notranslate"><span class="pre">sequence</span></code> like this –</p>
+</section>
+<section id="sequence">
+<h2><code class="docutils literal notranslate"><span class="pre">sequence</span></code><a class="headerlink" href="#sequence" title="Link to this heading">¶</a></h2>
+<p>We can now define <code class="docutils literal notranslate"><span class="pre">sequence</span></code> like this –</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="c1">; One possible definition of `sequence`</span>
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">sequence</span><span class="w"> </span><span class="n">pat1</span><span class="w"> </span><span class="n">pat2</span><span class="p">)</span>
 <span class="w">  </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
@@ -204,6 +209,9 @@ matched, along with whatever it is the pattern did match.</p>
 </div>
 <p>Now, when we do <code class="docutils literal notranslate"><span class="pre">(parse</span> <span class="pre">(sequence</span> <span class="pre">(character-in</span> <span class="pre">&quot;a-z&quot;)</span> <span class="pre">(character-in</span> <span class="pre">&quot;0-9&quot;))</span> <span class="pre">&quot;a1b2c3&quot;)</span></code>,
 we can expect to get <code class="docutils literal notranslate"><span class="pre">(pattern-match</span> <span class="pre">(cons</span> <span class="pre">#\a</span> <span class="pre">#\1)</span> <span class="pre">&quot;b2c3&quot;)</span></code> as the result.</p>
+</section>
+<section id="alternatives">
+<h2><code class="docutils literal notranslate"><span class="pre">alternatives</span></code><a class="headerlink" href="#alternatives" title="Link to this heading">¶</a></h2>
 <p>Now let’s see if we can use the same approach to define <code class="docutils literal notranslate"><span class="pre">alternatives</span></code>.</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">alternatives</span><span class="w"> </span><span class="n">pat1</span><span class="w"> </span><span class="n">pat2</span><span class="p">)</span>
 <span class="w">  </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
@@ -257,31 +265,70 @@ number of arguments like this –</p>
 </pre></div>
 </div>
 </div>
+</section>
+<section id="many-ness">
+<h2>Many-ness<a class="headerlink" href="#many-ness" title="Link to this heading">¶</a></h2>
+<p>With the definition of <code class="docutils literal notranslate"><span class="pre">alternatives</span></code>, our definition of <code class="docutils literal notranslate"><span class="pre">zero-or-more</span></code>
+and <code class="docutils literal notranslate"><span class="pre">one-or-more</span></code> gains validity and completeness.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">one-or-more</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="n">sequence</span><span class="w"> </span><span class="n">par</span><span class="w"> </span><span class="p">(</span><span class="n">zero-or-more</span><span class="w"> </span><span class="n">pat</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">zero-or-more</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="n">alternatives</span><span class="w"> </span><span class="n">empty-pattern</span><span class="w"> </span><span class="p">(</span><span class="n">one-or-more</span><span class="w"> </span><span class="n">pat</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="admonition-think-before-proceeding admonition">
+<p class="admonition-title"><strong>Think before proceeding</strong></p>
+<p>Given how we’ve defined <code class="docutils literal notranslate"><span class="pre">alternatives</span></code>, is our definition of
+<code class="docutils literal notranslate"><span class="pre">zero-or-more</span></code> acceptable? There is a subtle “bias” in how
+we’ve dealt with <code class="docutils literal notranslate"><span class="pre">alternatives</span></code> that affects this.</p>
+<p>Spoilers below.</p>
+</div>
+<p>What exactly is <code class="docutils literal notranslate"><span class="pre">empty-pattern</span></code>. Since there is always a region of any string
+that can be considered to be “empty of any characters”, the <code class="docutils literal notranslate"><span class="pre">empty-pattern</span></code>
+should succeed to match at any cursor position within a string.</p>
+<p>This is a problem for <code class="docutils literal notranslate"><span class="pre">zero-or-more</span></code> though. Because <code class="docutils literal notranslate"><span class="pre">empty-pattern</span></code>
+will always succeed, <code class="docutils literal notranslate"><span class="pre">(zero-or-more</span> <span class="pre">pat)</span></code> is effectively the same as
+<code class="docutils literal notranslate"><span class="pre">empty-pattern</span></code>!! We need to give the second option priority before
+falling back on the empty pattern. So we ought to have defined it
+as –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">zero-or-more</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="n">alternatives</span><span class="w"> </span><span class="p">(</span><span class="n">one-or-more</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span><span class="w"> </span><span class="n">empty-pattern</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">empty-pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="nb">empty</span><span class="w"> </span><span class="n">text</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="matching-meaning">
+<h2>Matching meaning<a class="headerlink" href="#matching-meaning" title="Link to this heading">¶</a></h2>
 <p>So now we can see that parsing a <code class="docutils literal notranslate"><span class="pre">(zero-or-more</span> <span class="pre">(character-in</span> <span class="pre">&quot;a-z&quot;))</span></code> can
 yield a list of alphabetical characters. However, we often don’t want lists of
 characters and we’d rather just like a string. To do this, we can transform the
-parse result using a given procedure. Maybe we can write <code class="docutils literal notranslate"><span class="pre">(transform</span>
+parse result using a given procedure. Maybe we can write <code class="docutils literal notranslate"><span class="pre">(reinterpret</span>
 <span class="pre">list-&gt;string</span> <span class="pre">(zero-or-more</span> <span class="pre">(character-in</span> <span class="pre">&quot;a-z&quot;)))</span></code> and expect it to work as a
 pattern that produces a matched string? Note how the procedure word
 <code class="docutils literal notranslate"><span class="pre">list-&gt;string</span></code> is mnemonic of converting a list to a string, but since a
 string consists of a sequence of characters, the list also must be a list of
 characters. And yes, you might’ve guessed that there is a corresponding
 <code class="docutils literal notranslate"><span class="pre">string-&gt;list</span></code> word as well.</p>
-<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">transform</span><span class="w"> </span><span class="n">change-form</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">reinterpret</span><span class="w"> </span><span class="n">interpretation</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
 <span class="w">        </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">res</span><span class="w"> </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="n">pat</span><span class="w"> </span><span class="n">text</span><span class="p">)])</span>
 <span class="w">            </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">res</span>
-<span class="w">                </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="p">(</span><span class="n">change-form</span><span class="w"> </span><span class="p">(</span><span class="n">pattern-match-result</span><span class="w"> </span><span class="n">res</span><span class="p">))</span>
+<span class="w">                </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="p">(</span><span class="n">interpretation</span><span class="w"> </span><span class="p">(</span><span class="n">pattern-match-result</span><span class="w"> </span><span class="n">res</span><span class="p">))</span>
 <span class="w">                               </span><span class="p">(</span><span class="n">pattern-match-remainder</span><span class="w"> </span><span class="n">res</span><span class="p">))</span>
 <span class="w">                </span><span class="no">#f</span><span class="p">)))</span>
 <span class="w">    </span><span class="n">pattern</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The way we’re expecting meaning to be constructed out of the word <code class="docutils literal notranslate"><span class="pre">change-form</span></code>
-informs what kinds of meanings we can supply to the first argument of <code class="docutils literal notranslate"><span class="pre">transform</span></code>.
-In this case, <code class="docutils literal notranslate"><span class="pre">change-form</span></code> has one argument and its result should serve as a
-“pattern match value”. <code class="docutils literal notranslate"><span class="pre">list-&gt;string</span></code> fits this form and is therefore a suitable
-“change form” word to use.</p>
+<p>The way we’re expecting meaning to be constructed out of the word
+<code class="docutils literal notranslate"><span class="pre">interpretation</span></code> informs what kinds of meanings (i.e. “values”) we can supply
+to the first argument of <code class="docutils literal notranslate"><span class="pre">reinterpret</span></code>. In this case, <code class="docutils literal notranslate"><span class="pre">interpretation</span></code>
+has one argument and its result should serve as a “pattern match value”.
+<code class="docutils literal notranslate"><span class="pre">list-&gt;string</span></code> fits this form and is therefore a suitable “change form” word
+to use. In this context, we’re using <code class="docutils literal notranslate"><span class="pre">list-&gt;string</span></code> to help “interpret” a
+list of characters as a string.</p>
 <p>We did something significant here. Instead of making a special word that treats
 a “list of characters” pattern as a string, we made a general word that can
 change the interpretation of any pattern result using a word given as an
@@ -293,7 +340,7 @@ interesting territory here. When we introduce such a definition for a new
 word where the input type is the same as the output type – both “pattern”
 in our case – we’ll have to consider how these definitions work with each
 other and ensure that they’re all consistent. Words like <code class="docutils literal notranslate"><span class="pre">sequence</span></code>,
-<code class="docutils literal notranslate"><span class="pre">alternatives</span></code>, <code class="docutils literal notranslate"><span class="pre">one-or-more</span></code> and <code class="docutils literal notranslate"><span class="pre">transform</span></code> unlike the basic
+<code class="docutils literal notranslate"><span class="pre">alternatives</span></code>, <code class="docutils literal notranslate"><span class="pre">one-or-more</span></code> and <code class="docutils literal notranslate"><span class="pre">reinterpret</span></code> unlike the basic
 patterns like <code class="docutils literal notranslate"><span class="pre">character-in</span></code>.</p>
 </div>
 </section>
@@ -372,6 +419,10 @@ mind.</p>
 <li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">More parsing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#character-in"><code class="docutils literal notranslate"><span class="pre">character-in</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sequence"><code class="docutils literal notranslate"><span class="pre">sequence</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#alternatives"><code class="docutils literal notranslate"><span class="pre">alternatives</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#many-ness">Many-ness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#matching-meaning">Matching meaning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#languages-within-languages">Languages within languages</a></li>
 </ul>
 </li>
