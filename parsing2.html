@@ -385,17 +385,69 @@ construct new patterns with them, unlike the basic patterns like
 <code class="docutils literal notranslate"><span class="pre">character-in</span></code>.</p>
 </div>
 </section>
+<section id="pattern-exercises">
+<h2>Pattern exercises<a class="headerlink" href="#pattern-exercises" title="Link to this heading">¶</a></h2>
+<p>Define a pattern for each of the following using the words above.</p>
+<ol class="arabic">
+<li><p><strong>Word</strong>: Define a pattern to match the first word of a sentence.
+Remember that we expect it to be capitalized.</p></li>
+<li><p><strong>Sentence</strong>: Define a pattern to match the first sentence in a given
+string.</p></li>
+<li><p><strong>HTML tag</strong>: A HTML tag looks like <code class="docutils literal notranslate"><span class="pre">&lt;tag&gt;..some</span> <span class="pre">text...&lt;/tag&gt;</span></code>.
+Define a pattern to match the tag at the start of a given string,
+like <code class="docutils literal notranslate"><span class="pre">&quot;&lt;strong&gt;you're</span> <span class="pre">it!&lt;/strong&gt;&quot;</span></code>.</p></li>
+<li><p><strong>Morse code</strong>: You’re given a string in Morse code like this –
+<code class="docutils literal notranslate"><span class="pre">&quot;....</span> <span class="pre">.</span> <span class="pre">.-..</span> <span class="pre">.-..</span> <span class="pre">---</span> <span class="pre">.--</span> <span class="pre">---</span> <span class="pre">.-.</span> <span class="pre">.-..</span> <span class="pre">-..&quot;</span></code>. Define a pattern
+to extract the sequence of single-space separate Morse characters.
+Can you define it so that when you use such a Morse string with
+<code class="docutils literal notranslate"><span class="pre">parse</span></code> with your pattern, you get the decoded letters?
+(See this code table - <a class="reference external" href="https://morsecode.world/international/morse2.html">https://morsecode.world/international/morse2.html</a>)</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>You might find the defining a new pattern word <code class="docutils literal notranslate"><span class="pre">literal</span></code>
+that’s used like <code class="docutils literal notranslate"><span class="pre">(literal</span> <span class="pre">&quot;xyz&quot;)</span></code> to match the literal string
+can make your Morse pattern simpler to define.</p>
+<details class="summary-expand-to-see-a-definition-of-literal">
+<summary>Expand to see a definition of ``literal``.</summary><div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">literal</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
+<span class="w">        </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">string-prefix?</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
+<span class="w">            </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">str</span><span class="p">)))</span>
+<span class="w">            </span><span class="no">#f</span><span class="p">))</span>
+<span class="w">    </span><span class="n">pattern</span><span class="p">)</span>
+</pre></div>
+</div>
+</details></div>
+</li>
+<li><p><strong>Arithmetic</strong>: For simple arithmetical expressions involving only “+” and
+“*” (times). The rules are in BNF form below -</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Expression</span> <span class="o">-&gt;</span> <span class="n">NaturalNumber</span>
+<span class="n">Expression</span> <span class="o">-&gt;</span> <span class="s2">&quot;(&quot;</span> <span class="n">Expression</span> <span class="n">Operator</span> <span class="n">Expression</span> <span class="s2">&quot;)&quot;</span>
+<span class="n">Operator</span> <span class="o">-&gt;</span> <span class="n">character</span><span class="o">-</span><span class="ow">in</span><span class="p">(</span><span class="s2">&quot;+*&quot;</span><span class="p">)</span>
+<span class="n">NaturalNumber</span> <span class="o">-&gt;</span> <span class="n">one</span><span class="o">-</span><span class="ow">or</span><span class="o">-</span><span class="n">more</span><span class="p">(</span><span class="n">Digit</span><span class="p">)</span>
+<span class="n">Digit</span> <span class="o">-&gt;</span> <span class="n">character</span><span class="o">-</span><span class="ow">in</span><span class="p">(</span><span class="s2">&quot;0123456789&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Start off by writing some examples of valid and invalid expressions.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>This may not be an easy one given what we’ve looked at so far.
+But persist and see how far you can get.</p>
+</div>
+</li>
+</ol>
+</section>
 <section id="languages-within-languages">
 <h2>Languages within languages<a class="headerlink" href="#languages-within-languages" title="Link to this heading">¶</a></h2>
-<p>If you zoom out a little bit, it can look like we’re building a small language
-to express patterns we want to decipher from text. We’re introducing new words
+<p>If you zoom out a bit, it can look like we’re building a small language to
+express patterns we want to decipher from text. We’re introducing new words
 like <code class="docutils literal notranslate"><span class="pre">character-in</span></code>, <code class="docutils literal notranslate"><span class="pre">sequence</span></code>, <code class="docutils literal notranslate"><span class="pre">alternatives</span></code>, <code class="docutils literal notranslate"><span class="pre">one-or-more</span></code>,
 <code class="docutils literal notranslate"><span class="pre">transform</span></code>, etc. that let us talk about specific patterns and how to combine
 patterns to make new patterns. This is very much like how language consists of
 both a vocabulary (words with meanings) and grammar (how to give meaning to
 combinations of words). So here we’re laying out a “grammar” for expressing
 patterns in strings by introducing a vocabulary and defining the words in such
-a way that they can be combined according to the grammar that makes sense to us.</p>
+a way that they can be combined according to the grammar that makes sense to
+us.</p>
 <p>We also sketched out the grammar first before defining the words in Racket.
 This is a powerful way to think about a domain. So powerful that much of the
 computing infrastructure you may have heard about – working with tables in
@@ -407,6 +459,15 @@ that cater to a “domain” (which in our case is patterns in text).</p>
 <p>Indeed, with modern computing infrastructure, it is pretty much <strong>Languages all
 the way through</strong>. This is also why large language models that’s trained on all
 public source code available can be very useful in computing.</p>
+<p>The underlying notion here is what’s called a “formal system” – which consists
+of “axioms” that are valid expressions as given, and “theorems” which can be
+used to derive other valid expressions given valid expressions. While this
+notion is general and there is no guarantee that all formal systems have some
+relevant applications, when the rules of a formal system do relate to rules in
+the world in some “domain”, then the formal system serves as a useful proxy to
+“reason” about the domain. Much of the task of working with specific domains
+through computing comes down to the creative process of constructing formal
+systems whose components and rules map well to the domain.</p>
 </section>
 <section id="algebra">
 <h2>Algebra<a class="headerlink" href="#algebra" title="Link to this heading">¶</a></h2>
@@ -517,6 +578,7 @@ mathematics.</p>
 <li class="toctree-l2"><a class="reference internal" href="#alternatives"><code class="docutils literal notranslate"><span class="pre">alternatives</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#many-ness">Many-ness</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#meaning-through-reinterpretation">Meaning through reinterpretation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pattern-exercises">Pattern exercises</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#languages-within-languages">Languages within languages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#algebra">Algebra</a></li>
 </ul>

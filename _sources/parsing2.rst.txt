@@ -387,19 +387,73 @@ translates to the **process** of matching patterns in strings.
    construct new patterns with them, unlike the basic patterns like
    ``character-in``.
 
+Pattern exercises
+-----------------
+
+Define a pattern for each of the following using the words above.
+
+1. **Word**: Define a pattern to match the first word of a sentence.
+   Remember that we expect it to be capitalized.
+
+2. **Sentence**: Define a pattern to match the first sentence in a given
+   string.
+
+3. **HTML tag**: A HTML tag looks like ``<tag>..some text...</tag>``. 
+   Define a pattern to match the tag at the start of a given string,
+   like ``"<strong>you're it!</strong>"``.
+
+4. **Morse code**: You're given a string in Morse code like this --
+   ``".... . .-.. .-.. --- .-- --- .-. .-.. -.."``. Define a pattern
+   to extract the sequence of single-space separate Morse characters.
+   Can you define it so that when you use such a Morse string with
+   ``parse`` with your pattern, you get the decoded letters?
+   (See this code table - https://morsecode.world/international/morse2.html)
+   
+   .. hint:: You might find the defining a new pattern word ``literal``
+       that's used like ``(literal "xyz")`` to match the literal string
+       can make your Morse pattern simpler to define.
+
+       .. collapse:: Expand to see a definition of ``literal``.
+
+            .. code:: racket
+
+                (define (literal str)
+                    (define (pattern text)
+                        (if (string-prefix? text str)
+                            (pattern-match str (substring text (string-length str)))
+                            #f))
+                    pattern)
+
+5. **Arithmetic**: For simple arithmetical expressions involving only "+" and
+   "*" (times). The rules are in BNF form below - 
+
+   .. code:: 
+
+      Expression -> NaturalNumber
+      Expression -> "(" Expression Operator Expression ")"
+      Operator -> character-in("+*")
+      NaturalNumber -> one-or-more(Digit)
+      Digit -> character-in("0123456789")
+
+   Start off by writing some examples of valid and invalid expressions.
+
+   .. tip:: This may not be an easy one given what we've looked at so far.
+      But persist and see how far you can get.
+
 
 Languages within languages
 --------------------------
 
-If you zoom out a little bit, it can look like we're building a small language
-to express patterns we want to decipher from text. We're introducing new words
+If you zoom out a bit, it can look like we're building a small language to
+express patterns we want to decipher from text. We're introducing new words
 like ``character-in``, ``sequence``, ``alternatives``, ``one-or-more``,
 ``transform``, etc. that let us talk about specific patterns and how to combine
 patterns to make new patterns. This is very much like how language consists of
 both a vocabulary (words with meanings) and grammar (how to give meaning to
 combinations of words). So here we're laying out a "grammar" for expressing
 patterns in strings by introducing a vocabulary and defining the words in such
-a way that they can be combined according to the grammar that makes sense to us.
+a way that they can be combined according to the grammar that makes sense to
+us.
 
 We also sketched out the grammar first before defining the words in Racket.
 This is a powerful way to think about a domain. So powerful that much of the
@@ -413,6 +467,16 @@ that cater to a "domain" (which in our case is patterns in text).
 Indeed, with modern computing infrastructure, it is pretty much **Languages all
 the way through**. This is also why large language models that's trained on all
 public source code available can be very useful in computing.
+
+The underlying notion here is what's called a "formal system" -- which consists
+of "axioms" that are valid expressions as given, and "theorems" which can be
+used to derive other valid expressions given valid expressions. While this
+notion is general and there is no guarantee that all formal systems have some
+relevant applications, when the rules of a formal system do relate to rules in
+the world in some "domain", then the formal system serves as a useful proxy to
+"reason" about the domain. Much of the task of working with specific domains
+through computing comes down to the creative process of constructing formal
+systems whose components and rules map well to the domain.
 
 Algebra
 -------
