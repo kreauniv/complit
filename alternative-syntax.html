@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Optional: Alternative language &#8212; CompLIT: Programming Literacy v1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d8a2add5" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=17171a54" />
+    <script src="_static/documentation_options.js?v=5cb08e4e"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Recap" href="recap.html" />
+    <link rel="prev" title="More parsing" href="parsing2.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="optional-alternative-language">
+<h1>Optional: Alternative language<a class="headerlink" href="#optional-alternative-language" title="Link to this heading">¶</a></h1>
+<p>When discussing parsing patterns in strings in <a class="reference internal" href="parsing2.html"><span class="doc">More parsing</span></a>, our “pattern”
+values were procedures that produced <code class="docutils literal notranslate"><span class="pre">pattern-match</span></code> structured values when
+given a piece of text. We wrote such pattern matcher definitions like this –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">character-in</span><span class="w"> </span><span class="n">charset</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
+<span class="w">      </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">         </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">first-char</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="p">)])</span>
+<span class="w">            </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">string-contains?</span><span class="w"> </span><span class="n">charset</span><span class="w"> </span><span class="n">first-char</span><span class="p">)</span>
+<span class="w">               </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="n">first-char</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span>
+<span class="w">               </span><span class="no">#f</span><span class="p">))</span>
+<span class="w">         </span><span class="no">#f</span><span class="p">))</span>
+<span class="w">   </span><span class="n">pattern</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="n">pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">pattern</span><span class="w"> </span><span class="n">text</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>With such a simple definition of <code class="docutils literal notranslate"><span class="pre">pattern</span></code>, all the heavy lifting is being
+done by each pattern definition. Within the <code class="docutils literal notranslate"><span class="pre">character-in</span></code> above, we’re
+defining a new “local” procedure and saying that the this procedure represents
+the pattern in question.</p>
+<p>There are a couple of alternative ways to write this in Racket which has parallels
+in other programming languages too.</p>
+<section id="lambda-procedures">
+<h2>Lambda procedures<a class="headerlink" href="#lambda-procedures" title="Link to this heading">¶</a></h2>
+<p>The form <code class="docutils literal notranslate"><span class="pre">(lambda</span> <span class="pre">(arg1</span> <span class="pre">arg2</span> <span class="pre">...)</span> <span class="pre">&lt;expr1&gt;</span> <span class="pre">&lt;expr2&gt;</span> <span class="pre">...</span> <span class="pre">&lt;exprN&gt;)</span></code> represents a procedure
+value that has not been named in the context in which this occurs. In the example
+above, <code class="docutils literal notranslate"><span class="pre">(define</span> <span class="pre">(pattern</span> <span class="pre">text)</span> <span class="pre">...)</span></code> is, in Racket, exactly equivalent to
+<code class="docutils literal notranslate"><span class="pre">(define</span> <span class="pre">pattern</span> <span class="pre">(lambda</span> <span class="pre">(text)</span> <span class="pre">...))</span></code>. So we could’ve written it as –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">character-in</span><span class="w"> </span><span class="n">charset</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="w">      </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">         </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">first-char</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="p">)])</span>
+<span class="w">            </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">string-contains?</span><span class="w"> </span><span class="n">charset</span><span class="w"> </span><span class="n">first-char</span><span class="p">)</span>
+<span class="w">               </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="n">first-char</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span>
+<span class="w">               </span><span class="no">#f</span><span class="p">))</span>
+<span class="w">         </span><span class="no">#f</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>If you’re intimidated by the word “lambda”, you can mentally replace
+it with “procedure” or “abstraction”. The “lambda” word has a historical
+origin in its association with Alonzo Church’s “lambda calculus” which
+provided a mathematical basis for computation.</p>
+<p>Depending on the discussion context, we may refer to such <code class="docutils literal notranslate"><span class="pre">(lambda</span> <span class="pre">...)</span></code>
+terms as “lambda procedures”, “lambda abstractions” or “lambda functions”,
+and we might drop the “lambda” and refer to them just as “procedures”,
+“abstractions” and “functions” where the “unnamed” aspect is not of
+much importance.</p>
+</div>
+</section>
+<section id="defining-meta-compounds">
+<h2>Defining meta-compounds<a class="headerlink" href="#defining-meta-compounds" title="Link to this heading">¶</a></h2>
+<p>We referred to words like <code class="docutils literal notranslate"><span class="pre">character-in</span></code> as “procedures” and
+expressiong using such procedures <code class="docutils literal notranslate"><span class="pre">(character-in</span> <span class="pre">&quot;0123456789&quot;)</span></code>
+as “compound terms” which we can roughly relate to sentences
+in ordinary language. The definition of <code class="docutils literal notranslate"><span class="pre">parse</span></code> indicates that
+such a compound term is itself intended to be used as a procedure
+like this –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">((</span><span class="n">character-in</span><span class="w"> </span><span class="s2">&quot;0123456789&quot;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;42&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>So Racket provides an even simpler syntax for defining such procedures
+that themselves result in procedures like this –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">((</span><span class="n">character-in</span><span class="w"> </span><span class="n">charset</span><span class="p">)</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">         </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">first-char</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="p">)])</span>
+<span class="w">            </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">string-contains?</span><span class="w"> </span><span class="n">charset</span><span class="w"> </span><span class="n">first-char</span><span class="p">)</span>
+<span class="w">               </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="n">first-char</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span>
+<span class="w">               </span><span class="no">#f</span><span class="p">))</span>
+<span class="w">         </span><span class="no">#f</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>What the form <code class="docutils literal notranslate"><span class="pre">((character-in</span> <span class="pre">charset)</span> <span class="pre">text)</span></code> says is that the word being
+defined – <code class="docutils literal notranslate"><span class="pre">character-in</span></code> – is intended to be used in a compound term like
+<code class="docutils literal notranslate"><span class="pre">((character-in</span> <span class="pre">&quot;0123456789&quot;)</span> <span class="pre">&quot;42&quot;)</span></code> which in turn implies that the compound
+term <code class="docutils literal notranslate"><span class="pre">(character-in</span> <span class="pre">&quot;0123456789&quot;)</span></code> is itself procedure-valued that requires
+a piece of text to fully determine its in-context meaning.</p>
+</section>
+<section id="procedures-as-abstractions">
+<h2>Procedures as abstractions<a class="headerlink" href="#procedures-as-abstractions" title="Link to this heading">¶</a></h2>
+<p>Because a procedure word on its own is just declared as a “procedure value” and
+it doesn’t get to be concrete until it is provided with in-context values –
+its “arguments” – it is said to <strong>abstract</strong> over all possible values it can
+possibly resolve to and therefore can be called an <strong>abstraction</strong>.</p>
+<p>Procedures are not the only means of abstraction in programming languages, but
+we’ll limit ourselves to procedures (named or unnamed) in this course. All
+other abstractions in programming can be understood in terms of procedures,
+so they are foundational.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">CompLIT: Programming Literacy</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="words.html">Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interrogation.html">Interrogating programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strings.html">Strings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample-programs.html">Sample programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abstractions.html">A guessing game</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structures.html">Structures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing2.html">More parsing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Optional: Alternative language</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#lambda-procedures">Lambda procedures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#defining-meta-compounds">Defining meta-compounds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#procedures-as-abstractions">Procedures as abstractions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="recap.html">Recap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="representations.html">Representations</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="parsing2.html" title="previous chapter">More parsing</a></li>
+      <li>Next: <a href="recap.html" title="next chapter">Recap</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Srikumar K. S..
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/alternative-syntax.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
