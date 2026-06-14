@@ -250,7 +250,7 @@ and ``one-or-more`` gains validity and completeness.
 .. code:: racket
 
    (define (one-or-more pat)
-      (sequence par (zero-or-more pat)))
+      (sequence pat (zero-or-more pat)))
 
    (define (zero-or-more pat)
       (alternatives empty-pattern (one-or-more pat)))

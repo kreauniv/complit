@@ -149,7 +149,7 @@ Now consider the same program written as shown below --
       (display prompt)
       (define guess (read))
       (if (= guess secret)
-          (displayln (string-append "You won in " (integer->string attempts) " attempts."))
+          (displayln (string-append "You won in " (number->string attempts) " attempts."))
           (play-game (if (< guess secret)
                          "It's higher. Guess again."
                          "It's lower. Guess again.")

@@ -403,7 +403,7 @@ A few things to notice here.
   to know is that you need to choose a colour and that ``front`` will give 
   you a "picture" to work with.
 
-.. note:: In the of ``front``, we've introduced Racket's mechanism for creating
+.. note:: In the case of ``front``, we've introduced Racket's mechanism for creating
    abstractions as a way to generalize and capture repetitive patterns in code.
    This is not the *only* reason to create abstractions and we'll see more
    as we go along.

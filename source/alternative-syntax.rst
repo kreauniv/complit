@@ -60,12 +60,11 @@ above, ``(define (pattern text) ...)`` is, in Racket, exactly equivalent to
 Defining meta-compounds
 -----------------------
 
-We referred to words like ``character-in`` as "procedures" and
-expressiong using such procedures ``(character-in "0123456789")``
-as "compound terms" which we can roughly relate to sentences
-in ordinary language. The definition of ``parse`` indicates that
-such a compound term is itself intended to be used as a procedure
-like this --
+We referred to words like ``character-in`` as "procedures" and expressions
+using such procedures ``(character-in "0123456789")`` as "compound terms" which
+we can roughly relate to sentences or phrases in ordinary language. The
+definition of ``parse`` indicates that such a compound term is itself intended
+to be used as a procedure like this --
 
 .. code:: racket
 
