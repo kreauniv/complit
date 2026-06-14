@@ -16,6 +16,7 @@ CompLIT: Programming Literacy (WORK-IN-PROGRESS)
    structures
    parsing
    parsing2
+   alternative-syntax
    recap
    representations
 
