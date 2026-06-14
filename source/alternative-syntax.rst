@@ -19,7 +19,7 @@ given a piece of text. We wrote such pattern matcher definitions like this --
 
    (define (parse pattern text) (pattern text))
 
-With such a simple definition of ``pattern``, all the heavy lifting is being
+With such a simple definition of ``parse``, all the heavy lifting is being
 done by each pattern definition. Within the ``character-in`` above, we're
 defining a new "local" procedure and saying that the this procedure represents
 the pattern in question.
