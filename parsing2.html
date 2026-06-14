@@ -18,7 +18,7 @@
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Recap" href="recap.html" />
+    <link rel="next" title="Optional: Alternative language" href="alternative-syntax.html" />
     <link rel="prev" title="Parsing" href="parsing.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -258,7 +258,7 @@ it actually has a different meaning for the two-argument case than <code class="
 <p>With the definition of <code class="docutils literal notranslate"><span class="pre">alternatives</span></code>, our definition of <code class="docutils literal notranslate"><span class="pre">zero-or-more</span></code>
 and <code class="docutils literal notranslate"><span class="pre">one-or-more</span></code> gains validity and completeness.</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">one-or-more</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span>
-<span class="w">   </span><span class="p">(</span><span class="n">sequence</span><span class="w"> </span><span class="n">par</span><span class="w"> </span><span class="p">(</span><span class="n">zero-or-more</span><span class="w"> </span><span class="n">pat</span><span class="p">)))</span>
+<span class="w">   </span><span class="p">(</span><span class="n">sequence</span><span class="w"> </span><span class="n">pat</span><span class="w"> </span><span class="p">(</span><span class="n">zero-or-more</span><span class="w"> </span><span class="n">pat</span><span class="p">)))</span>
 
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">zero-or-more</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span>
 <span class="w">   </span><span class="p">(</span><span class="n">alternatives</span><span class="w"> </span><span class="n">empty-pattern</span><span class="w"> </span><span class="p">(</span><span class="n">one-or-more</span><span class="w"> </span><span class="n">pat</span><span class="p">)))</span>
@@ -583,6 +583,7 @@ mathematics.</p>
 <li class="toctree-l2"><a class="reference internal" href="#algebra">Algebra</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="alternative-syntax.html">Optional: Alternative language</a></li>
 <li class="toctree-l1"><a class="reference internal" href="recap.html">Recap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="representations.html">Representations</a></li>
 </ul>
@@ -592,7 +593,7 @@ mathematics.</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="parsing.html" title="previous chapter">Parsing</a></li>
-      <li>Next: <a href="recap.html" title="next chapter">Recap</a></li>
+      <li>Next: <a href="alternative-syntax.html" title="next chapter">Optional: Alternative language</a></li>
   </ul></li>
 </ul>
 </div>

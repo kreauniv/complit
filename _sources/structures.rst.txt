@@ -154,7 +154,7 @@ Now let's pick that definition apart and figure out how to "read" it.
   string when ``and`` gets around to evaluating ``(string-length str)``.
   :hl:`This ordering is important` because ``(>= pos 0)`` will be an error if
   ``pos`` is not a number and ``(string-length str)`` will be an error if
-  ``str`` is not a string.`
+  ``str`` is not a string.
 
 - So the combined ``(and ...)`` expression is saying "``str`` is a string and ``pos`` is an
   integer and ``pos`` is >= 0 and ``pos`` is <= the length of ``str``". As we read that,

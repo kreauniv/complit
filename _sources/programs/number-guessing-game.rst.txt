@@ -327,7 +327,7 @@ Putting all of that together, we get our "version 3" below --
 The moral of this whole story is that the top level
 ``play-number-guessing-game`` almost reads in a self-explanatory manner, with
 our usual understanding of words like ``greet-player`` and ``clue`` filling in
-all the details, much like how we can out together "horse in a box cart" to
+all the details, much like how we can put together "horse in a box cart" to
 form a mental image based on our understanding of "horse", "box" and "cart".
 We now only need to read line 1-11 in :ref:`the third version <nggv3>` compared
 to lines 1-18 in :ref:`the first version <nggv1>` to have a top level understanding

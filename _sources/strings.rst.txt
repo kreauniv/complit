@@ -99,7 +99,7 @@ Now, what if the string we want to provide as a literal in the program itself
 needs to use the double quote character? We'll need to somehow tell Racket how
 to distinguish between a ``"`` that begins or ends a string literal, with a
 ``"`` that is supposed to be considered as part of the string. We have a little
-syntax ti help us with that. ``"`` characters that are intended to be a part of
+syntax to help us with that. ``"`` characters that are intended to be a part of
 the string will needed to be preceded by the ``\`` (backslash) character, as
 shown below --
 

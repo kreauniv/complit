@@ -123,7 +123,7 @@ Let's collect some concept phrases from that description and clarify what they m
 1. "Word" - we've dealt with this already.
 2. "list of words" - Hmm we don't know how to do lists yet! Mark it up on our TODO list ;)
 3. "start position" - the index of the first character in the string that needs to be examined.
-4. "end position" - the index of the last character in the string that needs to be exmained.
+4. "end position" - the index of the last character in the string that needs to be examined.
 5. "next word" - the first word that occurs at the head of the string from the given
    start position.
 

@@ -164,7 +164,7 @@ expression <code class="docutils literal notranslate"><span class="pre">(&gt;=</
 string when <code class="docutils literal notranslate"><span class="pre">and</span></code> gets around to evaluating <code class="docutils literal notranslate"><span class="pre">(string-length</span> <span class="pre">str)</span></code>.
 <span class="yellow-highlight">This ordering is important</span> because <code class="docutils literal notranslate"><span class="pre">(&gt;=</span> <span class="pre">pos</span> <span class="pre">0)</span></code> will be an error if
 <code class="docutils literal notranslate"><span class="pre">pos</span></code> is not a number and <code class="docutils literal notranslate"><span class="pre">(string-length</span> <span class="pre">str)</span></code> will be an error if
-<code class="docutils literal notranslate"><span class="pre">str</span></code> is not a string.`</p></li>
+<code class="docutils literal notranslate"><span class="pre">str</span></code> is not a string.</p></li>
 <li><p>So the combined <code class="docutils literal notranslate"><span class="pre">(and</span> <span class="pre">...)</span></code> expression is saying “<code class="docutils literal notranslate"><span class="pre">str</span></code> is a string and <code class="docutils literal notranslate"><span class="pre">pos</span></code> is an
 integer and <code class="docutils literal notranslate"><span class="pre">pos</span></code> is &gt;= 0 and <code class="docutils literal notranslate"><span class="pre">pos</span></code> is &lt;= the length of <code class="docutils literal notranslate"><span class="pre">str</span></code>”. As we read that,
 we can realize that the moment any one of the sub-conditions becomes false, there is no
@@ -459,6 +459,7 @@ is given to give you a flavour of how having a type system is useful.</p>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parsing2.html">More parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="alternative-syntax.html">Optional: Alternative language</a></li>
 <li class="toctree-l1"><a class="reference internal" href="recap.html">Recap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="representations.html">Representations</a></li>
 </ul>
