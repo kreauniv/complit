@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Modelling a domain - Images &#8212; CompLIT: Programming Literacy v1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d8a2add5" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=17171a54" />
+    <script src="_static/documentation_options.js?v=5cb08e4e"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Representations" href="representations.html" />
+    <link rel="prev" title="Recap" href="recap.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="modelling-a-domain-images">
+<h1>Modelling a domain - Images<a class="headerlink" href="#modelling-a-domain-images" title="Link to this heading">¶</a></h1>
+<p>In this section, we work through the process of how to use programming to try
+and understand a domain better, by working our way ground up. It requires
+some fluency with the “interrogation” approach we worked through in earlier
+sections and also with the notion of “procedures as abstractions” which was
+dealt with when we worked on parsing strings. The parsing topic itself
+was a soft intro to this approach, but here we’ll go a little deeper.</p>
+<p>The content of this chapter is based on an old research paper published by
+Conal Elliot called <a class="reference external" href="http://conal.net/Pan/">Pan</a> which described a way to think about constructing
+images through programs.</p>
+<section id="images">
+<h2>Images<a class="headerlink" href="#images" title="Link to this heading">¶</a></h2>
+<p>We use the word “image” as distinct from a “picture” for the purpose of this
+section, though there is not a very significant difference between the two.
+We include the possibility of photographs being an “image” where as we take
+a picture as mostly something that is “drawn” using some mechanism. Again,
+this is not a distinction worth emphasizing, but it is just to clarify the
+language used here.</p>
+<p>Let’s say we have an image in computer memory – <code class="docutils literal notranslate"><span class="pre">apple</span></code>. We presume it
+represents some visual thing that looks like an apple. Either a drawing of
+an apple or a photograph of one.</p>
+<p>The basic thing we can expect to do with an image is to show it. We’ll call
+this <code class="docutils literal notranslate"><span class="pre">render-image</span></code>, since “display”, “show” and such have other meanings
+given to them by Racket. So <code class="docutils literal notranslate"><span class="pre">(render-image</span> <span class="pre">apple)</span></code> should give us something
+we can see. We might similarly image another word <code class="docutils literal notranslate"><span class="pre">render-image-to-file</span></code>
+which will produce a PNG or JPG file containing the depiction that we can view
+using any external tool – <code class="docutils literal notranslate"><span class="pre">(render-image-to-png-file</span> <span class="pre">apple</span> <span class="pre">&quot;apple.png&quot;)</span></code>.</p>
+<p>We might ask many questions of such a rendered image – What is its width and
+height? Which portion (rectangle) of the image has been rendered?. It would
+seem that these should be intrinsic properties of an image, but we can also
+think of a fractal “Mandelbrot set” as an image that has a conceptually
+infinite amount of detail in it, so it would be necessary to make the
+dimensions and portion specific in order to get a concrete rendering of it.</p>
+<p>So ideally, our rendering procedures will be something like –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">render-image</span><span class="w"> </span><span class="n">apple</span><span class="w"> </span><span class="n">&lt;width&gt;</span><span class="w"> </span><span class="n">&lt;height&gt;</span><span class="w"> </span><span class="n">&lt;x0&gt;</span><span class="w"> </span><span class="n">&lt;y0&gt;</span><span class="w"> </span><span class="n">&lt;x1&gt;</span><span class="w"> </span><span class="n">&lt;y1&gt;</span><span class="p">)</span>
+<span class="p">(</span><span class="n">render-image-to-file</span><span class="w"> </span><span class="s2">&quot;apple.png&quot;</span><span class="w"> </span><span class="n">apple</span><span class="w"> </span><span class="n">&lt;width&gt;</span><span class="w"> </span><span class="n">&lt;height&gt;</span><span class="w"> </span><span class="n">&lt;x0&gt;</span><span class="w"> </span><span class="n">&lt;y0&gt;</span><span class="w"> </span><span class="n">&lt;x1&gt;</span><span class="w"> </span><span class="n">&lt;y1&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where the <span class="math notranslate nohighlight">\((x_0,y_0,x_1,y_1)\)</span> define a rectangle by giving the top-left
+coordinate <span class="math notranslate nohighlight">\((x_0,y_0)\)</span> and the bottom right coordinate <span class="math notranslate nohighlight">\((x_1,y_1)\)</span>.</p>
+</section>
+<section id="need-for-a-representation">
+<h2>Need for a representation<a class="headerlink" href="#need-for-a-representation" title="Link to this heading">¶</a></h2>
+<p>When we’re looking at modelling an idea like an “image” that we don’t yet fully
+understand <a class="footnote-reference brackets" href="#imund" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> to actually start doing things with images, we need to
+pick a “representation” that we can use in our program. The term “representation”
+refers to determining which of available mechanisms can be used to model the
+thing we’re looking at so as to enable us to work with it in ways that we expect
+to.</p>
+<p>Picking a representation therefore implies that we know the ways in which we want
+to work with it. Note that there are dimensions of representations that we may not
+be concerned with initially as we work towards understanding a domain, but might
+wish to get to later. These include efficiency of operations, interoperability
+with some other software, optimal memory usage and so on. Before we get to that,
+we need to understand images by first clarifying what we want to do with them.</p>
+</section>
+<section id="doing-things-with-images">
+<h2>Doing things with images<a class="headerlink" href="#doing-things-with-images" title="Link to this heading">¶</a></h2>
+<p>You’re given an image bound to the identifier <code class="docutils literal notranslate"><span class="pre">apple</span></code>. What can you do with it?</p>
+<ul>
+<li><p>Maybe you want to overlay two apple images to make a “bunch of apples”. Let’s
+write it as <code class="docutils literal notranslate"><span class="pre">(overlay</span> <span class="pre">apple</span> <span class="pre">apple)</span></code>. This phrase isn’t precise just yet,
+because in our minds as we think of overlaying an apple image on another, we
+might think of an apple “near” another apple and not exactly on top of it,
+which would hide it. But “how close?” then becomes another question we need
+to answer through our expression. Since a relative position shift can be
+given by a pair of numbers <span class="math notranslate nohighlight">\((\d x,\d y)\)</span>, maybe we can write our
+expression as <code class="docutils literal notranslate"><span class="pre">(overlay</span> <span class="pre">dx</span> <span class="pre">dy</span> <span class="pre">apple</span> <span class="pre">apple)</span></code>. This still isn’t very clear as
+we don’t quite know which of the two apples the <span class="math notranslate nohighlight">\((\d x,\d y)\)</span> applies
+to. We can pick a convention, which would be one solution. However we can
+also take this opportunity to note that “an image shifted by dx,dy is also an
+image” to simplify the <code class="docutils literal notranslate"><span class="pre">overlay</span></code> concept. Now, maybe we can write our
+intention as <code class="docutils literal notranslate"><span class="pre">(overlay</span> <span class="pre">apple</span> <span class="pre">(shift</span> <span class="pre">dx</span> <span class="pre">dy</span> <span class="pre">apple))</span></code>. This pattern is now
+accessible to us for other purposes too – ex: <code class="docutils literal notranslate"><span class="pre">(overlay</span> <span class="pre">apple</span> <span class="pre">(shift</span> <span class="pre">dx</span> <span class="pre">dy</span>
+<span class="pre">orange))</span></code>, <code class="docutils literal notranslate"><span class="pre">(overlay</span> <span class="pre">apple</span> <span class="pre">(overlay</span> <span class="pre">(shift</span> <span class="pre">dx1</span> <span class="pre">dy1</span> <span class="pre">orange)</span> <span class="pre">(shift</span> <span class="pre">dx2</span> <span class="pre">dy2</span>
+<span class="pre">pear)))</span></code>, and so on.</p>
+<div class="admonition-insight admonition">
+<p class="admonition-title"><strong>Insight</strong></p>
+<p>When we define a word whose argument types and result types are the same
+(“image” in this case), we immediately gain a very large number of ways
+to combine the values. If the operation only has one argument, then the
+only thing we can do is to apply the operation multiple times. However if
+we have more than one such operation, or more than one argument of the
+same type, the possibilities explode even more. We see this with
+<code class="docutils literal notranslate"><span class="pre">shift</span></code> and <code class="docutils literal notranslate"><span class="pre">overlay</span></code>.</p>
+</div>
+</li>
+<li><p>Maybe we want to make an image bigger or smaller – i.e. “scale” it. We can
+express this idea using <span class="math notranslate nohighlight">\((s_x,s_y)\)</span> scaling factors like this <code class="docutils literal notranslate"><span class="pre">(scale</span>
+<span class="pre">sx</span> <span class="pre">sy</span> <span class="pre">apple)</span></code>. Now we can put apples of various sizes near each other in a
+cluster by combining <code class="docutils literal notranslate"><span class="pre">overlay</span></code>, <code class="docutils literal notranslate"><span class="pre">shift</span></code> and <code class="docutils literal notranslate"><span class="pre">scale</span></code>.</p>
+<div class="admonition-task admonition">
+<p class="admonition-title"><strong>Task</strong></p>
+<p>Write some expressions of a “fruit scene” using the given images
+bound to identifiers <code class="docutils literal notranslate"><span class="pre">apple</span></code>, <code class="docutils literal notranslate"><span class="pre">banana</span></code> and <code class="docutils literal notranslate"><span class="pre">orange</span></code>, using
+the operators <code class="docutils literal notranslate"><span class="pre">overlay</span></code>, <code class="docutils literal notranslate"><span class="pre">shift</span></code> and <code class="docutils literal notranslate"><span class="pre">scale</span></code>.</p>
+</div>
+</li>
+</ul>
+</section>
+<section id="understanding-what-we-ve-asked-for">
+<h2>Understanding what we’ve asked for<a class="headerlink" href="#understanding-what-we-ve-asked-for" title="Link to this heading">¶</a></h2>
+<p>Now, we still can’t make any images because we don’t know what an image is yet?
+i.e. We haven’t selected a representation for it yet and therefore we cannot
+construct a single image. However, we’re close and we need to pay some attention
+to what we’ve asked for in the section above.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">shift</span></code> and <code class="docutils literal notranslate"><span class="pre">scale</span></code> words imply some kind of an “X/Y axis coordinate system”
+for our images. <code class="docutils literal notranslate"><span class="pre">(shift</span> <span class="pre">2</span> <span class="pre">1</span> <span class="pre">apple)</span></code> might be expected to shift the apple
+twice as much to the right as <code class="docutils literal notranslate"><span class="pre">(shift</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">apple)</span></code>. Depending on how we choose
+our y axis, say we pick it to be pointing vertically upwards, <code class="docutils literal notranslate"><span class="pre">(shift</span> <span class="pre">1</span> <span class="pre">2</span> <span class="pre">apple)</span></code>
+would shift it twice as much upwards as <code class="docutils literal notranslate"><span class="pre">(shift</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">apple)</span></code>.</p>
+<figure class="align-center" id="id2">
+<img alt="_images/scaling.png" src="_images/scaling.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Scaling a picture of a cat by half using <code class="docutils literal notranslate"><span class="pre">(scale</span> <span class="pre">0.5</span> <span class="pre">0.5</span> <span class="pre">cat)</span></code>.</span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>But what does “shifting” or “scaling” mean? With reference to the picture above,
+we might say “whatever is happening at a given coordinate <span class="math notranslate nohighlight">\((x,y)\)</span> is now
+happening at a different coordinate <span class="math notranslate nohighlight">\((x+\d x,y+\d y)\)</span> for an image shifted
+by <span class="math notranslate nohighlight">\((\d dx, \d y)\)</span> and similarly for a scaled image, whatever was “happening”
+at <span class="math notranslate nohighlight">\((x,y)\)</span> is now “happening” at <span class="math notranslate nohighlight">\((x \times s_x, y \times s_y)\)</span>.</p>
+<p>The key idea here is that something is “happening” at a given coordinate <span class="math notranslate nohighlight">\((x,y)\)</span>.
+For visual image, the only thing we can tell that’s special about a given point
+is the colour at the given point. So, we can now think of an “image” as a
+mapping from a given coordinate <span class="math notranslate nohighlight">\((x,y)\)</span> to a colour which is often
+graded in computer systems as a mixture of three “primary” colours red, green
+and blue – <span class="math notranslate nohighlight">\((red,green,blue)\)</span>.</p>
+<p>Another word for “mapping” is “function” and programming languages let you
+describe mappings by giving general ways by which to compute the target value
+given the source value of the mapping, instead of, say, listing every possible
+combination and checking the input against such a table.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="n">colour</span><span class="w"> </span><span class="p">(</span><span class="n">red</span><span class="w"> </span><span class="n">green</span><span class="w"> </span><span class="n">blue</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">red-circle</span><span class="w"> </span><span class="n">radius</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">colour</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">)</span>
+<span class="w">      </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="n">y</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">radius</span><span class="w"> </span><span class="n">radius</span><span class="p">))</span>
+<span class="w">         </span><span class="p">(</span><span class="n">colour</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="mf">0.0</span><span class="p">)</span>
+<span class="w">         </span><span class="p">(</span><span class="n">colour</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="mf">0.0</span><span class="p">)))</span>
+<span class="w">   </span><span class="n">colour</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Or using the “lambda” approach,</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">red-circle</span><span class="w"> </span><span class="n">radius</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">)</span>
+<span class="w">      </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="n">y</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">radius</span><span class="w"> </span><span class="n">radius</span><span class="p">))</span>
+<span class="w">         </span><span class="p">(</span><span class="n">colour</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="mf">0.0</span><span class="p">)</span>
+<span class="w">         </span><span class="p">(</span><span class="n">colour</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="mf">0.0</span><span class="p">))))</span>
+</pre></div>
+</div>
+<details class="summary-alternative-ways-of-writing-red-circle">
+<summary>**Alternative ways of writing ``red-circle``**</summary><p>There are many ways to write the same <code class="docutils literal notranslate"><span class="pre">red-circle</span></code> definition. You should
+always choose the way that <em>for you</em> expresses the idea in the clearest
+manner. Concerns like optimization of calculations come only after clarity.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="c1">; While the same, it doesn&#39;t let us think of &quot;red-circle&quot;</span>
+<span class="c1">; in the abstract and forces us to consider how it deals with</span>
+<span class="c1">; coordinates right in its definitional form.</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">((</span><span class="n">red-circle</span><span class="w"> </span><span class="n">radius</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="n">y</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">radius</span><span class="w"> </span><span class="n">radius</span><span class="p">))</span>
+<span class="w">      </span><span class="p">(</span><span class="n">colour</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="mf">0.0</span><span class="p">)</span>
+<span class="w">      </span><span class="p">(</span><span class="n">colour</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="mf">0.0</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="c1">; This one uses the fact that the two paths don&#39;t choose</span>
+<span class="c1">; different values for green and blue components of the colours</span>
+<span class="c1">; and uses the (if..) to only pick the red value. While this is</span>
+<span class="c1">; correct, it doesn&#39;t generalize well and we&#39;ll need to change</span>
+<span class="c1">; the *form* of the definition if we decide for some reason that</span>
+<span class="c1">; the inside of the circle should be orange and outside should be</span>
+<span class="c1">; teal. However, this form is useful if we want to vary the colour</span>
+<span class="c1">; for different values of the distance from the origin (0,0).</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">red-circle</span><span class="w"> </span><span class="n">radius</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">)</span>
+<span class="w">      </span><span class="p">(</span><span class="n">colour</span><span class="w"> </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="n">y</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">radius</span><span class="w"> </span><span class="n">radius</span><span class="p">))</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="mf">0.0</span><span class="p">)</span>
+<span class="w">              </span><span class="mf">0.0</span>
+<span class="w">              </span><span class="mf">0.0</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>So you see that in writing programs, we don’t just care about being correct
+about what the program means, we also care about <em>how</em> the meaning is
+expressed – i.e. the <strong>form</strong> – because we can derive new meanings by
+manipulating the form.</p>
+</details><p>We now have a “representation” for an image as a map from <span class="math notranslate nohighlight">\((x,y)\)</span>
+coordinates to an RGB <code class="docutils literal notranslate"><span class="pre">colour</span></code>. This means the other words we wanted,
+such as <code class="docutils literal notranslate"><span class="pre">overlay</span></code>, <code class="docutils literal notranslate"><span class="pre">shift</span></code> and <code class="docutils literal notranslate"><span class="pre">scale</span></code> will have to work with
+this same representation.</p>
+</section>
+<section id="expressing-shift">
+<h2>Expressing <code class="docutils literal notranslate"><span class="pre">shift</span></code><a class="headerlink" href="#expressing-shift" title="Link to this heading">¶</a></h2>
+<p>With <code class="docutils literal notranslate"><span class="pre">(shift</span> <span class="pre">dx</span> <span class="pre">dy</span> <span class="pre">img)</span></code>, we described it as “whatever used to happen
+at <span class="math notranslate nohighlight">\((x,y)`\)</span> in the <code class="docutils literal notranslate"><span class="pre">img</span></code> now happens at <span class="math notranslate nohighlight">\((x+\d x, y+\d y)\)</span>.
+We can capture this relationship in a definition like given below. You
+should try to define it yourself first before revealing the solution.</p>
+<details class="summary-defining-shift">
+<summary>**Defining shift**</summary><div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">shift</span><span class="w"> </span><span class="n">dx</span><span class="w"> </span><span class="n">dy</span><span class="w"> </span><span class="n">img</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">)</span>
+<span class="w">      </span><span class="p">(</span><span class="n">img</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">dx</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="n">dy</span><span class="p">))))</span>
+</pre></div>
+</div>
+</details></section>
+<section id="expressing-scale">
+<h2>Expressing <code class="docutils literal notranslate"><span class="pre">scale</span></code><a class="headerlink" href="#expressing-scale" title="Link to this heading">¶</a></h2>
+<p>This is very similar to <code class="docutils literal notranslate"><span class="pre">shift</span></code> and if you’ve done that, you should
+definitely give this definition a go. Remember that <code class="docutils literal notranslate"><span class="pre">(scale</span> <span class="pre">sx</span> <span class="pre">sy</span> <span class="pre">img)</span></code> is an
+image where “whatever was happening at <span class="math notranslate nohighlight">\((x,y)\)</span> in the image now happens
+at <span class="math notranslate nohighlight">\((x \times s_x, y \times s_y)\)</span>”.</p>
+<details class="summary-defining-scale">
+<summary>**Defining scale**</summary><div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">scale</span><span class="w"> </span><span class="n">sx</span><span class="w"> </span><span class="n">sy</span><span class="w"> </span><span class="n">img</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">)</span>
+<span class="w">      </span><span class="p">(</span><span class="n">img</span><span class="w"> </span><span class="p">(</span><span class="nb">/</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">sx</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">/</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="n">sy</span><span class="p">))))</span>
+</pre></div>
+</div>
+</details></section>
+<section id="expressing-overlay">
+<h2>Expressing <code class="docutils literal notranslate"><span class="pre">overlay</span></code><a class="headerlink" href="#expressing-overlay" title="Link to this heading">¶</a></h2>
+<p>We need a precise notion of what <code class="docutils literal notranslate"><span class="pre">(overlay</span> <span class="pre">apple</span> <span class="pre">banana)</span></code> means. One possible meaning
+is that the <code class="docutils literal notranslate"><span class="pre">banana</span></code> should appear right on top of the <code class="docutils literal notranslate"><span class="pre">apple</span></code> wherever its colours
+are valid and the apple should show through wherever the banana gives no colours.</p>
+<p>In our representation <code class="docutils literal notranslate"><span class="pre">(colour</span> <span class="pre">r</span> <span class="pre">g</span> <span class="pre">b)</span></code>, which is the only value produced by
+an image that maps <span class="math notranslate nohighlight">\((x,y)\)</span> to colour, we do not have a way to tell whether a
+particular colour returned is part of the banana or not.</p>
+<p>A common way to include this information in a colour is the ARGB representation
+where we use a fourth number – the so called “alpha channel” – which takes
+values in the range <span class="math notranslate nohighlight">\([0.0,1.0]\)</span> – and expresses how “opaque” the colour
+is. So we now change our colour definition to include such an “alpha channel”
+in order for <code class="docutils literal notranslate"><span class="pre">overlay</span></code> to be possible. Given such an “alpha” value, we can
+use simple linear colour mixing to determine the resultant colour at each point
+in the final image. For the moment, let’s consider “alpha” to be <em>either</em>
+<span class="math notranslate nohighlight">\(0.0\)</span> <em>or</em> <span class="math notranslate nohighlight">\(1.0\)</span> for ease of thinking about colour mixing without
+knowing too much colour theory.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="n">colour</span><span class="w"> </span><span class="p">(</span><span class="n">alpha</span><span class="w"> </span><span class="n">red</span><span class="w"> </span><span class="n">green</span><span class="w"> </span><span class="n">blue</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">overlay</span><span class="w"> </span><span class="n">behind-img</span><span class="w"> </span><span class="n">front-img</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">)</span>
+<span class="w">      </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">c1</span><span class="w"> </span><span class="p">(</span><span class="n">behind-img</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">)]</span>
+<span class="w">            </span><span class="p">[</span><span class="n">c2</span><span class="w"> </span><span class="p">(</span><span class="n">front-img</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">)])</span>
+<span class="w">         </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">colour-alpha</span><span class="w"> </span><span class="n">c2</span><span class="p">)</span><span class="w"> </span><span class="mf">0.5</span><span class="p">)</span><span class="w"> </span><span class="n">c2</span><span class="w"> </span><span class="n">c1</span><span class="p">))))</span>
+</pre></div>
+</div>
+</section>
+<section id="exercises-other-ways-to-combine-images">
+<h2>Exercises: Other ways to combine images<a class="headerlink" href="#exercises-other-ways-to-combine-images" title="Link to this heading">¶</a></h2>
+<p>Now that you have <code class="docutils literal notranslate"><span class="pre">shift</span></code>, <code class="docutils literal notranslate"><span class="pre">scale</span></code> and <code class="docutils literal notranslate"><span class="pre">overlay</span></code> in your vocabulary,
+define the following shapes and ways to combine images. (Assume ARGB colour
+for these).</p>
+<ol class="arabic">
+<li><p>Define a <code class="docutils literal notranslate"><span class="pre">(box</span> <span class="pre">width</span> <span class="pre">height</span> <span class="pre">colour)</span></code> which should give you a box whose
+bottom-left corner is at <span class="math notranslate nohighlight">\((0,0)\)</span> and it has a given width and height
+and its interior is of the given colour.</p>
+<p>Question: What colour should its exterior be?</p>
+</li>
+<li><p>Define a <code class="docutils literal notranslate"><span class="pre">(disc</span> <span class="pre">radius</span> <span class="pre">colour)</span></code> which should be a circle of the given radius
+filled with the given colour inside. Again, what should be the colour outside?</p></li>
+<li><p>Define a <code class="docutils literal notranslate"><span class="pre">(rotate</span> <span class="pre">angle-degrees</span> <span class="pre">img)</span></code> which would be a rotated version of
+the given image. So <code class="docutils literal notranslate"><span class="pre">(rotate</span> <span class="pre">90.0</span> <span class="pre">(box</span> <span class="pre">1.0</span> <span class="pre">10.0</span> <span class="pre">black))</span></code> should
+effectively give you a box with width <span class="math notranslate nohighlight">\(10.0\)</span> and height <span class="math notranslate nohighlight">\(1.0\)</span>
+whose right bottom corner is at the origin. You’ll need some high school
+trigonometry to work this out.</p></li>
+<li><p>Using all the elements and operator words you’ve defined so far, make a
+picture of a “cricket pitch”.</p></li>
+</ol>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="imund" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Just us, and at this moment, obviously there are other people who
+understand it.</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">CompLIT: Programming Literacy</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="words.html">Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interrogation.html">Interrogating programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strings.html">Strings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample-programs.html">Sample programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abstractions.html">A guessing game</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structures.html">Structures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing2.html">More parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="alternative-syntax.html">Optional: Alternative language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recap.html">Recap</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Modelling a domain - Images</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#images">Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#need-for-a-representation">Need for a representation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#doing-things-with-images">Doing things with images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#understanding-what-we-ve-asked-for">Understanding what we’ve asked for</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#expressing-shift">Expressing <code class="docutils literal notranslate"><span class="pre">shift</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#expressing-scale">Expressing <code class="docutils literal notranslate"><span class="pre">scale</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#expressing-overlay">Expressing <code class="docutils literal notranslate"><span class="pre">overlay</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exercises-other-ways-to-combine-images">Exercises: Other ways to combine images</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="representations.html">Representations</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="recap.html" title="previous chapter">Recap</a></li>
+      <li>Next: <a href="representations.html" title="next chapter">Representations</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Srikumar K. S..
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/modelling-images.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

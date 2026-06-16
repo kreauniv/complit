@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Optional: Technical terms &#8212; CompLIT: Programming Literacy v1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d8a2add5" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=17171a54" />
+    <script src="_static/documentation_options.js?v=5cb08e4e"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="optional-technical-terms">
+<h1>Optional: Technical terms<a class="headerlink" href="#optional-technical-terms" title="Link to this heading">¶</a></h1>
+<p>The field of Computer Science uses a few technical terms in place of the common
+words we’ve been using to work our way through programming literacy. This page
+is to cover them for those interested who might take up CS.</p>
+<dl class="simple">
+<dt><strong>Word</strong></dt><dd><p>“Identifier” is more common and we’ve also mentioned this. The
+thinking is that just as a word evokes an idea in a person’s mind,
+an “identifier” identifies a “value” in computer memory. Such
+values have types associated with them that determine their meaning
+what computations can be done with them.</p>
+</dd>
+<dt><strong>Compound term</strong></dt><dd><p>We referred to terms of the form  <code class="docutils literal notranslate"><span class="pre">(character-in</span> <span class="pre">&quot;0123456789&quot;)</span></code>,
+<code class="docutils literal notranslate"><span class="pre">(string-length</span> <span class="pre">&quot;hello&quot;)</span></code> as “compound terms”. In CS, we’d usually
+just call them “expressions” or if we’re specifically talking about
+Racket-like languages, “s-expressions”.</p>
+</dd>
+<dt><strong>Abstraction</strong></dt><dd><p>A word like <code class="docutils literal notranslate"><span class="pre">character-in</span></code> which needed some concrete values to
+take on specific meaning in a context was called an “abstraction”.
+Depending on context, we might use the operational word “procedure”
+or “function” for the values that such words refer to. Note that
+it gets tedious quickly if we keep maintaining the distinction between
+a word and the value it “identifies”. So casual language tends to
+conflate the two where it isn’t confusing to do so.</p>
+</dd>
+<dt><strong>Procedure-valued compound terms</strong></dt><dd><p>A word like <code class="docutils literal notranslate"><span class="pre">character-in</span></code>, when used with a string of allowed
+characters, is itself procedure-valued. This is one kind of what
+is called “higher order procedure”. In this case, it is a procedure,
+which when applied produces another procedure.</p>
+</dd>
+<dt><strong>Procedure-valued arguments</strong></dt><dd><p>When we defined <code class="docutils literal notranslate"><span class="pre">reinterpret</span></code>, its first argument (which we named
+<code class="docutils literal notranslate"><span class="pre">interpretation</span></code> was expected to itself be a procedure-valued thing like
+<code class="docutils literal notranslate"><span class="pre">list-&gt;string</span></code> that was then used to “interpret” (a.k.a. “transform”) the
+list of characters parsed by, say, <code class="docutils literal notranslate"><span class="pre">(one-or-more</span> <span class="pre">digit)</span></code>. Such a
+procedure is another kind of “higher order procedure” and may also be
+called a “higher order function”, or “HOF” for short, depending on context.
+There are many such HOFs provided for you by Racket which make expressing
+common ideas simple – such as <code class="docutils literal notranslate"><span class="pre">map</span></code>, <code class="docutils literal notranslate"><span class="pre">filter</span></code>, <code class="docutils literal notranslate"><span class="pre">andmap</span></code>, <code class="docutils literal notranslate"><span class="pre">ormap</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">for-each</span></code>.</p>
+</dd>
+</dl>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">CompLIT: Programming Literacy</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="words.html">Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interrogation.html">Interrogating programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strings.html">Strings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample-programs.html">Sample programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abstractions.html">A guessing game</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structures.html">Structures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing2.html">More parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="alternative-syntax.html">Optional: Alternative language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recap.html">Recap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelling-images.html">Modelling a domain - Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="representations.html">Representations</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Srikumar K. S..
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/technical-terms.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
