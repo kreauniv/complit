@@ -302,12 +302,12 @@ radius 20 units, filled solid with the colour blue."
 
 Now, what the interaction window shows you is a representation of the value and
 much as you can copy and paste text, you can do the same with these pictures as
-well. Let's find out the number of units this circle picture is. If we know our
-geometry, we should expect it to be twice the radius, which is 40 units. So
-copy the circle picture by selecting it first and hitting "ctrl-c" or "cmd-c"
-(depending on your operating system). Then type ``(image-width`` and then a
-space. Now paste the picture using "ctrl-v" or "cmd-v", then type ``)`` and
-then press <enter>. 
+well. Let's find out the number of units of width this circle picture is. If we
+know our geometry, we should expect it to be twice the radius, which is 40
+units. So copy the circle picture by selecting it first and hitting "ctrl-c" or
+"cmd-c" (depending on your operating system). Then type ``(image-width`` and
+then a space. Now paste the picture using "ctrl-v" or "cmd-v", then type ``)``
+and then press <enter>. 
 
 You should see ``40`` displayed in the interaction window.
 
