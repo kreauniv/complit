@@ -80,7 +80,7 @@ give to it.
 Given a rich enough language that we can directly derive the meaning of a given
 identifier, we might simplify the above figure :numref:`figdenotation` down to
 :numref:`fighorse` without loss of accuracy. It is here that the difference
-between computer languages turn out to be significant.
+between computer languages turns out to be significant.
 
 In Racket, you can use the ``define`` word to give meaning to (i.e. "bind") new
 words of your own and the interaction window [#repl]_ lets you interactively
