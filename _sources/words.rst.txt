@@ -98,7 +98,14 @@ figure out and understand what the identifiers denote. Furthermore, the Racket
 engine keeps information about what kind of a value is denoted by an identifier
 along with the information pertaining to the value itself. This "type
 information" is what is used by the interaction window to display a value
-appropriately for our understanding.
+appropriately for our understanding. The two main windows are shown in :numref:`drracket-windows`.
+
+.. _drracket-windows:
+
+.. figure:: images/drracket-windows.png
+   :align: center
+
+   The definitions and interactions windows of DrRacket.
 
 
 .. admonition:: **Exercise**:
