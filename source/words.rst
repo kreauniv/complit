@@ -79,8 +79,18 @@ give to it.
 
 Given a rich enough language that we can directly derive the meaning of a given
 identifier, we might simplify the above figure :numref:`figdenotation` down to
-:numref:`fighorse` without loss of accuracy. It is here that the difference
-between computer languages turns out to be significant.
+:numref:`fighorse` in most circumstances. It is here that the difference
+between computer languages turns out to be significant. 
+
+.. tip:: Nevertheless, it is useful to remember that what is being denoted by
+   an identifier referring to something in computer memory is only realized in
+   meaning within our minds. This is especially easy to forget when the effort
+   required to map words to ideas in our mind reduces over time. This results
+   in some people thinking that LLMs "know" what the words they output refer to 
+   and that there is some "entity" behind the scenes that handles that "knowledge".
+   This has come to be called `AI psychosis`_.
+
+.. _AI psychosis: https://www.psychologytoday.com/us/blog/urban-survival/202507/the-emerging-problem-of-ai-psychosis
 
 In Racket, you can use the ``define`` word to give meaning to (i.e. "bind") new
 words of your own and the interaction window [#repl]_ lets you interactively
