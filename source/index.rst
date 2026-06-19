@@ -12,7 +12,6 @@ CompLIT: Programming Literacy (WORK-IN-PROGRESS)
    interrogation
    strings
    sample-programs
-   abstractions
    structures
    parsing
    parsing2
