@@ -42,6 +42,8 @@ that it might mean a "box on wheels". Now when I say "a horse in a box car
 pulled by a steam engine", you can put together the individual pieces to form a
 scene in your mind.
 
+.. _fighorse:
+
 .. figure:: images/horse.png
    :align: center
     
@@ -57,9 +59,35 @@ value that the word refers to. [#analogy]_
 
 We call such words in a programming language "identifiers" as they serve to
 "identify" something in computer memory which we'll call the "value" of the
-identifier. [#mem]_ We say the "identifier is bound to the value". In Racket,
-you can use the ``define`` word to give meaning to (i.e. "bind") new words of
-your own.
+identifier. [#mem]_ We say the "identifier is bound to the value".
+
+.. _figdenotation:
+
+.. figure:: images/pi-denotation.png
+   :align: center
+
+   The denotation chain for the identifier ``pi``. The in-computer-memory
+   representation is devoid of any meaning without the mind behind the
+   scenes that maintains an interpretation of its contents.
+
+The thing to keep in mind is the "value" is not actually in the computer but
+lies in your mind in the interpretation it gives to whatever it is the
+identifier refers to. Without our mind interpreting the number as the ratio of
+the circumference to diameter (or some other interpretation depending on
+context), there is no real "meaning" for the value denoted by the identifier
+``pi``. It is our minds that give meaning to the value and therefore the
+computer is said to "mediate" between the identifier and the meaning we
+give to it.
+
+Given a rich enough language that we can directly derive the meaning of a given
+identifier, we might simplify the above :ref:`figdenotation` down to
+:ref:`fighorse` without loss of accuracy. It is here that the difference
+between computer languages turn out to be significant.
+
+In Racket, you can use the ``define`` word to give meaning to (i.e. "bind") new
+words of your own and the interaction window [#repl]_ lets you interactively
+figure out and understand what the identifiers denote.
+
 
 .. admonition:: **Exercise**:
 
@@ -310,6 +338,12 @@ package`_ or go through how to use them in the `Image Guide`_.
 
 .. _2htdp/image package: https://docs.racket-lang.org/teachpack/2htdpimage.html
 .. _Image Guide: https://docs.racket-lang.org/teachpack/2htdpimage-guide.html
+
+.. [#repl] Also known as "REPL" - short for "Read-Eval-Print-Loop" - since
+   that's sort of what the interaction window does. It reads user input,
+   evaluates the expression given by the user, "prints" the result (in whatever
+   appropriate form for the type of the result) and does this over and over in
+   a loop.
 
 .. [#mem] The details of how such values are stored and referenced in computer
    memory are not of importance for the purpose of this course. If you're going

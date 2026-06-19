@@ -72,24 +72,49 @@ together your knowledge of a “box” and a “car” and might, for example, g
 that it might mean a “box on wheels”. Now when I say “a horse in a box car
 pulled by a steam engine”, you can put together the individual pieces to form a
 scene in your mind.</p>
-<figure class="align-center" id="id4">
-<img alt="_images/horse.png" src="_images/horse.png" />
+<figure class="align-center" id="id5">
+<span id="fighorse"></span><img alt="_images/horse.png" src="_images/horse.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 1 </span><span class="caption-text">The word “horse” invokes the image of a horse in our minds.
 This can be compared to how a word like “pi” in a program maps
-to a <em>value</em> stored in computer memory.</span><a class="headerlink" href="#id4" title="Link to this image">¶</a></p>
+to a <em>value</em> stored in computer memory.</span><a class="headerlink" href="#id5" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>Much like that, words in an interactive programming language can refer to
 “values” in computer memory, as illustrated in the figure above.
 DrRacket’s “interaction window” lets you inspect the values associated with
 various words it knows about already, by displaying a representation of the
-value that the word refers to. <a class="footnote-reference brackets" href="#analogy" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+value that the word refers to. <a class="footnote-reference brackets" href="#analogy" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p>
 <p>We call such words in a programming language “identifiers” as they serve to
 “identify” something in computer memory which we’ll call the “value” of the
-identifier. <a class="footnote-reference brackets" href="#mem" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> We say the “identifier is bound to the value”. In Racket,
-you can use the <code class="docutils literal notranslate"><span class="pre">define</span></code> word to give meaning to (i.e. “bind”) new words of
-your own.</p>
+identifier. <a class="footnote-reference brackets" href="#mem" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> We say the “identifier is bound to the value”.</p>
+<figure class="align-center" id="id6">
+<span id="figdenotation"></span><img alt="_images/pi-denotation.png" src="_images/pi-denotation.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">The denotation chain for the identifier <code class="docutils literal notranslate"><span class="pre">pi</span></code>. The in-computer-memory
+representation is devoid of any meaning without the mind behind the
+scenes that maintains an interpretation of its contents.</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The thing to keep in mind is the “value” is not actually in the computer but
+lies in your mind in the interpretation it gives to whatever it is the
+identifier refers to. Without our mind interpreting the number as the ratio of
+the circumference to diameter (or some other interpretation depending on
+context), there is no real “meaning” for the value denoted by the identifier
+<code class="docutils literal notranslate"><span class="pre">pi</span></code>. It is our minds that give meaning to the value and therefore the
+computer is said to “mediate” between the identifier and the meaning we
+give to it.</p>
+<p>Given a rich enough language that we can directly derive the meaning of a given
+identifier, we might simplify the above <a class="reference internal" href="#figdenotation"><span class="std std-ref">The denotation chain for the identifier pi. The in-computer-memory
+representation is devoid of any meaning without the mind behind the
+scenes that maintains an interpretation of its contents.</span></a> down to
+<a class="reference internal" href="#fighorse"><span class="std std-ref">The word “horse” invokes the image of a horse in our minds.
+This can be compared to how a word like “pi” in a program maps
+to a value stored in computer memory.</span></a> without loss of accuracy. It is here that the difference
+between computer languages turn out to be significant.</p>
+<p>In Racket, you can use the <code class="docutils literal notranslate"><span class="pre">define</span></code> word to give meaning to (i.e. “bind”) new
+words of your own and the interaction window <a class="footnote-reference brackets" href="#repl" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> lets you interactively
+figure out and understand what the identifiers denote.</p>
 <div class="admonition-exercise admonition">
 <p class="admonition-title"><strong>Exercise</strong>:</p>
 <p>Start DrRacket and type the following into a new window.</p>
@@ -298,15 +323,23 @@ a cricket pitch or a cricket bat/ball representation.</p>
 <p>You can find more “image making and manipulating words” in the <a class="reference external" href="https://docs.racket-lang.org/teachpack/2htdpimage.html">2htdp/image
 package</a> or go through how to use them in the <a class="reference external" href="https://docs.racket-lang.org/teachpack/2htdpimage-guide.html">Image Guide</a>.</p>
 <aside class="footnote-list brackets">
+<aside class="footnote brackets" id="repl" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">1</a><span class="fn-bracket">]</span></span>
+<p>Also known as “REPL” - short for “Read-Eval-Print-Loop” - since
+that’s sort of what the interaction window does. It reads user input,
+evaluates the expression given by the user, “prints” the result (in whatever
+appropriate form for the type of the result) and does this over and over in
+a loop.</p>
+</aside>
 <aside class="footnote brackets" id="mem" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">1</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">2</a><span class="fn-bracket">]</span></span>
 <p>The details of how such values are stored and referenced in computer
 memory are not of importance for the purpose of this course. If you’re going
 to study computer science, you’ll encounter courses that teach you about
 this aspect.</p>
 </aside>
 <aside class="footnote brackets" id="analogy" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">3</a><span class="fn-bracket">]</span></span>
 <p>Understand that analogies are useful, but have their limitations.</p>
 </aside>
 </aside>
