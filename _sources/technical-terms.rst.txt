@@ -8,24 +8,24 @@ is to cover them for those interested who might take up CS.
 **Word**
     "Identifier" is more common and we've also mentioned this. The
     thinking is that just as a word evokes an idea in a person's mind,
-    an "identifier" identifies a "value" in computer memory. Such
+    an **identifier** identifies a "value" in computer memory. Such
     values have types associated with them that determine their meaning
     what computations can be done with them.
 
 **Compound term**
     We referred to terms of the form  ``(character-in "0123456789")``,
     ``(string-length "hello")`` as "compound terms". In CS, we'd usually
-    just call them "expressions" or if we're specifically talking about
-    Racket-like languages, "s-expressions".
+    just call them **expressions** or if we're specifically talking about
+    Racket-like languages, **s-expressions**.
 
 **Abstraction**
-    A word like ``character-in`` which needed some concrete values to
-    take on specific meaning in a context was called an "abstraction".
-    Depending on context, we might use the operational word "procedure"
-    or "function" for the values that such words refer to. Note that
-    it gets tedious quickly if we keep maintaining the distinction between
-    a word and the value it "identifies". So casual language tends to
-    conflate the two where it isn't confusing to do so.
+    A word like ``character-in`` which needed some concrete values to take on
+    specific meaning in a context was called an "abstraction". Depending on
+    context, we might use the operational word **procedure** or **function**
+    for the values that such words refer to. Note that it gets tedious quickly
+    if we keep maintaining the distinction between a word and the value it
+    "identifies". So casual language tends to conflate the two where it isn't
+    confusing to do so.
 
 **Procedure-valued compound terms**
     A word like ``character-in``, when used with a string of allowed
@@ -38,8 +38,8 @@ is to cover them for those interested who might take up CS.
     ``interpretation`` was expected to itself be a procedure-valued thing like
     ``list->string`` that was then used to "interpret" (a.k.a. "transform") the
     list of characters parsed by, say, ``(one-or-more digit)``. Such a
-    procedure is another kind of "higher order procedure" and may also be
-    called a "higher order function", or "HOF" for short, depending on context.
+    procedure is another kind of **higher order procedure** and may also be
+    called a **higher order function**, or **HOF** for short, depending on context.
     There are many such HOFs provided for you by Racket which make expressing
     common ideas simple -- such as ``map``, ``filter``, ``andmap``, ``ormap``,
     and ``for-each``.

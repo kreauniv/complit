@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>A guessing game &#8212; CompLIT: Programming Literacy v1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d8a2add5" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=17171a54" />
+    <script src="_static/documentation_options.js?v=5cb08e4e"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-guessing-game">
+<h1>A guessing game<a class="headerlink" href="#a-guessing-game" title="Link to this heading">¶</a></h1>
+<p>Consider the following program –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="kn">#lang </span><span class="nn">racket</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">run-number-guessing-game</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="n">greet-player</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">secret</span><span class="w"> </span><span class="p">(</span><span class="n">select-random-secret</span><span class="w"> </span><span class="n">max-number</span><span class="p">)]</span>
+<span class="w">         </span><span class="p">[</span><span class="n">attempts</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span>
+<span class="w">     </span><span class="p">(</span><span class="n">play-game</span><span class="w"> </span><span class="s2">&quot;Guess the number: &quot;</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">attempts</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-game</span><span class="w"> </span><span class="n">prompt</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">attempts</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">guess</span><span class="w"> </span><span class="p">(</span><span class="n">ask-user-to-guess</span><span class="w"> </span><span class="n">prompt</span><span class="w"> </span><span class="n">attempts</span><span class="w"> </span><span class="n">max-number</span><span class="p">)])</span>
+<span class="w">      </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="w">        </span><span class="p">(</span><span class="n">user-won</span><span class="w"> </span><span class="n">attempts</span><span class="p">)</span>
+<span class="w">        </span><span class="p">(</span><span class="n">play-game</span><span class="w"> </span><span class="p">(</span><span class="n">prompt-with-clue</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="w">                   </span><span class="n">secret</span>
+<span class="w">                   </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">attempts</span><span class="p">)</span>
+<span class="w">                   </span><span class="n">max-number</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">greet-player</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;Welcome to the number guessing game.&quot;</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;I&#39;ll pick a secret number in the range 1 to &quot;</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;and let&#39;s see in how many attempts you manage&quot;</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;to guess it. I&#39;ll give you clues along the way.&quot;</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">select-random-secret</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">random</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">prompt-with-clue</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="w">       </span><span class="s2">&quot;It&#39;s lower. Guess again: &quot;</span>
+<span class="w">       </span><span class="s2">&quot;It&#39;s higher. Guess again: &quot;</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">user-won</span><span class="w"> </span><span class="n">attempts</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;You won in &quot;</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">attempts</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot; attempts.&quot;</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">ask-user-to-guess</span><span class="w"> </span><span class="n">prompt</span><span class="w"> </span><span class="n">attempts</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="n">report-attempts</span><span class="w"> </span><span class="n">attempts</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">prompt</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">guess</span><span class="w"> </span><span class="p">(</span><span class="nb">read</span><span class="p">)])</span>
+<span class="w">       </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">guess-valid?</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">           </span><span class="n">guess</span>
+<span class="w">           </span><span class="p">(</span><span class="n">ask-user-to-guess</span><span class="w"> </span><span class="p">(</span><span class="n">invalid-guess-prompt</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">                              </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">attempts</span><span class="p">)</span>
+<span class="w">                              </span><span class="n">max-number</span><span class="p">))))</span>
+
+<span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">guess-valid?</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">     </span><span class="p">(</span><span class="k">and</span><span class="w"> </span><span class="p">(</span><span class="nb">integer?</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="w">          </span><span class="p">(</span><span class="nb">&gt;=</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">          </span><span class="p">(</span><span class="nb">&lt;=</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
+
+<span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">report-attempts</span><span class="w"> </span><span class="n">attempts</span><span class="p">)</span>
+<span class="w">     </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;You have used &quot;</span><span class="p">)</span>
+<span class="w">     </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">attempts</span><span class="p">)</span>
+<span class="w">     </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot; attempts.&quot;</span><span class="p">))</span>
+
+<span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">invalid-guess-prompt</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">     </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="s2">&quot;Not a number in the range 1 to &quot;</span>
+<span class="w">                    </span><span class="p">(</span><span class="nb">number-&gt;string</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">                    </span><span class="s2">&quot;. Guess properly: &quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<section id="let-expressions">
+<h2><code class="docutils literal notranslate"><span class="pre">let</span></code> expressions<a class="headerlink" href="#let-expressions" title="Link to this heading">¶</a></h2>
+<p>The above code uses a construct you have not seen yet – <code class="docutils literal notranslate"><span class="pre">(let</span> <span class="pre">&lt;bindings&gt;</span>
+<span class="pre">...)</span></code>. It’s purpose is to introduce meaning for given identifiers within the
+scope of the <code class="docutils literal notranslate"><span class="pre">...</span></code> part. It has the following structure –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">&lt;identifier1&gt;</span><span class="w"> </span><span class="n">&lt;expr1&gt;</span><span class="p">]</span>
+<span class="w">      </span><span class="p">[</span><span class="n">&lt;identifier2&gt;</span><span class="w"> </span><span class="n">&lt;expr2&gt;</span><span class="p">]</span>
+<span class="w">      </span><span class="k">...</span><span class="p">)</span>
+<span class="w">     </span><span class="n">&lt;one-or-more-exprs-that-uses-the-identifiers&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The value of the entire <code class="docutils literal notranslate"><span class="pre">(let..)</span></code> expression will be the value
+of the last expression in the sequence of expressions given after
+the bindings.</p>
+<div class="admonition-task admonition">
+<p class="admonition-title"><strong>Task</strong></p>
+<p>Based on the above description, construct examples of <code class="docutils literal notranslate"><span class="pre">(let...)</span></code>
+expression to express the following computations –</p>
+<ol class="arabic simple">
+<li><p>Bind <code class="docutils literal notranslate"><span class="pre">x</span></code> to 3 and <code class="docutils literal notranslate"><span class="pre">y</span></code> to 4 and compute <code class="docutils literal notranslate"><span class="pre">(+</span> <span class="pre">(*</span> <span class="pre">x</span> <span class="pre">x)</span> <span class="pre">(*</span> <span class="pre">y</span> <span class="pre">y))</span></code>.</p></li>
+<li><p>Bind <code class="docutils literal notranslate"><span class="pre">prefix</span></code> to <code class="docutils literal notranslate"><span class="pre">&quot;planet</span> <span class="pre">&quot;</span></code> and compute <code class="docutils literal notranslate"><span class="pre">(string-append</span> <span class="pre">prefix</span> <span class="pre">&quot;earth&quot;)</span></code>.</p></li>
+</ol>
+</div>
+</section>
+<section id="play-the-game">
+<h2>Play the game<a class="headerlink" href="#play-the-game" title="Link to this heading">¶</a></h2>
+<p>Pick, say, a maximum of 100 and play the game. Figure out how to win in the
+fewest attempts. Note down your strategy.</p>
+</section>
+<section id="tasks">
+<h2>Tasks<a class="headerlink" href="#tasks" title="Link to this heading">¶</a></h2>
+<p>Your task is to now understand how the program works using both reading
+methods we’ve used so far, as well as interrogation methods. To start
+with, copy the whole program to a new Racket file and “Run” it.</p>
+<p>The program has no comments to help you understand it. So <strong>your task</strong>
+of understanding is to comment the code with descriptions so that
+the next student who reads the code would find it easier to tell the
+meaning of the code.</p>
+<ol class="arabic simple">
+<li><p>Figure out the purpose of each of the defined procedures
+and write a purpose statement for each of them.</p></li>
+<li><p>Describe the constraints on the arguments for each of the procedures
+in your comments.</p></li>
+<li><p>For the simple ones that compute values from the arguments, also
+given a couple of examples.</p></li>
+<li><p>For each expression, try to provide a verbal explanation of what it is
+for by inserting a comment above it (one or more lines).</p></li>
+</ol>
+</section>
+<section id="another-version">
+<h2>Another version<a class="headerlink" href="#another-version" title="Link to this heading">¶</a></h2>
+<p>Now consider the same program written as shown below –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="kn">#lang </span><span class="nn">racket</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">run-number-guessing-game</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;Welcome to the number guessing game.&quot;</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;I&#39;ll pick a secret number in the range 1 to &quot;</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;and let&#39;s see in how many attempts you manage&quot;</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;to guess it. I&#39;ll give you clues along the way.&quot;</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="p">(</span><span class="nb">random</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
+<span class="w">   </span><span class="p">(</span><span class="n">play-game</span><span class="w"> </span><span class="s2">&quot;Guess the number: &quot;</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">attempts</span><span class="w"> </span><span class="n">max-number</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-game</span><span class="w"> </span><span class="n">prompt</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">attempts</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;You have used &quot;</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">attempts</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot; attempts.&quot;</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">prompt</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="p">(</span><span class="nb">read</span><span class="p">))</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="n">secret</span><span class="p">)</span>
+<span class="w">       </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="s2">&quot;You won in &quot;</span><span class="w"> </span><span class="p">(</span><span class="nb">number-&gt;string</span><span class="w"> </span><span class="n">attempts</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot; attempts.&quot;</span><span class="p">))</span>
+<span class="w">       </span><span class="p">(</span><span class="n">play-game</span><span class="w"> </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="n">secret</span><span class="p">)</span>
+<span class="w">                      </span><span class="s2">&quot;It&#39;s higher. Guess again.&quot;</span>
+<span class="w">                      </span><span class="s2">&quot;It&#39;s lower. Guess again.&quot;</span><span class="p">)</span>
+<span class="w">                  </span><span class="n">secret</span>
+<span class="w">                  </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">attempts</span><span class="p">)</span>
+<span class="w">                  </span><span class="n">max-number</span><span class="p">)))</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>How would you describe the behaviour of this version compared to the first version?</p></li>
+<li><p>Comment this program to express your understanding, pretending that you’re reading
+it for the first time.</p></li>
+<li><p>Can you modify this program to behave the same way as the first version? What
+understanding did you have to achieve first before you could make the necessary
+changes?</p></li>
+</ol>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">CompLIT: Programming Literacy</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="words.html">Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interrogation.html">Interrogating programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strings.html">Strings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample-programs.html">Sample programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structures.html">Structures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing2.html">More parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="alternative-syntax.html">Optional: Alternative language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recap.html">Recap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelling-images.html">Modelling a domain - Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="representations.html">Representations</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Srikumar K. S..
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/_abstractions.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

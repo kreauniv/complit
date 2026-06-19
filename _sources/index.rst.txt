@@ -17,6 +17,7 @@ CompLIT: Programming Literacy (WORK-IN-PROGRESS)
    parsing2
    alternative-syntax
    recap
+   technical-terms
    modelling-images
    representations
 
