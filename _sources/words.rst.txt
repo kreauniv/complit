@@ -138,7 +138,9 @@ sees that, it will recognize it and construct the string of characters as
 a value in memory.
 
 Racket also recognizes other kinds of things common with all programming
-languages.
+languages. You can type these "literals" into the interaction window
+and Racket will pretty much show you whatever you typed back at you --
+because *only you* know the **meaning** of a literal.
 
 **Numbers**
    ``1``, ``42``, ``-23``, ``3.1415``, ``6.370e6`` and so on. These get stored
