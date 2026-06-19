@@ -66,9 +66,7 @@ identifier. [#mem]_ We say the "identifier is bound to the value".
 .. figure:: images/pi-denotation.png
    :align: center
 
-   The denotation chain for the identifier ``pi``. The in-computer-memory
-   representation is devoid of any meaning without the mind behind the
-   scenes that maintains an interpretation of its contents.
+   The denotation chain for the identifier ``pi``. 
 
 The thing to keep in mind is the "value" is not actually in the computer but
 lies in your mind in the interpretation it gives to whatever it is the
@@ -80,13 +78,17 @@ computer is said to "mediate" between the identifier and the meaning we
 give to it.
 
 Given a rich enough language that we can directly derive the meaning of a given
-identifier, we might simplify the above :ref:`figdenotation` down to
-:ref:`fighorse` without loss of accuracy. It is here that the difference
+identifier, we might simplify the above figure :numref:`figdenotation` down to
+:numref:`fighorse` without loss of accuracy. It is here that the difference
 between computer languages turn out to be significant.
 
 In Racket, you can use the ``define`` word to give meaning to (i.e. "bind") new
 words of your own and the interaction window [#repl]_ lets you interactively
-figure out and understand what the identifiers denote.
+figure out and understand what the identifiers denote. Furthermore, the Racket
+engine keeps information about what kind of a value is denoted by an identifier
+along with the information pertaining to the value itself. This "type
+information" is what is used by the interaction window to display a value
+appropriately for our understanding.
 
 
 .. admonition:: **Exercise**:

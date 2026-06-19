@@ -91,9 +91,7 @@ identifier. <a class="footnote-reference brackets" href="#mem" id="id3" role="do
 <figure class="align-center" id="id6">
 <span id="figdenotation"></span><img alt="_images/pi-denotation.png" src="_images/pi-denotation.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 2 </span><span class="caption-text">The denotation chain for the identifier <code class="docutils literal notranslate"><span class="pre">pi</span></code>. The in-computer-memory
-representation is devoid of any meaning without the mind behind the
-scenes that maintains an interpretation of its contents.</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">The denotation chain for the identifier <code class="docutils literal notranslate"><span class="pre">pi</span></code>.</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>The thing to keep in mind is the “value” is not actually in the computer but
@@ -105,16 +103,16 @@ context), there is no real “meaning” for the value denoted by the identifier
 computer is said to “mediate” between the identifier and the meaning we
 give to it.</p>
 <p>Given a rich enough language that we can directly derive the meaning of a given
-identifier, we might simplify the above <a class="reference internal" href="#figdenotation"><span class="std std-ref">The denotation chain for the identifier pi. The in-computer-memory
-representation is devoid of any meaning without the mind behind the
-scenes that maintains an interpretation of its contents.</span></a> down to
-<a class="reference internal" href="#fighorse"><span class="std std-ref">The word “horse” invokes the image of a horse in our minds.
-This can be compared to how a word like “pi” in a program maps
-to a value stored in computer memory.</span></a> without loss of accuracy. It is here that the difference
+identifier, we might simplify the above figure <a class="reference internal" href="#figdenotation"><span class="std std-numref">Fig. 2</span></a> down to
+<a class="reference internal" href="#fighorse"><span class="std std-numref">Fig. 1</span></a> without loss of accuracy. It is here that the difference
 between computer languages turn out to be significant.</p>
 <p>In Racket, you can use the <code class="docutils literal notranslate"><span class="pre">define</span></code> word to give meaning to (i.e. “bind”) new
 words of your own and the interaction window <a class="footnote-reference brackets" href="#repl" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> lets you interactively
-figure out and understand what the identifiers denote.</p>
+figure out and understand what the identifiers denote. Furthermore, the Racket
+engine keeps information about what kind of a value is denoted by an identifier
+along with the information pertaining to the value itself. This “type
+information” is what is used by the interaction window to display a value
+appropriately for our understanding.</p>
 <div class="admonition-exercise admonition">
 <p class="admonition-title"><strong>Exercise</strong>:</p>
 <p>Start DrRacket and type the following into a new window.</p>
