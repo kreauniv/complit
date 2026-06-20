@@ -111,12 +111,12 @@ of ours to clarify what they mean.</p>
 <span class="w">   </span><span class="p">(</span><span class="n">sequence</span><span class="w"> </span><span class="n">pattern</span><span class="w"> </span><span class="p">(</span><span class="n">zero-or-more</span><span class="w"> </span><span class="n">pattern</span><span class="p">)))</span>
 
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">zero-or-more</span><span class="w"> </span><span class="n">pattern</span><span class="p">)</span>
-<span class="w">   </span><span class="p">(</span><span class="n">alternatives</span><span class="w"> </span><span class="n">empty-pattern</span><span class="w"> </span><span class="p">(</span><span class="n">one-or-more</span><span class="w"> </span><span class="n">pattern</span><span class="p">)))</span>
+<span class="w">   </span><span class="p">(</span><span class="n">one-of</span><span class="w"> </span><span class="n">empty-pattern</span><span class="w"> </span><span class="p">(</span><span class="n">one-or-more</span><span class="w"> </span><span class="n">pattern</span><span class="p">)))</span>
 </pre></div>
 </div>
-<p>While we’re introducing a new word <code class="docutils literal notranslate"><span class="pre">alternatives</span></code> here, our words
+<p>While we’re introducing a new word <code class="docutils literal notranslate"><span class="pre">one-of</span></code> here, our words
 have nearly all gained some good definitions and we’re only left
-with <code class="docutils literal notranslate"><span class="pre">sequence</span></code> and <code class="docutils literal notranslate"><span class="pre">alternatives</span></code>.</p>
+with <code class="docutils literal notranslate"><span class="pre">sequence</span></code> and <code class="docutils literal notranslate"><span class="pre">one-of</span></code>.</p>
 <section id="character-in">
 <h2><code class="docutils literal notranslate"><span class="pre">character-in</span></code><a class="headerlink" href="#character-in" title="Link to this heading">¶</a></h2>
 <p>Now let’s look deeper into what the word <code class="docutils literal notranslate"><span class="pre">character-in</span></code> can mean
@@ -205,10 +205,10 @@ matched, along with whatever it is the pattern did match.</p>
 <p>Now, when we do <code class="docutils literal notranslate"><span class="pre">(parse</span> <span class="pre">(sequence</span> <span class="pre">(character-in</span> <span class="pre">&quot;a-z&quot;)</span> <span class="pre">(character-in</span> <span class="pre">&quot;0-9&quot;))</span> <span class="pre">&quot;a1b2c3&quot;)</span></code>,
 we can expect to get <code class="docutils literal notranslate"><span class="pre">(pattern-match</span> <span class="pre">(cons</span> <span class="pre">#\a</span> <span class="pre">#\1)</span> <span class="pre">&quot;b2c3&quot;)</span></code> as the result.</p>
 </section>
-<section id="alternatives">
-<h2><code class="docutils literal notranslate"><span class="pre">alternatives</span></code><a class="headerlink" href="#alternatives" title="Link to this heading">¶</a></h2>
-<p>Now let’s see if we can use the same approach to define <code class="docutils literal notranslate"><span class="pre">alternatives</span></code>.</p>
-<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">alternatives</span><span class="w"> </span><span class="n">pat1</span><span class="w"> </span><span class="n">pat2</span><span class="p">)</span>
+<section id="one-of">
+<h2><code class="docutils literal notranslate"><span class="pre">one-of</span></code><a class="headerlink" href="#one-of" title="Link to this heading">¶</a></h2>
+<p>Now let’s see if we can use the same approach to define <code class="docutils literal notranslate"><span class="pre">one-of</span></code>.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">one-of</span><span class="w"> </span><span class="n">pat1</span><span class="w"> </span><span class="n">pat2</span><span class="p">)</span>
 <span class="w">  </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
 <span class="w">     </span><span class="c1">; `or` in this case means &quot;the first parse that succeeds on text&quot;.</span>
 <span class="w">     </span><span class="p">(</span><span class="k">or</span><span class="w"> </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="n">pat1</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="n">pat2</span><span class="w"> </span><span class="n">text</span><span class="p">)))</span>
@@ -218,7 +218,7 @@ we can expect to get <code class="docutils literal notranslate"><span class="pre
 <div class="admonition-a-side-trip admonition">
 <p class="admonition-title"><strong>A side trip</strong></p>
 <p>It would be nice to be able to write <code class="docutils literal notranslate"><span class="pre">(sequence</span> <span class="pre">pat1</span> <span class="pre">pat2</span> <span class="pre">pat3</span> <span class="pre">..</span> <span class="pre">patN)</span></code>
-and <code class="docutils literal notranslate"><span class="pre">(alternatives</span> <span class="pre">pat1</span> <span class="pre">pat2</span> <span class="pre">..</span> <span class="pre">patN)</span></code> using how many ever patterns we
+and <code class="docutils literal notranslate"><span class="pre">(one-of</span> <span class="pre">pat1</span> <span class="pre">pat2</span> <span class="pre">..</span> <span class="pre">patN)</span></code> using how many ever patterns we
 want to sequence or choose between. Racket lets you bind an word introducing
 the “list of arguments” instead of each individual argument, like this –</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">our-procedure</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="n">args</span><span class="p">)</span>
@@ -226,7 +226,7 @@ the “list of arguments” instead of each individual argument, like this –</
 <span class="w">    </span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Using this, we can generalize <code class="docutils literal notranslate"><span class="pre">sequence</span></code> and <code class="docutils literal notranslate"><span class="pre">alternatives</span></code> to an arbitrary
+<p>Using this, we can generalize <code class="docutils literal notranslate"><span class="pre">sequence</span></code> and <code class="docutils literal notranslate"><span class="pre">one-of</span></code> to an arbitrary
 number of arguments. We’ll use a different word <code class="docutils literal notranslate"><span class="pre">sequence*</span></code> for this, since
 it actually has a different meaning for the two-argument case than <code class="docutils literal notranslate"><span class="pre">sequence</span></code>.</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="c1">; sequence* will match and provide a list of patterns.</span>
@@ -239,15 +239,15 @@ it actually has a different meaning for the two-argument case than <code class="
 <span class="w">                  </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">sequence*</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">patterns</span><span class="p">)))))</span>
 
 <span class="c1">; Will match the first alternative that succeeds.</span>
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">alternatives</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="n">patterns</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">one-of</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="n">patterns</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
 <span class="w">        </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">patterns</span><span class="p">)</span>
 <span class="w">            </span><span class="c1">; None succeeded</span>
 <span class="w">            </span><span class="no">#f</span>
-<span class="w">            </span><span class="c1">; `or` here will try the remaining alternatives</span>
+<span class="w">            </span><span class="c1">; `or` here will try the remaining one-of</span>
 <span class="w">            </span><span class="c1">; only if the first pattern failed.</span>
 <span class="w">            </span><span class="p">(</span><span class="k">or</span><span class="w"> </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">pattern</span><span class="p">)</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
-<span class="w">                </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">alternatives</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">patterns</span><span class="p">))</span><span class="w"> </span><span class="n">text</span><span class="p">))))</span>
+<span class="w">                </span><span class="p">(</span><span class="n">parse</span><span class="w"> </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">one-of</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">patterns</span><span class="p">))</span><span class="w"> </span><span class="n">text</span><span class="p">))))</span>
 <span class="w">    </span><span class="n">pattern</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -255,20 +255,20 @@ it actually has a different meaning for the two-argument case than <code class="
 </section>
 <section id="many-ness">
 <h2>Many-ness<a class="headerlink" href="#many-ness" title="Link to this heading">¶</a></h2>
-<p>With the definition of <code class="docutils literal notranslate"><span class="pre">alternatives</span></code>, our definition of <code class="docutils literal notranslate"><span class="pre">zero-or-more</span></code>
+<p>With the definition of <code class="docutils literal notranslate"><span class="pre">one-of</span></code>, our definition of <code class="docutils literal notranslate"><span class="pre">zero-or-more</span></code>
 and <code class="docutils literal notranslate"><span class="pre">one-or-more</span></code> gains validity and completeness.</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">one-or-more</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span>
 <span class="w">   </span><span class="p">(</span><span class="n">sequence</span><span class="w"> </span><span class="n">pat</span><span class="w"> </span><span class="p">(</span><span class="n">zero-or-more</span><span class="w"> </span><span class="n">pat</span><span class="p">)))</span>
 
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">zero-or-more</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span>
-<span class="w">   </span><span class="p">(</span><span class="n">alternatives</span><span class="w"> </span><span class="n">empty-pattern</span><span class="w"> </span><span class="p">(</span><span class="n">one-or-more</span><span class="w"> </span><span class="n">pat</span><span class="p">)))</span>
+<span class="w">   </span><span class="p">(</span><span class="n">one-of</span><span class="w"> </span><span class="n">empty-pattern</span><span class="w"> </span><span class="p">(</span><span class="n">one-or-more</span><span class="w"> </span><span class="n">pat</span><span class="p">)))</span>
 </pre></div>
 </div>
 <div class="admonition-think-before-proceeding admonition">
 <p class="admonition-title"><strong>Think before proceeding</strong></p>
-<p>Given how we’ve defined <code class="docutils literal notranslate"><span class="pre">alternatives</span></code>, is our definition of
+<p>Given how we’ve defined <code class="docutils literal notranslate"><span class="pre">one-of</span></code>, is our definition of
 <code class="docutils literal notranslate"><span class="pre">zero-or-more</span></code> acceptable? There is a subtle “bias” in how
-we’ve dealt with <code class="docutils literal notranslate"><span class="pre">alternatives</span></code> that affects this.</p>
+we’ve dealt with <code class="docutils literal notranslate"><span class="pre">one-of</span></code> that affects this.</p>
 <p>Spoilers below.</p>
 </div>
 <p>What exactly is <code class="docutils literal notranslate"><span class="pre">empty-pattern</span></code>. Since there is always a region of any string
@@ -280,7 +280,7 @@ will always succeed, <code class="docutils literal notranslate"><span class="pre
 falling back on the empty pattern. So we ought to have defined it
 as –</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">zero-or-more</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span>
-<span class="w">   </span><span class="p">(</span><span class="n">alternatives</span><span class="w"> </span><span class="p">(</span><span class="n">one-or-more</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span><span class="w"> </span><span class="n">empty-pattern</span><span class="p">))</span>
+<span class="w">   </span><span class="p">(</span><span class="n">one-of</span><span class="w"> </span><span class="p">(</span><span class="n">one-or-more</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span><span class="w"> </span><span class="n">empty-pattern</span><span class="p">))</span>
 
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">empty-pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
 <span class="w">   </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="nb">empty</span><span class="w"> </span><span class="n">text</span><span class="p">))</span>
@@ -386,7 +386,7 @@ string like this –</p>
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">digit</span><span class="w"> </span><span class="p">(</span><span class="n">character-in</span><span class="w"> </span><span class="s2">&quot;0123456789&quot;</span><span class="p">))</span>
 
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">optional</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span>
-<span class="w">    </span><span class="p">(</span><span class="n">alternatives</span><span class="w"> </span><span class="n">pat</span><span class="w"> </span><span class="n">empty-pattern</span><span class="p">))</span>
+<span class="w">    </span><span class="p">(</span><span class="n">one-of</span><span class="w"> </span><span class="n">pat</span><span class="w"> </span><span class="n">empty-pattern</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Now you can start to see how these definitions relate to the Backus-Naur grammar
@@ -401,7 +401,7 @@ interesting territory here. When we introduce such a definition for a new
 word where the input type is the same as the output type – both “pattern”
 in our case – we’ll have to consider how these definitions work with each
 other and ensure that they’re all consistent. Words like <code class="docutils literal notranslate"><span class="pre">sequence</span></code>,
-<code class="docutils literal notranslate"><span class="pre">alternatives</span></code>, <code class="docutils literal notranslate"><span class="pre">one-or-more</span></code> and <code class="docutils literal notranslate"><span class="pre">reinterpret</span></code> take patterns and
+<code class="docutils literal notranslate"><span class="pre">one-of</span></code>, <code class="docutils literal notranslate"><span class="pre">one-or-more</span></code> and <code class="docutils literal notranslate"><span class="pre">reinterpret</span></code> take patterns and
 construct new patterns with them, unlike the basic patterns like
 <code class="docutils literal notranslate"><span class="pre">character-in</span></code>.</p>
 </div>
@@ -461,7 +461,7 @@ But persist and see how far you can get.</p>
 <h2>Languages within languages<a class="headerlink" href="#languages-within-languages" title="Link to this heading">¶</a></h2>
 <p>If you zoom out a bit, it can look like we’re building a small language to
 express patterns we want to decipher from text. We’re introducing new words
-like <code class="docutils literal notranslate"><span class="pre">character-in</span></code>, <code class="docutils literal notranslate"><span class="pre">sequence</span></code>, <code class="docutils literal notranslate"><span class="pre">alternatives</span></code>, <code class="docutils literal notranslate"><span class="pre">one-or-more</span></code>,
+like <code class="docutils literal notranslate"><span class="pre">character-in</span></code>, <code class="docutils literal notranslate"><span class="pre">sequence</span></code>, <code class="docutils literal notranslate"><span class="pre">one-of</span></code>, <code class="docutils literal notranslate"><span class="pre">one-or-more</span></code>,
 <code class="docutils literal notranslate"><span class="pre">transform</span></code>, etc. that let us talk about specific patterns and how to combine
 patterns to make new patterns. This is very much like how language consists of
 both a vocabulary (words with meanings) and grammar (how to give meaning to
@@ -501,17 +501,17 @@ know how to use it without having to think about the exact computations
 that happen when we parse a string with it.</p>
 <p>Here are some such expectations -</p>
 <ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">(alternatives</span> <span class="pre">pat1</span> <span class="pre">pat2</span> <span class="pre">...</span> <span class="pre">patN)</span></code> should be replaceable with <code class="docutils literal notranslate"><span class="pre">patK</span></code>
+<li><p><code class="docutils literal notranslate"><span class="pre">(one-of</span> <span class="pre">pat1</span> <span class="pre">pat2</span> <span class="pre">...</span> <span class="pre">patN)</span></code> should be replaceable with <code class="docutils literal notranslate"><span class="pre">patK</span></code>
 in a particular situation if <code class="docutils literal notranslate"><span class="pre">patK</span></code> were the first pattern to successfully
 match against the given text. In fact, in any pattern expression containing
-the <code class="docutils literal notranslate"><span class="pre">alternatives</span></code> form, the form should be replaceable with any one of
+the <code class="docutils literal notranslate"><span class="pre">one-of</span></code> form, the form should be replaceable with any one of
 the patterns and still preserve the integrity of the total expression.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">(sequence</span> <span class="pre">pat1</span> <span class="pre">(sequence</span> <span class="pre">pat2</span> <span class="pre">empty-pattern))</span></code> is the same as
 <code class="docutils literal notranslate"><span class="pre">(sequence*</span> <span class="pre">pat1</span> <span class="pre">pat2)</span></code>. This is similar to <code class="docutils literal notranslate"><span class="pre">(cons</span> <span class="pre">a</span> <span class="pre">(cons</span> <span class="pre">b</span> <span class="pre">empty))</span></code>
 being the same as <code class="docutils literal notranslate"><span class="pre">(list</span> <span class="pre">a</span> <span class="pre">b)</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">(sequence</span> <span class="pre">pat</span> <span class="pre">empty-pattern)</span></code> is expected to be equivalent to
 <code class="docutils literal notranslate"><span class="pre">(reinterpret</span> <span class="pre">list</span> <span class="pre">pat)</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">(alternatives</span> <span class="pre">pat</span> <span class="pre">empty-pattern)</span></code> is always expected to succeed since
+<li><p><code class="docutils literal notranslate"><span class="pre">(one-of</span> <span class="pre">pat</span> <span class="pre">empty-pattern)</span></code> is always expected to succeed since
 <code class="docutils literal notranslate"><span class="pre">empty-pattern</span></code> will always succeed.</p></li>
 </ol>
 <div class="admonition-task admonition">
@@ -595,7 +595,7 @@ mathematics.</p>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">More parsing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#character-in"><code class="docutils literal notranslate"><span class="pre">character-in</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#sequence"><code class="docutils literal notranslate"><span class="pre">sequence</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#alternatives"><code class="docutils literal notranslate"><span class="pre">alternatives</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#one-of"><code class="docutils literal notranslate"><span class="pre">one-of</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#many-ness">Many-ness</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#skipping-until-match">Skipping until match</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#meaning-through-reinterpretation">Meaning through reinterpretation</a></li>
