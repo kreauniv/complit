@@ -23,5 +23,9 @@ The program below implements a two-player tictactoe game.
    it would then be up to you to verify, at some point, whether your guess
    turned out to be valid.
 
+.. tip:: A good rule of thumb is that when the pattern of an expression repeats
+   in some sense, there is perhaps a concept waiting to be abstracted from the
+   repetitions.
+
 
 .. _Systematic program design: https://htdp.org/2026-5-28//Book/part_preface.html#(part._sec~3asystematic-design)
