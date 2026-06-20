@@ -82,7 +82,7 @@ without looking at their code) to examine your thinking.</p>
 </div>
 <p>Consider how you’ll describe this program when asked, if you didn’t happen
 to know it is a number guessing game or much of the vocabulary used in
-ordinary Racket programs. It might go something like -</p>
+ordinary Racket programs. It might go something like –</p>
 <ul class="simple">
 <li><p>It looks like this is a program that takes in a “maximum number” to run.</p></li>
 <li><p>“Hmm what does <code class="docutils literal notranslate"><span class="pre">display</span></code> do? It seems related to <code class="docutils literal notranslate"><span class="pre">displayln</span></code> as well.”
@@ -99,10 +99,10 @@ a storage place to store the user input.</p></li>
 <li><p>We’re starting some sort of a loop that seems to be keeping track of <code class="docutils literal notranslate"><span class="pre">attempts</span></code>.
 (You still don’t know what <code class="docutils literal notranslate"><span class="pre">(let</span> <span class="pre">loop</span> <span class="pre">...)</span></code> does, but proceed with guess work
 for now.)</p></li>
-<li><p>The program reads the player’s input and store it in the <code class="docutils literal notranslate"><span class="pre">user-input</span></code> box.</p></li>
+<li><p>The program reads the player’s input and stores it in the <code class="docutils literal notranslate"><span class="pre">user-input</span></code> box.</p></li>
 <li><p>If the player entered the same number as the random number selected earlier,
 the program tells the user the number of attempts they took.</p></li>
-<li><p>If not, the programs gives a hint about guessing higher or lower and continues
+<li><p>If not, the program gives a hint about guessing higher or lower and continues
 the loop, incrementing the number of attempts taken so far.</p></li>
 </ul>
 <p>If you’re the curious kind (hope so), you’ll go ahead and read up what the
@@ -115,15 +115,15 @@ This is akin to reading the genetic code of a creature having no idea what
 the A/T/G/C sequences actually do to the creature’s form and function. But
 somehow because you can run the program and find things out by
 “interrogation”, you now have some idea that this is a number guessing game.</p></li>
-<li><p>You’ve figured out that the <code class="docutils literal notranslate"><span class="pre">random-number</span></code> identifier gets bound to a,
-ahem, random number which is not displayed to the player and thus remains a
+<li><p>You’ve figured out that the <code class="docutils literal notranslate"><span class="pre">random-number</span></code> identifier gets bound to a (ahem!)
+random number which is not displayed to the player and thus remains a
 “secret” until the program declares the player to have found it.</p></li>
-<li><p>You’ve gathered that the <code class="docutils literal notranslate"><span class="pre">user-input</span></code> box must store a number that the
-is the user’s next guess.</p></li>
-<li><p>You’ve figure out that each turn of the “loop” plays one “round” of the game,
+<li><p>You’ve gathered that the <code class="docutils literal notranslate"><span class="pre">user-input</span></code> box must store a number that is the
+user’s next guess.</p></li>
+<li><p>You’ve figured out that each turn of the “loop” plays one “round” of the game,
 and keeps track of the number of attempts made up to the point the player is
 asked for their next guess.</p></li>
-<li><p>The programs gives a “guess higher” and “guess lower” kind of hint to the
+<li><p>The program gives a “guess higher” and “guess lower” kind of hint to the
 player at each turn.</p></li>
 </ol>
 <p>Now consider the question of how you’d like to have written this program so its
@@ -152,7 +152,7 @@ an abstraction that makes the purpose of these three lines clear –</p>
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>To make such an “extraction” as <code class="docutils literal notranslate"><span class="pre">greet-player</span></code>, first identify the what
+<p>To make such an “extraction” as <code class="docutils literal notranslate"><span class="pre">greet-player</span></code>, first identify what
 you wish to extract by selecting the expressions. In this case, the three <code class="docutils literal notranslate"><span class="pre">display..</span></code>
 expressions can be considered as though they were nested within a <code class="docutils literal notranslate"><span class="pre">(begin</span> <span class="pre">..)</span></code>
 form, so we can pull it out this way into the “top level” of the definitions window.</p>
@@ -209,7 +209,7 @@ clear by renaming <code class="docutils literal notranslate"><span class="pre">l
 <p>The program is still doing exactly the same things, but is starting to read a little clearer
 simply due to good names we’re choosing.</p>
 <p>So now what does the expression <code class="docutils literal notranslate"><span class="pre">(set-box!</span> <span class="pre">players-guess</span> <span class="pre">(read))</span></code> mean? This is asking the
-user’s next guess (remember we renamed <code class="docutils literal notranslate"><span class="pre">user-input</span></code> to <code class="docutils literal notranslate"><span class="pre">players-guess</span></code>. Since it depends on
+user’s next guess (remember, we renamed <code class="docutils literal notranslate"><span class="pre">user-input</span></code> to <code class="docutils literal notranslate"><span class="pre">players-guess</span></code>. Since it depends on
 the <code class="docutils literal notranslate"><span class="pre">players-guess</span></code> box, we can make the following abstraction to capture this –</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">ask-players-guess</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
 <span class="w">   </span><span class="p">(</span><span class="nb">set-box!</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="p">(</span><span class="nb">read</span><span class="p">)))</span>
@@ -274,9 +274,8 @@ to proceed. We can capture this redundancy as an abstraction as well –</p>
 </div>
 <p>We see that this <code class="docutils literal notranslate"><span class="pre">clue</span></code> abstraction only deals with the case where
 <code class="docutils literal notranslate"><span class="pre">next-guess</span></code> is <strong>different</strong> from <code class="docutils literal notranslate"><span class="pre">secret</span></code>. So it must necessarily error
-out when they happen to be the same, as no clue remains to be given.
-However, in the program, <code class="docutils literal notranslate"><span class="pre">clue</span></code> is used exactly in a valid context
-only.</p>
+out when they happen to be the same, as no clue remains to be given. However,
+in the program, <code class="docutils literal notranslate"><span class="pre">clue</span></code> is used in a valid context only.</p>
 <div class="admonition-terminology admonition">
 <p class="admonition-title"><strong>Terminology</strong></p>
 <p>Such a <code class="docutils literal notranslate"><span class="pre">clue</span></code> procedure that is valid only for some argument values and is
@@ -334,14 +333,14 @@ We now only need to read line 1-11 in <a class="reference internal" href="#nggv3
 to lines 1-18 in <a class="reference internal" href="#nggv1"><span class="std std-ref">the first version</span></a> to have a top level understanding
 of the program.</p>
 </section>
-<section id="digging-deeper-into-evalution">
-<h2>Digging deeper into evalution<a class="headerlink" href="#digging-deeper-into-evalution" title="Link to this heading">¶</a></h2>
+<section id="digging-deeper-into-evaluation">
+<h2>Digging deeper into evaluation<a class="headerlink" href="#digging-deeper-into-evaluation" title="Link to this heading">¶</a></h2>
 <p>With <a class="reference internal" href="#nggv3"><span class="std std-ref">the latest version</span></a> of the program, it is now possible to
 see that the <code class="docutils literal notranslate"><span class="pre">(display</span> <span class="pre">&quot;Your</span> <span class="pre">guess:</span> <span class="pre">&quot;)</span></code> is immediately followed by the
 <code class="docutils literal notranslate"><span class="pre">(read)</span></code> step in line 5. The same pattern also occurs when we come to
 <code class="docutils literal notranslate"><span class="pre">play-till-win</span></code>, but with a different prompt <code class="docutils literal notranslate"><span class="pre">&quot;Guess</span> <span class="pre">again:</span> <span class="pre">&quot;</span></code>. The
 purpose of both is the same – to prompt the user for their next input. We can
-therefore club these two and make that purpose clear as well. This particular
+therefore combine these two and make that purpose clear as well. This particular
 step requires a <strong>closer examination</strong> of what’s going on than merely paying
 attention to the form of the code.</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">ask-next-guess</span><span class="w"> </span><span class="n">prompt</span><span class="p">)</span>
@@ -425,7 +424,7 @@ for the reader by using our “<a class="reference external" href="https://www.c
 </section>
 <section id="taking-stock">
 <h2>Taking stock<a class="headerlink" href="#taking-stock" title="Link to this heading">¶</a></h2>
-<p>The <a class="reference internal" href="#nggv4"><span class="std std-ref">latest version</span></a> of the top level program is now much
+<p>The <a class="reference internal" href="#nggv4"><span class="std std-ref">latest version</span></a> of the top-level program is now much
 closer to expressing the full intent of the number guessing game. You can
 pretty much just read it from start to finish and keep going because we’re
 using words that are <strong>in the domain</strong> of the program. Words like
@@ -437,7 +436,7 @@ without any changes. So let’s wrap this up by writing a comment explaining
 the <strong>purpose</strong> of the program in plain language for the reader, to reduce
 their mental load even more.</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="c1">; Plays a &quot;number guessing game&quot; with the user as the player.</span>
-<span class="c1">; Given a maximum value, the program pics a secret number in the</span>
+<span class="c1">; Given a maximum value, the program picks a secret number in the</span>
 <span class="c1">; range 1 to the maximum and asks the user to guess this secret</span>
 <span class="c1">; in each turn, giving clues along the way. The goal for the player</span>
 <span class="c1">; is to guess the secret in as few attempts as possible.</span>
@@ -445,7 +444,7 @@ their mental load even more.</p>
 <span class="c1">; `max-number` is expected to be a non-negative integer greater than 1.</span>
 <span class="c1">;</span>
 <span class="c1">; E.g.</span>
-<span class="c1">;   &gt; (play-number-guessing-name 10)</span>
+<span class="c1">;   &gt; (play-number-guessing-game 10)</span>
 <span class="c1">;   Let&#39;s play a number guessing game.</span>
 <span class="c1">;   I&#39;ll pick a number from 1 to 10.</span>
 <span class="c1">;   You have to guess it in the fewest attempts you can.</span>
@@ -467,8 +466,8 @@ to read about how to describe procedures from a design perspective.</p>
 <p class="admonition-title"><strong>Learnings</strong></p>
 <ul>
 <li><p>We learnt how to use abstractions to reduce redundancy in a program code.</p></li>
-<li><p>We learnt how abstractions can also be used to improve clarity and expressed
-meaning of code by introduce <strong>domain</strong> words into the program.</p></li>
+<li><p>We learnt how abstractions can also be used to improve clarity and the expressed
+meaning of code by introducing <strong>domain</strong> words into the program.</p></li>
 <li><p>We learnt about the <strong>purpose</strong> of the program by systematically rewriting
 parts of it to express the incremental understanding we gained as we
 worked with it.</p></li>
@@ -508,7 +507,7 @@ have our first constraint that <code class="docutils literal notranslate"><span 
 that’s greater than 1 for the game to be meaningful.</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-number-guessing-game</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="w">   </span><span class="p">(</span><span class="k">when</span><span class="w"> </span><span class="p">(</span><span class="nb">not</span><span class="w"> </span><span class="p">(</span><span class="k">and</span><span class="w"> </span><span class="p">(</span><span class="nb">integer?</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;</span><span class="w"> </span><span class="n">max-number</span><span class="w"> </span><span class="mi">1</span><span class="p">)))</span>
-<span class="w">     </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;Expecting a non-negative integer &gt; 1&quot;</span><span class="p">))</span>
+<span class="w">     </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;Expecting a positive integer &gt; 1&quot;</span><span class="p">))</span>
 <span class="w">   </span><span class="k">...</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -551,16 +550,16 @@ enforce.</p>
 </div>
 <p>We notice that while we can visually inspect that <code class="docutils literal notranslate"><span class="pre">clue</span></code> and <code class="docutils literal notranslate"><span class="pre">declare-win</span></code>
 and even <code class="docutils literal notranslate"><span class="pre">play-number-guessing-game</span></code> produce correct kinds of output values
-(what are there output values?), <code class="docutils literal notranslate"><span class="pre">ask-next-guess</span></code> simply passes on what the
+(what are their output values?), <code class="docutils literal notranslate"><span class="pre">ask-next-guess</span></code> simply passes on what the
 user typed. So if the user typed, say, <code class="docutils literal notranslate"><span class="pre">meow</span></code> instead of a number, the
 program errors out without very descriptive (i.e. <strong>in-domain</strong>) error
 messages. Also, it is not clear whether it the whole program should abort if
-the <strong>player</strong> made an error. That is in general a bad idea for program design.
+the <strong>player</strong> made an error. That is, in general, a bad idea for program design.
 <span class="yellow-highlight">When the programmer makes an error, that’s a good reason to error out in
 various ways. But when a user makes an error, it is in general advisable to
 catch these errors and report back to the user about what the desired behaviour
 actually is.</span> So let’s fix that for <code class="docutils literal notranslate"><span class="pre">ask-next-guess</span></code> and some how ensure that
-it will always produce an integer as the result.</p>
+it will always produce an integer.</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">ask-next-guess</span><span class="w"> </span><span class="n">prompt</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="n">must-be-a-string</span><span class="w"> </span><span class="s2">&quot;prompt&quot;</span><span class="w"> </span><span class="n">prompt</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">prompt</span><span class="p">)</span>
@@ -585,7 +584,7 @@ A reasonable choice would be to tell the user what is expected and to ask them a
 <span class="w">                  </span><span class="p">(</span><span class="n">ask-next-guess</span><span class="w"> </span><span class="n">prompt</span><span class="p">)))))</span>
 </pre></div>
 </div>
-<p>You see what we did there? We simply repeated the process ad nausem so the
+<p>You see what we did there? We simply repeated the process ad nauseam so the
 player gets tired or aborts the program, but the program won’t crash because
 of a casual mistake.</p>
 <p>We’ve done something different this time. The rewrite that resulted in the
@@ -609,7 +608,7 @@ see that later.</p>
 <h2>Afterword<a class="headerlink" href="#afterword" title="Link to this heading">¶</a></h2>
 <p>In this section, we started with a partially correct but poorly written program
 for the number guessing game (from a reader’s point of view). The question
-before us therefore, how do we avoid that in the first place?</p>
+before us, therefore, is: how do we avoid that in the first place?</p>
 <p>That inverse question assumes that a) we know what problem we want to solve,
 and b) we know what we need to do to solve it. However, what we haven’t worked
 out is how we express that solution as a program.</p>
@@ -619,7 +618,7 @@ of abstraction” can help construct a program from scratch.</p>
 <p>The <strong>key principle</strong> is to add some level of detail to each successive stage
 of the expansion from a high level version to a functioning program.
 We call this approach “incremental program development” or IPD for short
-and will see this in approach as a separate topic.</p>
+and will see this approach as a separate topic.</p>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="fn" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>

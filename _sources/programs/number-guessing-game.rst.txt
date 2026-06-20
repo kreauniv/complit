@@ -46,7 +46,7 @@ First off, run the program to see what its purpose is.
 
 Consider how you'll describe this program when asked, if you didn't happen
 to know it is a number guessing game or much of the vocabulary used in
-ordinary Racket programs. It might go something like -
+ordinary Racket programs. It might go something like --
 
 - It looks like this is a program that takes in a "maximum number" to run.
 - "Hmm what does ``display`` do? It seems related to ``displayln`` as well."
@@ -63,10 +63,10 @@ ordinary Racket programs. It might go something like -
 - We're starting some sort of a loop that seems to be keeping track of ``attempts``.
   (You still don't know what ``(let loop ...)`` does, but proceed with guess work
   for now.)
-- The program reads the player's input and store it in the ``user-input`` box.
+- The program reads the player's input and stores it in the ``user-input`` box.
 - If the player entered the same number as the random number selected earlier,
   the program tells the user the number of attempts they took.
-- If not, the programs gives a hint about guessing higher or lower and continues
+- If not, the program gives a hint about guessing higher or lower and continues
   the loop, incrementing the number of attempts taken so far.
 
 If you're the curious kind (hope so), you'll go ahead and read up what the
@@ -81,18 +81,18 @@ Notice the following about the above description --
    somehow because you can run the program and find things out by
    "interrogation", you now have some idea that this is a number guessing game.
 
-2. You've figured out that the ``random-number`` identifier gets bound to a,
-   ahem, random number which is not displayed to the player and thus remains a
+2. You've figured out that the ``random-number`` identifier gets bound to a (ahem!)
+   random number which is not displayed to the player and thus remains a
    "secret" until the program declares the player to have found it.
 
-3. You've gathered that the ``user-input`` box must store a number that the
-   is the user's next guess.
+3. You've gathered that the ``user-input`` box must store a number that is the
+   user's next guess.
 
-4. You've figure out that each turn of the "loop" plays one "round" of the game,
+4. You've figured out that each turn of the "loop" plays one "round" of the game,
    and keeps track of the number of attempts made up to the point the player is
    asked for their next guess.
 
-5. The programs gives a "guess higher" and "guess lower" kind of hint to the
+5. The program gives a "guess higher" and "guess lower" kind of hint to the
    player at each turn.
 
 Now consider the question of how you'd like to have written this program so its
@@ -126,7 +126,7 @@ an abstraction that makes the purpose of these three lines clear --
        (display "I'll pick a number from 1 to ") (display max-number) (displayln ".")
        (displayln "You have to guess it in the fewest attempts you can."))
 
-.. tip:: To make such an "extraction" as ``greet-player``, first identify the what
+.. tip:: To make such an "extraction" as ``greet-player``, first identify what
    you wish to extract by selecting the expressions. In this case, the three ``display..``
    expressions can be considered as though they were nested within a ``(begin ..)``
    form, so we can pull it out this way into the "top level" of the definitions window.
@@ -192,7 +192,7 @@ The program is still doing exactly the same things, but is starting to read a li
 simply due to good names we're choosing.
 
 So now what does the expression ``(set-box! players-guess (read))`` mean? This is asking the
-user's next guess (remember we renamed ``user-input`` to ``players-guess``. Since it depends on 
+user's next guess (remember, we renamed ``user-input`` to ``players-guess``. Since it depends on 
 the ``players-guess`` box, we can make the following abstraction to capture this --
 
 .. code:: racket
@@ -268,9 +268,8 @@ to proceed. We can capture this redundancy as an abstraction as well --
 
 We see that this ``clue`` abstraction only deals with the case where
 ``next-guess`` is **different** from ``secret``. So it must necessarily error
-out when they happen to be the same, as no clue remains to be given.
-However, in the program, ``clue`` is used exactly in a valid context
-only.
+out when they happen to be the same, as no clue remains to be given. However,
+in the program, ``clue`` is used in a valid context only.
 
 .. admonition:: **Terminology**
 
@@ -333,15 +332,15 @@ We now only need to read line 1-11 in :ref:`the third version <nggv3>` compared
 to lines 1-18 in :ref:`the first version <nggv1>` to have a top level understanding
 of the program.
 
-Digging deeper into evalution
------------------------------
+Digging deeper into evaluation
+------------------------------
 
 With :ref:`the latest version <nggv3>` of the program, it is now possible to
 see that the ``(display "Your guess: ")`` is immediately followed by the
 ``(read)`` step in line 5. The same pattern also occurs when we come to
 ``play-till-win``, but with a different prompt ``"Guess again: "``. The
 purpose of both is the same -- to prompt the user for their next input. We can
-therefore club these two and make that purpose clear as well. This particular
+therefore combine these two and make that purpose clear as well. This particular
 step requires a **closer examination** of what's going on than merely paying
 attention to the form of the code.
 
@@ -438,7 +437,7 @@ that's fine too.
 Taking stock
 ------------
 
-The :ref:`latest version <nggv4>` of the top level program is now much
+The :ref:`latest version <nggv4>` of the top-level program is now much
 closer to expressing the full intent of the number guessing game. You can
 pretty much just read it from start to finish and keep going because we're
 using words that are **in the domain** of the program. Words like
@@ -454,7 +453,7 @@ their mental load even more.
 .. code:: racket
 
     ; Plays a "number guessing game" with the user as the player.
-    ; Given a maximum value, the program pics a secret number in the
+    ; Given a maximum value, the program picks a secret number in the
     ; range 1 to the maximum and asks the user to guess this secret
     ; in each turn, giving clues along the way. The goal for the player
     ; is to guess the secret in as few attempts as possible.
@@ -462,7 +461,7 @@ their mental load even more.
     ; `max-number` is expected to be a non-negative integer greater than 1.
     ;
     ; E.g.
-    ;   > (play-number-guessing-name 10)
+    ;   > (play-number-guessing-game 10)
     ;   Let's play a number guessing game.
     ;   I'll pick a number from 1 to 10.
     ;   You have to guess it in the fewest attempts you can.
@@ -482,8 +481,8 @@ their mental load even more.
 .. admonition:: **Learnings**
 
    - We learnt how to use abstractions to reduce redundancy in a program code.
-   - We learnt how abstractions can also be used to improve clarity and expressed
-     meaning of code by introduce **domain** words into the program.
+   - We learnt how abstractions can also be used to improve clarity and the expressed
+     meaning of code by introducing **domain** words into the program.
    - We learnt about the **purpose** of the program by systematically rewriting
      parts of it to express the incremental understanding we gained as we
      worked with it.
@@ -527,7 +526,7 @@ that's greater than 1 for the game to be meaningful.
 
    (define (play-number-guessing-game max-number)
       (when (not (and (integer? max-number) (> max-number 1)))
-        (error "Expecting a non-negative integer > 1"))
+        (error "Expecting a positive integer > 1"))
       ...)
 
 In fact, we can make a small abstraction to help make type constraints easier to
@@ -575,16 +574,16 @@ Now we look at an interesting case -- the ``ask-next-guess`` procedure --
 
 We notice that while we can visually inspect that ``clue`` and ``declare-win``
 and even ``play-number-guessing-game`` produce correct kinds of output values
-(what are there output values?), ``ask-next-guess`` simply passes on what the
+(what are their output values?), ``ask-next-guess`` simply passes on what the
 user typed. So if the user typed, say, ``meow`` instead of a number, the
 program errors out without very descriptive (i.e. **in-domain**) error
 messages. Also, it is not clear whether it the whole program should abort if
-the **player** made an error. That is in general a bad idea for program design.
+the **player** made an error. That is, in general, a bad idea for program design.
 :hl:`When the programmer makes an error, that's a good reason to error out in
 various ways. But when a user makes an error, it is in general advisable to
 catch these errors and report back to the user about what the desired behaviour
 actually is.` So let's fix that for ``ask-next-guess`` and some how ensure that
-it will always produce an integer as the result.
+it will always produce an integer.
 
 .. code:: racket
 
@@ -613,7 +612,7 @@ A reasonable choice would be to tell the user what is expected and to ask them a
                (begin (display "Please give me an integer this time. ")
                       (ask-next-guess prompt)))))
 
-You see what we did there? We simply repeated the process ad nausem so the
+You see what we did there? We simply repeated the process ad nauseam so the
 player gets tired or aborts the program, but the program won't crash because
 of a casual mistake.
 
@@ -640,7 +639,7 @@ Afterword
 
 In this section, we started with a partially correct but poorly written program
 for the number guessing game (from a reader's point of view). The question
-before us therefore, how do we avoid that in the first place?
+before us, therefore, is: how do we avoid that in the first place?
 
 That inverse question assumes that a) we know what problem we want to solve,
 and b) we know what we need to do to solve it. However, what we haven't worked
@@ -653,7 +652,7 @@ of abstraction" can help construct a program from scratch.
 The **key principle** is to add some level of detail to each successive stage
 of the expansion from a high level version to a functioning program.
 We call this approach "incremental program development" or IPD for short
-and will see this in approach as a separate topic.
+and will see this approach as a separate topic.
 
 .. [#fn] A "function" is a procedure whose result value depends only on the
    values of its arguments. This is not a property enforced by Racket, but
