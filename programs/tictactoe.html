@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>TicTacToe &#8212; CompLIT: Programming Literacy v1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d8a2add5" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=17171a54" />
+    <script src="../_static/documentation_options.js?v=5cb08e4e"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Structures" href="../structures.html" />
+    <link rel="prev" title="The number guessing game" href="number-guessing-game.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="tictactoe">
+<h1>TicTacToe<a class="headerlink" href="#tictactoe" title="Link to this heading">¶</a></h1>
+<p>The program below implements a two-player tictactoe game.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-number">Listing 7 </span><span class="caption-text">Simple two player tictactoe game.</span><a class="headerlink" href="#id1" title="Link to this code">¶</a></div>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">#lang </span><span class="nn">racket</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">tictactoe</span><span class="w"> </span><span class="n">cross?</span><span class="p">)</span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="n">play-turn</span><span class="w"> </span><span class="p">([</span><span class="n">board</span><span class="w"> </span><span class="s2">&quot;.........&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">cross?</span><span class="w"> </span><span class="n">cross?</span><span class="p">])</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="linenos"> 6</span><span class="w">                              </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="linenos"> 7</span><span class="w">                              </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="mi">9</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">string-contains?</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="linenos"> 9</span><span class="w">        </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">or</span><span class="w"> </span><span class="p">(</span><span class="nb">string=?</span><span class="w"> </span><span class="s2">&quot;xxx&quot;</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">3</span><span class="p">))</span>
+<span class="linenos">10</span><span class="w">                </span><span class="p">(</span><span class="nb">string=?</span><span class="w"> </span><span class="s2">&quot;xxx&quot;</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">6</span><span class="p">))</span>
+<span class="linenos">11</span><span class="w">                </span><span class="p">(</span><span class="nb">string=?</span><span class="w"> </span><span class="s2">&quot;xxx&quot;</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="mi">9</span><span class="p">))</span>
+<span class="linenos">12</span><span class="w">                </span><span class="p">(</span><span class="nb">string=?</span><span class="w"> </span><span class="s2">&quot;xxx&quot;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos">13</span><span class="w">                                               </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span>
+<span class="linenos">14</span><span class="w">                                               </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="mi">9</span><span class="p">)))</span>
+<span class="linenos">15</span><span class="w">                </span><span class="p">(</span><span class="nb">string=?</span><span class="w"> </span><span class="s2">&quot;xxx&quot;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="linenos">16</span><span class="w">                                               </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span>
+<span class="linenos">17</span><span class="w">                                               </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="mi">7</span><span class="p">)))</span>
+<span class="linenos">18</span><span class="w">                </span><span class="p">(</span><span class="nb">string=?</span><span class="w"> </span><span class="s2">&quot;xxx&quot;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos">19</span><span class="w">                                               </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span>
+<span class="linenos">20</span><span class="w">                                               </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="mi">7</span><span class="p">)))</span>
+<span class="linenos">21</span><span class="w">                </span><span class="p">(</span><span class="nb">string=?</span><span class="w"> </span><span class="s2">&quot;xxx&quot;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+<span class="linenos">22</span><span class="w">                                               </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span>
+<span class="linenos">23</span><span class="w">                                               </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="mi">8</span><span class="p">)))</span>
+<span class="linenos">24</span><span class="w">                </span><span class="p">(</span><span class="nb">string=?</span><span class="w"> </span><span class="s2">&quot;xxx&quot;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="linenos">25</span><span class="w">                                               </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span>
+<span class="linenos">26</span><span class="w">                                               </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="mi">9</span><span class="p">))))</span>
+<span class="linenos">27</span><span class="w">            </span><span class="o">&#39;</span><span class="ss">x-won</span>
+<span class="linenos">28</span><span class="w">            </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">or</span><span class="w"> </span><span class="p">(</span><span class="nb">string=?</span><span class="w"> </span><span class="s2">&quot;ooo&quot;</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">3</span><span class="p">))</span>
+<span class="linenos">29</span><span class="w">                    </span><span class="p">(</span><span class="nb">string=?</span><span class="w"> </span><span class="s2">&quot;ooo&quot;</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">6</span><span class="p">))</span>
+<span class="linenos">30</span><span class="w">                    </span><span class="p">(</span><span class="nb">string=?</span><span class="w"> </span><span class="s2">&quot;ooo&quot;</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="mi">9</span><span class="p">))</span>
+<span class="linenos">31</span><span class="w">                    </span><span class="p">(</span><span class="nb">string=?</span><span class="w"> </span><span class="s2">&quot;ooo&quot;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos">32</span><span class="w">                                                   </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span>
+<span class="linenos">33</span><span class="w">                                                   </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="mi">9</span><span class="p">)))</span>
+<span class="linenos">34</span><span class="w">                    </span><span class="p">(</span><span class="nb">string=?</span><span class="w"> </span><span class="s2">&quot;ooo&quot;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="linenos">35</span><span class="w">                                                   </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span>
+<span class="linenos">36</span><span class="w">                                                   </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="mi">7</span><span class="p">)))</span>
+<span class="linenos">37</span><span class="w">                    </span><span class="p">(</span><span class="nb">string=?</span><span class="w"> </span><span class="s2">&quot;ooo&quot;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos">38</span><span class="w">                                                   </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span>
+<span class="linenos">39</span><span class="w">                                                   </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="mi">7</span><span class="p">)))</span>
+<span class="linenos">40</span><span class="w">                    </span><span class="p">(</span><span class="nb">string=?</span><span class="w"> </span><span class="s2">&quot;ooo&quot;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+<span class="linenos">41</span><span class="w">                                                   </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span>
+<span class="linenos">42</span><span class="w">                                                   </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="mi">8</span><span class="p">)))</span>
+<span class="linenos">43</span><span class="w">                    </span><span class="p">(</span><span class="nb">string=?</span><span class="w"> </span><span class="s2">&quot;ooo&quot;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="linenos">44</span><span class="w">                                                   </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span>
+<span class="linenos">45</span><span class="w">                                                   </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="mi">9</span><span class="p">))))</span>
+<span class="linenos">46</span><span class="w">                </span><span class="o">&#39;</span><span class="ss">o-won</span>
+<span class="linenos">47</span><span class="w">                </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">next-pos</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="p">(</span><span class="nb">read</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span><span class="p">)])</span>
+<span class="linenos">48</span><span class="w">                  </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">equal?</span><span class="w"> </span><span class="p">(</span><span class="nb">string-ref</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="n">next-pos</span><span class="p">)</span><span class="w"> </span><span class="sc">#\.</span><span class="p">)</span>
+<span class="linenos">49</span><span class="w">                      </span><span class="p">(</span><span class="n">play-turn</span><span class="w"> </span><span class="p">(</span><span class="nb">string-append</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">next-pos</span><span class="p">)</span>
+<span class="linenos">50</span><span class="w">                                                </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">cross?</span><span class="w"> </span><span class="s2">&quot;x&quot;</span><span class="w"> </span><span class="s2">&quot;o&quot;</span><span class="p">)</span>
+<span class="linenos">51</span><span class="w">                                                </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">next-pos</span><span class="p">)</span><span class="w"> </span><span class="mi">9</span><span class="p">))</span>
+<span class="linenos">52</span><span class="w">                                 </span><span class="p">(</span><span class="nb">not</span><span class="w"> </span><span class="n">cross?</span><span class="p">))</span>
+<span class="linenos">53</span><span class="w">                      </span><span class="p">(</span><span class="k">begin</span><span class="w"> </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;Invalid position. Try again.&quot;</span><span class="p">)</span>
+<span class="linenos">54</span><span class="w">                             </span><span class="p">(</span><span class="n">play-turn</span><span class="w"> </span><span class="n">board</span><span class="w"> </span><span class="n">cross?</span><span class="p">))))))</span>
+<span class="linenos">55</span><span class="w">        </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;Game over&quot;</span><span class="p">))))</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition-task admonition">
+<p class="admonition-title"><strong>Task</strong></p>
+<p>Go through the same process as with the <a class="reference internal" href="number-guessing-game.html"><span class="doc">The number guessing game</span></a> to arrive
+at a legible program for playing the same game. Remember that when you’re
+starting with this, you probably don’t “understand” the program and that’s
+ok and expected. Your goal is to “interrogate” and along the way edit/rewrite parts
+of the program step by step to arrive at a final version that is more easily
+understood. For reference about documenting abstractions (a.k.a. “procedures”
+or “functions”) see <a class="reference external" href="https://htdp.org/2026-5-28//Book/part_preface.html#(part._sec~3asystematic-design)">Systematic program design</a>.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Approach the process using the scientific method. You’re welcome to
+make “guesses” (i.e. “hypotheses”) as to what a particular form means, but
+it would then be up to you to verify, at some point, whether your guess
+turned out to be valid.</p>
+</div>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">CompLIT: Programming Literacy</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../words.html">Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interrogation.html">Interrogating programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../strings.html">Strings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../sample-programs.html">Sample programs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="number-guessing-game.html">The number guessing game</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">TicTacToe</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../structures.html">Structures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parsing.html">Parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parsing2.html">More parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../alternative-syntax.html">Optional: Alternative language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../recap.html">Recap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-terms.html">Optional: Technical terms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modelling-images.html">Modelling a domain - Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../representations.html">Representations</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../sample-programs.html">Sample programs</a><ul>
+      <li>Previous: <a href="number-guessing-game.html" title="previous chapter">The number guessing game</a></li>
+      <li>Next: <a href="../structures.html" title="next chapter">Structures</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Srikumar K. S..
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/programs/tictactoe.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
