@@ -83,11 +83,11 @@ of ours to clarify what they mean.
       (sequence pattern (zero-or-more pattern)))
 
    (define (zero-or-more pattern)
-      (alternatives empty-pattern (one-or-more pattern)))
+      (one-of empty-pattern (one-or-more pattern)))
 
-While we're introducing a new word ``alternatives`` here, our words
+While we're introducing a new word ``one-of`` here, our words
 have nearly all gained some good definitions and we're only left 
-with ``sequence`` and ``alternatives``.
+with ``sequence`` and ``one-of``.
 
 ``character-in``
 ----------------
@@ -187,14 +187,14 @@ We can now define ``sequence`` like this --
 Now, when we do ``(parse (sequence (character-in "a-z") (character-in "0-9")) "a1b2c3")``,
 we can expect to get ``(pattern-match (cons #\a #\1) "b2c3")`` as the result.
 
-``alternatives``
-----------------
+``one-of``
+----------
 
-Now let's see if we can use the same approach to define ``alternatives``.
+Now let's see if we can use the same approach to define ``one-of``.
 
 .. code-block:: racket
 
-   (define (alternatives pat1 pat2)
+   (define (one-of pat1 pat2)
      (define (pattern text)
         ; `or` in this case means "the first parse that succeeds on text".
         (or (parse pat1 text) (parse pat2 text)))
@@ -203,7 +203,7 @@ Now let's see if we can use the same approach to define ``alternatives``.
 .. admonition:: **A side trip**
 
     It would be nice to be able to write ``(sequence pat1 pat2 pat3 .. patN)``
-    and ``(alternatives pat1 pat2 .. patN)`` using how many ever patterns we
+    and ``(one-of pat1 pat2 .. patN)`` using how many ever patterns we
     want to sequence or choose between. Racket lets you bind an word introducing
     the "list of arguments" instead of each individual argument, like this --
 
@@ -213,7 +213,7 @@ Now let's see if we can use the same approach to define ``alternatives``.
             ; args here is the list of arguments given to `our-procedure`
             )
 
-    Using this, we can generalize ``sequence`` and ``alternatives`` to an arbitrary
+    Using this, we can generalize ``sequence`` and ``one-of`` to an arbitrary
     number of arguments. We'll use a different word ``sequence*`` for this, since
     it actually has a different meaning for the two-argument case than ``sequence``.
 
@@ -229,22 +229,22 @@ Now let's see if we can use the same approach to define ``alternatives``.
                           (apply sequence* (rest patterns)))))
 
         ; Will match the first alternative that succeeds.
-        (define (alternatives . patterns)
+        (define (one-of . patterns)
             (define (pattern text)
                 (if (empty? patterns)
                     ; None succeeded
                     #f
-                    ; `or` here will try the remaining alternatives
+                    ; `or` here will try the remaining one-of
                     ; only if the first pattern failed.
                     (or (parse (first pattern) text)
-                        (parse (apply alternatives (rest patterns)) text))))
+                        (parse (apply one-of (rest patterns)) text))))
             pattern)
                             
 
 Many-ness
 ---------
 
-With the definition of ``alternatives``, our definition of ``zero-or-more``
+With the definition of ``one-of``, our definition of ``zero-or-more``
 and ``one-or-more`` gains validity and completeness.
 
 .. code:: racket
@@ -253,13 +253,13 @@ and ``one-or-more`` gains validity and completeness.
       (sequence pat (zero-or-more pat)))
 
    (define (zero-or-more pat)
-      (alternatives empty-pattern (one-or-more pat)))
+      (one-of empty-pattern (one-or-more pat)))
 
 .. admonition:: **Think before proceeding**
    
-   Given how we've defined ``alternatives``, is our definition of
+   Given how we've defined ``one-of``, is our definition of
    ``zero-or-more`` acceptable? There is a subtle "bias" in how
-   we've dealt with ``alternatives`` that affects this.
+   we've dealt with ``one-of`` that affects this.
 
    Spoilers below.
 
@@ -276,7 +276,7 @@ as --
 .. code:: racket
 
    (define (zero-or-more pat)
-      (alternatives (one-or-more pat) empty-pattern))
+      (one-of (one-or-more pat) empty-pattern))
 
    (define (empty-pattern text)
       (pattern-match empty text))
@@ -391,7 +391,7 @@ We can also express a simple decimal fractional number like ``-3.1415`` --
     (define digit (character-in "0123456789"))
 
     (define (optional pat)
-        (alternatives pat empty-pattern))
+        (one-of pat empty-pattern))
 
 
 Now you can start to see how these definitions relate to the Backus-Naur grammar
@@ -407,7 +407,7 @@ translates to the **process** of matching patterns in strings.
    word where the input type is the same as the output type -- both "pattern"
    in our case -- we'll have to consider how these definitions work with each
    other and ensure that they're all consistent. Words like ``sequence``,
-   ``alternatives``, ``one-or-more`` and ``reinterpret`` take patterns and
+   ``one-of``, ``one-or-more`` and ``reinterpret`` take patterns and
    construct new patterns with them, unlike the basic patterns like
    ``character-in``.
 
@@ -470,7 +470,7 @@ Languages within languages
 
 If you zoom out a bit, it can look like we're building a small language to
 express patterns we want to decipher from text. We're introducing new words
-like ``character-in``, ``sequence``, ``alternatives``, ``one-or-more``,
+like ``character-in``, ``sequence``, ``one-of``, ``one-or-more``,
 ``transform``, etc. that let us talk about specific patterns and how to combine
 patterns to make new patterns. This is very much like how language consists of
 both a vocabulary (words with meanings) and grammar (how to give meaning to
@@ -515,10 +515,10 @@ that happen when we parse a string with it.
 
 Here are some such expectations -
 
-1. ``(alternatives pat1 pat2 ... patN)`` should be replaceable with ``patK``
+1. ``(one-of pat1 pat2 ... patN)`` should be replaceable with ``patK``
    in a particular situation if ``patK`` were the first pattern to successfully
    match against the given text. In fact, in any pattern expression containing
-   the ``alternatives`` form, the form should be replaceable with any one of
+   the ``one-of`` form, the form should be replaceable with any one of
    the patterns and still preserve the integrity of the total expression.
 
 2. ``(sequence pat1 (sequence pat2 empty-pattern))`` is the same as
@@ -528,7 +528,7 @@ Here are some such expectations -
 3. ``(sequence pat empty-pattern)`` is expected to be equivalent to
    ``(reinterpret list pat)``.
 
-4. ``(alternatives pat empty-pattern)`` is always expected to succeed since
+4. ``(one-of pat empty-pattern)`` is always expected to succeed since
    ``empty-pattern`` will always succeed.
 
 .. admonition:: **Task**
