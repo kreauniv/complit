@@ -283,6 +283,30 @@ as --
 
     (define (failed-pattern text) #f)
 
+Skipping until match
+--------------------
+
+Sometimes, we want to look for patterns within a string where the
+initial part is not expected to match and we don't care what is there
+before the first occurrence of the pattern. For example, the first
+word in the string ``"1.) Programs are easy to work with"``. We may not
+care about the ``"1.)"`` part and only want ``"Programs"`` to be
+matched. We can express this as a general idea like this --
+
+.. collapse:: ``first-occurrence`` - Try it first before opening this.
+
+    .. code-block:: racket
+
+        (define (first-occurrence pat)
+            (define (pattern text)
+                (if (= (string-length text) 0)
+                    #f
+                    (let ([p (parse pat text)])
+                        (if p
+                            p
+                            (pattern (substring text 1))))))
+            pattern)
+
 Meaning through reinterpretation
 --------------------------------
 
