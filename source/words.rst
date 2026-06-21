@@ -278,10 +278,10 @@ Type the following at the start of your Racket file --
    #lang racket
    (require 2htdp/image)
 
-The ``require`` word when used as an operator fetches a collection of
-definitions identified by the given "package identifier" and introduces
-the words it defines for use within the rest of your program. We're now
-borrowing all the definitions associated with working with pictures.
+The ``require`` word when used with a package name like that indicates that the
+words defined and "provided" by the package are now to be considered "in
+context" for the rest of the text of the program in the definitions window.
+We're now borrowing all the definitions associated with working with pictures.
 
 Click on "Run".
 
