@@ -37,8 +37,68 @@
             
   <section id="representations">
 <h1>Representations<a class="headerlink" href="#representations" title="Link to this heading">¶</a></h1>
-<p>We saw how we can work with sequences of characters as a representation
-for textual material. We called such values “strings”.</p>
+<p>We saw how we can work with sequences of characters as a representation for
+textual material. We called such values “strings”. Are other representations
+possible for text? Consider the following questions –</p>
+<ul class="simple">
+<li><p>Suppose we wish to work with a collection of textual material that span
+several 100 GBs. Would it work for us to load it all up into memory and
+reference it as a single “string of characters”?</p></li>
+<li><p>Suppose we’re working with text as part of an editor application. Should we
+still represent a complete file as a single string of characters? Consider
+how we’ll do an editing operation like “delete like 147 to 149”.</p></li>
+<li><p>Suppose we’re analyzing a piece of text for its literary value and so we’re
+concerned mostly with words, phrases and sentences in the text. Does it still
+make sense to treat it as a sequence of characters if we want to answer
+questions like “how many times does each word occur in the body of text?”.</p></li>
+</ul>
+<p>The import of the above considerations is that different ways of looking at
+some data may be important in different application contexts.</p>
+<p>When we’re trying to understand a domain more precisely though, we might be at
+a loss for what representation we should be using. Thanks to Alonzo Church’s
+“lambda calculus” and the Church-Turing thesis, we know that no matter what
+we’re trying to model, we can always start with representing a value as a
+procedure! While this is seen as a fundamental result in computing, its value
+for us is that it gives us a way in <strong>every</strong> circumstance.</p>
+<section id="cons-pairs">
+<h2><code class="docutils literal notranslate"><span class="pre">cons</span></code> pairs<a class="headerlink" href="#cons-pairs" title="Link to this heading">¶</a></h2>
+<p>As a simple example, consider the “cons pair” we’ve used so far. The basic
+operations we need to do with these are –</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">(cons</span> <span class="pre">a</span> <span class="pre">b)</span></code> makes a pair.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(car</span> <span class="pre">p)</span></code> gets the first item of a pair <code class="docutils literal notranslate"><span class="pre">p</span></code>. i.e. <code class="docutils literal notranslate"><span class="pre">(car</span> <span class="pre">(cons</span> <span class="pre">a</span> <span class="pre">b))</span> <span class="pre">=</span>
+<span class="pre">a</span></code> for all <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(cdr</span> <span class="pre">p)</span></code> gets the second item of a pair <code class="docutils literal notranslate"><span class="pre">p</span></code>. i.e. <code class="docutils literal notranslate"><span class="pre">(cdr</span> <span class="pre">(cons</span> <span class="pre">a</span> <span class="pre">b))</span> <span class="pre">=</span>
+<span class="pre">b</span></code> for all <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p></li>
+</ol>
+<p>Racket provides such “cons pairs” for us, but what if it didn’t? Can we make
+them on our own? Here is one way to make pairs just using procedures.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-number">Listing 10 </span><span class="caption-text">Implementing pairs using procedures</span><a class="headerlink" href="#id1" title="Link to this code">¶</a></div>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">.first</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="n">a</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">.second</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="n">b</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">our-cons</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">select</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">select</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">b</span><span class="p">)))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">our-car</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="n">.first</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">our-cdr</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="n">.second</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<p>If we can represent pairs using “lambda procedures”, we can build any complex
+structure this way. For example, a sequence of values can be represented as
+nested pairs like <code class="docutils literal notranslate"><span class="pre">(cons</span> <span class="pre">a1</span> <span class="pre">(cons</span> <span class="pre">a2</span> <span class="pre">(cons</span> <span class="pre">a3</span> <span class="pre">...</span> <span class="pre">(cons</span> <span class="pre">aN</span> <span class="pre">empty))))</span></code>,
+which is how Racket represents “a list of values”.</p>
+<p>We won’t go deeper into the Church-Turing thesis at this point. For now, it is
+enough to know what when we need a representation for a domain we’re playing
+with, we can always try to come up with an initial one based on
+procedures/functions alone. Later on, when we’re clearer about what we’d like
+to do with domain values of interest to us, we can improve the representation
+based on the newly discovered considerations such as “efficient memory usage”
+or making certain operations efficient, or ease of access over a network.</p>
+<p>Since we’re not concerned with such aspects in this course and are more
+concerned with programs and what they mean to us, we’ll continue to use
+procedure-based modelling such as we did with images.</p>
+</section>
 </section>
 
 
@@ -81,7 +141,10 @@ for textual material. We called such values “strings”.</p>
 <li class="toctree-l1"><a class="reference internal" href="recap.html">Recap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="technical-terms.html">Optional: Technical terms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modelling-images.html">Modelling a domain - Images</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Representations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Representations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#cons-pairs"><code class="docutils literal notranslate"><span class="pre">cons</span></code> pairs</a></li>
+</ul>
+</li>
 </ul>
 
 <div class="relations">
