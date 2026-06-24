@@ -64,7 +64,8 @@ with, we can always try to come up with an initial one based on
 procedures/functions alone. Later on, when we're clearer about what we'd like
 to do with domain values of interest to us, we can improve the representation
 based on the newly discovered considerations such as "efficient memory usage"
-or making certain operations efficient, or ease of access over a network.
+or making certain operations efficient, or ease of access over a network, or
+need some additional flexibility with certain operations.
 
 Since we're not concerned with such aspects in this course and are more
 concerned with programs and what they mean to us, we'll continue to use
