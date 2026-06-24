@@ -41,32 +41,35 @@
 <p>The field of Computer Science uses a few technical terms in place of the common
 words we’ve been using to work our way through programming literacy. This page
 is to cover them for those interested who might take up CS.</p>
-<dl class="simple">
-<dt><strong>Word</strong></dt><dd><p>“Identifier” is more common and we’ve also mentioned this. The
-thinking is that just as a word evokes an idea in a person’s mind,
-an <strong>identifier</strong> identifies a “value” in computer memory. Such
-values have types associated with them that determine their meaning
-what computations can be done with them.</p>
+<dl>
+<dt><strong>Identifiers</strong></dt><dd><p>We’ve been using “word” for the textual element that refers to
+some “thing” – a “value” – whose <em>meaning</em> is understood by us.
+“Identifier” is usually used in the literature in the context
+of programming – where a “value” in computer memory is referenced
+by the identifier.</p>
 </dd>
-<dt><strong>Compound term</strong></dt><dd><p>We referred to terms of the form  <code class="docutils literal notranslate"><span class="pre">(character-in</span> <span class="pre">&quot;0123456789&quot;)</span></code>,
+<dt><strong>s-expressions</strong></dt><dd><p>We referred to terms of the form  <code class="docutils literal notranslate"><span class="pre">(character-in</span> <span class="pre">&quot;0123456789&quot;)</span></code>,
 <code class="docutils literal notranslate"><span class="pre">(string-length</span> <span class="pre">&quot;hello&quot;)</span></code> as “compound terms”. In CS, we’d usually
 just call them <strong>expressions</strong> or if we’re specifically talking about
-Racket-like languages, <strong>s-expressions</strong>.</p>
+Racket-like languages, <strong>s-expressions</strong>. We’ve referred to these
+forms as “compound terms” in these notes.</p>
 </dd>
-<dt><strong>Abstraction</strong></dt><dd><p>A word like <code class="docutils literal notranslate"><span class="pre">character-in</span></code> which needed some concrete values to take on
+<dt><strong>Procedures and Functions</strong></dt><dd><p>A word like <code class="docutils literal notranslate"><span class="pre">character-in</span></code> which needed some concrete values to take on
 specific meaning in a context was called an “abstraction”. Depending on
 context, we might use the operational word <strong>procedure</strong> or <strong>function</strong>
 for the values that such words refer to. Note that it gets tedious quickly
 if we keep maintaining the distinction between a word and the value it
 “identifies”. So casual language tends to conflate the two where it isn’t
 confusing to do so.</p>
+<p>Broadly, we’ve been referring to these as “abstractions” because they
+generalize a concept over a number of “arguments”.</p>
 </dd>
-<dt><strong>Procedure-valued compound terms</strong></dt><dd><p>A word like <code class="docutils literal notranslate"><span class="pre">character-in</span></code>, when used with a string of allowed
+<dt><strong>Higher order procedures</strong></dt><dd><p>A word like <code class="docutils literal notranslate"><span class="pre">character-in</span></code>, when used with a string of allowed
 characters, is itself procedure-valued. This is one kind of what
 is called “higher order procedure”. In this case, it is a procedure,
-which when applied produces another procedure.</p>
-</dd>
-<dt><strong>Procedure-valued arguments</strong></dt><dd><p>When we defined <code class="docutils literal notranslate"><span class="pre">reinterpret</span></code>, its first argument (which we named
+which when applied produces another procedure – i.e. a compound
+term which refers to an abstraction.</p>
+<p>When we defined <code class="docutils literal notranslate"><span class="pre">reinterpret</span></code>, its first argument (which we named
 <code class="docutils literal notranslate"><span class="pre">interpretation</span></code> was expected to itself be a procedure-valued thing like
 <code class="docutils literal notranslate"><span class="pre">list-&gt;string</span></code> that was then used to “interpret” (a.k.a. “transform”) the
 list of characters parsed by, say, <code class="docutils literal notranslate"><span class="pre">(one-or-more</span> <span class="pre">digit)</span></code>. Such a
