@@ -5,20 +5,21 @@ The field of Computer Science uses a few technical terms in place of the common
 words we've been using to work our way through programming literacy. This page
 is to cover them for those interested who might take up CS.
 
-**Word**
-    "Identifier" is more common and we've also mentioned this. The
-    thinking is that just as a word evokes an idea in a person's mind,
-    an **identifier** identifies a "value" in computer memory. Such
-    values have types associated with them that determine their meaning
-    what computations can be done with them.
+**Identifiers**
+    We've been using "word" for the textual element that refers to
+    some "thing" -- a "value" -- whose *meaning* is understood by us.
+    "Identifier" is usually used in the literature in the context
+    of programming -- where a "value" in computer memory is referenced
+    by the identifier.
 
-**Compound term**
+**s-expressions**
     We referred to terms of the form  ``(character-in "0123456789")``,
     ``(string-length "hello")`` as "compound terms". In CS, we'd usually
     just call them **expressions** or if we're specifically talking about
-    Racket-like languages, **s-expressions**.
+    Racket-like languages, **s-expressions**. We've referred to these
+    forms as "compound terms" in these notes.
 
-**Abstraction**
+**Procedures and Functions**
     A word like ``character-in`` which needed some concrete values to take on
     specific meaning in a context was called an "abstraction". Depending on
     context, we might use the operational word **procedure** or **function**
@@ -27,13 +28,16 @@ is to cover them for those interested who might take up CS.
     "identifies". So casual language tends to conflate the two where it isn't
     confusing to do so.
 
-**Procedure-valued compound terms**
+    Broadly, we've been referring to these as "abstractions" because they
+    generalize a concept over a number of "arguments".
+
+**Higher order procedures**
     A word like ``character-in``, when used with a string of allowed
     characters, is itself procedure-valued. This is one kind of what
     is called "higher order procedure". In this case, it is a procedure,
-    which when applied produces another procedure.
+    which when applied produces another procedure -- i.e. a compound
+    term which refers to an abstraction.
 
-**Procedure-valued arguments**
     When we defined ``reinterpret``, its first argument (which we named
     ``interpretation`` was expected to itself be a procedure-valued thing like
     ``list->string`` that was then used to "interpret" (a.k.a. "transform") the
