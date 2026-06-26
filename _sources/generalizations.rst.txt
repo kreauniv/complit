@@ -292,9 +292,16 @@ Now we have a more general form ``distance/f`` (read as "distance with ``f``"),
 where the additional ``f`` argument can be varied according to circumstance.
 Apart from ``square``, we can also pass ``abs`` for the ``f`` argument to get a
 different measure. In mathematics, this notion of "k-norm" refers to sums of
-the form :math:`|a_1|^k + |a_2|^k` and we simply landed on this idea (though
+the form :math:`(|a_1|^k + |a_2|^k)^{\frac{1}{k}}` and we simply landed on this idea (though
 incomplete and needing more thought) through a "mechanical" process of
 identifying redundant sub-expressions.
+
+.. note:: In this case, we saw another aspect of the generalization steps. We
+   deal with equivalent sub-expressions simultaneously. Although it is common
+   for equivalent sub-expressions to really be equivalent in meaning, it is not
+   necessary for that to hold in all circumstances and we must be cognizant of
+   that when we include multiple equivalent-in-context sub-expressions in the
+   process of generalization.
 
 When we say this is "a creative act", what I'm really saying is that I cheated
 in performing this *specific* generalization over all other possible ones,

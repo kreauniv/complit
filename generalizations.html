@@ -286,9 +286,18 @@ we can abstract over the redundant <code class="docutils literal notranslate"><s
 where the additional <code class="docutils literal notranslate"><span class="pre">f</span></code> argument can be varied according to circumstance.
 Apart from <code class="docutils literal notranslate"><span class="pre">square</span></code>, we can also pass <code class="docutils literal notranslate"><span class="pre">abs</span></code> for the <code class="docutils literal notranslate"><span class="pre">f</span></code> argument to get a
 different measure. In mathematics, this notion of “k-norm” refers to sums of
-the form <span class="math notranslate nohighlight">\(|a_1|^k + |a_2|^k\)</span> and we simply landed on this idea (though
+the form <span class="math notranslate nohighlight">\((|a_1|^k + |a_2|^k)^{\frac{1}{k}}\)</span> and we simply landed on this idea (though
 incomplete and needing more thought) through a “mechanical” process of
 identifying redundant sub-expressions.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In this case, we saw another aspect of the generalization steps. We
+deal with equivalent sub-expressions simultaneously. Although it is common
+for equivalent sub-expressions to really be equivalent in meaning, it is not
+necessary for that to hold in all circumstances and we must be cognizant of
+that when we include multiple equivalent-in-context sub-expressions in the
+process of generalization.</p>
+</div>
 <p>When we say this is “a creative act”, what I’m really saying is that I cheated
 in performing this <em>specific</em> generalization over all other possible ones,
 because I’ve encountered the need for this generalization in my experience many
