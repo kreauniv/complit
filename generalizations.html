@@ -241,6 +241,14 @@ be used for.</p>
 <p>“Good” generalizations are therefore creative acts that rely on how the one
 performing the generalization is able to give meaning to the general construct.</p>
 <p>Consider another example –</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-number">Listing 14 </span><span class="caption-text">Calculating distance between two points.</span><a class="headerlink" href="#id4" title="Link to this code">¶</a></div>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">distance</span><span class="w"> </span><span class="n">x1</span><span class="w"> </span><span class="n">y1</span><span class="w"> </span><span class="n">x2</span><span class="w"> </span><span class="n">y2</span><span class="p">)</span>
+<span class="linenos">2</span><span class="w">   </span><span class="p">(</span><span class="nb">sqrt</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">x1</span><span class="w"> </span><span class="n">x2</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">x1</span><span class="w"> </span><span class="n">x2</span><span class="p">))</span>
+<span class="linenos">3</span><span class="w">            </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">y1</span><span class="w"> </span><span class="n">y2</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">y1</span><span class="w"> </span><span class="n">y2</span><span class="p">)))))</span>
+</pre></div>
+</div>
+</div>
 <p>We see some obvious repetitions here. For example, within
 <code class="docutils literal notranslate"><span class="pre">(*</span> <span class="pre">(-</span> <span class="pre">x1</span> <span class="pre">x2)</span> <span class="pre">(-</span> <span class="pre">x1</span> <span class="pre">x2))</span></code>, the sub-expression <code class="docutils literal notranslate"><span class="pre">(-</span> <span class="pre">x1</span> <span class="pre">x2)</span></code>
 is repeated and therefore is a candidate for being abstracted
@@ -306,8 +314,152 @@ more the possible generalizations. If we have a mathematical bent of mind
 though, we can explore a given generalization to find its uses or discard it.
 Therefore such acts of creativity arise from extensive labour.</p>
 </section>
+<section id="some-very-useful-generalizations">
+<h2>Some very useful generalizations<a class="headerlink" href="#some-very-useful-generalizations" title="Link to this heading">¶</a></h2>
+<section id="mapping">
+<h3>Mapping<a class="headerlink" href="#mapping" title="Link to this heading">¶</a></h3>
+<p>We often come across situations where we have a sequence of values
+and we need to create a derived sequence where there is a one-to-one
+correspondence between the values in the input sequence and another
+sequence.</p>
+<p>For example, if we have a list of strings, the corresponding list
+of lengths of these strings can be defined like this –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">string-lengths</span><span class="w"> </span><span class="n">strings</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">strings</span><span class="p">)</span>
+<span class="w">      </span><span class="nb">empty</span>
+<span class="w">      </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">strings</span><span class="p">))</span>
+<span class="w">            </span><span class="p">(</span><span class="n">string-lengths</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">strings</span><span class="p">)))))</span>
+</pre></div>
+</div>
+<p>In another case, maybe we’re looking computing the squares of a sequence of numbers –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">squares</span><span class="w"> </span><span class="n">list-of-numbers</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">list-of-numbers</span><span class="p">)</span>
+<span class="w">      </span><span class="nb">empty</span>
+<span class="w">      </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="p">(</span><span class="n">square</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">list-of-numbers</span><span class="p">))</span>
+<span class="w">            </span><span class="p">(</span><span class="n">squares</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">list-of-numbers</span><span class="p">)))))</span>
+</pre></div>
+</div>
+<p>It is easy to see that these two look very similar to each other though. Much
+of the structure of these two definitions is the same and the sameness is
+particularly visible if you replace the argument with a generic word like
+“list-of-values”. The only difference that leaps out is that in
+<code class="docutils literal notranslate"><span class="pre">string-lengths</span></code>, we use <code class="docutils literal notranslate"><span class="pre">string-length</span></code> and in <code class="docutils literal notranslate"><span class="pre">squares</span></code>, we use
+<code class="docutils literal notranslate"><span class="pre">square</span></code>.</p>
+<p>So if we abstract <code class="docutils literal notranslate"><span class="pre">string-length</span></code> over the definition of string-lengths,
+we get –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">string-lengths</span><span class="w"> </span><span class="n">fn</span><span class="w"> </span><span class="n">list-of-values</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">list-of-values</span><span class="p">)</span>
+<span class="w">       </span><span class="nb">empty</span>
+<span class="w">       </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="p">(</span><span class="n">fn</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">list-of-values</span><span class="p">))</span>
+<span class="w">             </span><span class="p">(</span><span class="n">string-lengths</span><span class="w"> </span><span class="n">fn</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">list-of-values</span><span class="p">)))))</span>
+
+<span class="c1">; Example usage</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">string-lengths</span><span class="w"> </span><span class="nb">string-length</span><span class="w"> </span><span class="p">(</span><span class="nb">list</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span><span class="w"> </span><span class="s2">&quot;world&quot;</span><span class="p">))</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">string-lengths</span><span class="w"> </span><span class="n">square</span><span class="w"> </span><span class="p">(</span><span class="nb">list</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>It is now obvious that what we have here is no longer specific to
+“string-lengths” and what happens to the elements of the supplied
+list is entirely up to the behaviour of the procedure passed
+in as the first argument. Since now <code class="docutils literal notranslate"><span class="pre">string-lengths</span></code> is no longer
+an appropriate name, we need to choose a sufficiently generic name
+reflective of the flexibility of its usage. This generalization
+is readily available in Racket and is named <code class="docutils literal notranslate"><span class="pre">map</span></code>.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="n">fn</span><span class="w"> </span><span class="n">items</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">items</span><span class="p">)</span>
+<span class="w">       </span><span class="nb">empty</span>
+<span class="w">       </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="p">(</span><span class="n">fn</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">items</span><span class="p">))</span>
+<span class="w">             </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="n">fn</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">items</span><span class="p">)))))</span>
+</pre></div>
+</div>
+</section>
+<section id="filtering">
+<h3>Filtering<a class="headerlink" href="#filtering" title="Link to this heading">¶</a></h3>
+<p>Another common pattern with sequences is where we want to derive another
+sequence by only keeping items that fit some condition. For example,
+given a list of numbers, only keeping the perfect squares in them. Or
+given a list of strings, only keeping the strings that are longer than,
+say, 10 characters. Definitions for these two are shown below –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">keep-squares</span><span class="w"> </span><span class="n">numbers</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">numbers</span><span class="p">)</span>
+<span class="w">       </span><span class="nb">empty</span>
+<span class="w">       </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">square?</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">numbers</span><span class="p">))</span>
+<span class="w">           </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">numbers</span><span class="p">)</span>
+<span class="w">                 </span><span class="p">(</span><span class="n">keep-squares</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">numbers</span><span class="p">)))</span>
+<span class="w">           </span><span class="p">(</span><span class="n">keep-squares</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">numbers</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">keep-long-strings</span><span class="w"> </span><span class="n">strings</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">strings</span><span class="p">)</span>
+<span class="w">       </span><span class="nb">empty</span>
+<span class="w">       </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">strings</span><span class="p">))</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+<span class="w">           </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">strings</span><span class="p">)</span>
+<span class="w">                 </span><span class="p">(</span><span class="n">keep-long-strings</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">strings</span><span class="p">)))</span>
+<span class="w">           </span><span class="p">(</span><span class="n">keep-long-strings</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">strings</span><span class="p">)))))</span>
+</pre></div>
+</div>
+<p>Again, just like <code class="docutils literal notranslate"><span class="pre">map</span></code>, we can see much commonality of structure
+between these two definitions, with the majority of the difference
+coming from the “condition” in the second <code class="docutils literal notranslate"><span class="pre">if</span></code> expression.</p>
+<p>Consider the expression <code class="docutils literal notranslate"><span class="pre">(&gt;</span> <span class="pre">(string-length</span> <span class="pre">(first</span> <span class="pre">strings))</span> <span class="pre">10)</span></code>.
+If we abstract <code class="docutils literal notranslate"><span class="pre">(first</span> <span class="pre">strings)</span></code> over this expression, we get
+<code class="docutils literal notranslate"><span class="pre">((lambda</span> <span class="pre">(s)</span> <span class="pre">(&gt;</span> <span class="pre">(string-length</span> <span class="pre">s)</span> <span class="pre">10))</span> <span class="pre">(first</span> <span class="pre">strings))</span></code>.
+This now has the same structure as <code class="docutils literal notranslate"><span class="pre">(square?</span> <span class="pre">(first</span> <span class="pre">numbers))</span></code>
+where the <code class="docutils literal notranslate"><span class="pre">(lambda</span> <span class="pre">(s)</span> <span class="pre">...)</span></code> occurs in place of <code class="docutils literal notranslate"><span class="pre">square?</span></code>.
+So if we generalize over <code class="docutils literal notranslate"><span class="pre">square?</span></code> in the first definition,
+we get –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">keep-squares/f</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="n">numbers</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">numbers</span><span class="p">)</span>
+<span class="w">       </span><span class="nb">empty</span>
+<span class="w">       </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">numbers</span><span class="p">))</span>
+<span class="w">           </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">numbers</span><span class="p">)</span>
+<span class="w">                 </span><span class="p">(</span><span class="n">keep-squares/f</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">numbers</span><span class="p">)))</span>
+<span class="w">           </span><span class="p">(</span><span class="n">keep-squares/f</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">numbers</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">keep-squares</span><span class="w"> </span><span class="n">numbers</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="n">keep-squares/f</span><span class="w"> </span><span class="n">square?</span><span class="w"> </span><span class="n">numbers</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">keep-long-strings</span><span class="w"> </span><span class="n">strings</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="n">keep-squares/f</span><span class="w"> </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="mi">10</span><span class="p">))</span><span class="w"> </span><span class="n">strings</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>It is obvious that <code class="docutils literal notranslate"><span class="pre">keep-squares/f</span></code> (read “keep squares with f”)
+is no longer specific to lists of numbers from which to extract the
+square numbers. We’ve generalized it to also be applicable to our
+“keep long strings” case.</p>
+<p>This turns out to be another very useful generalization that Racket
+provides it for us in the name of <code class="docutils literal notranslate"><span class="pre">filter</span></code>.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="nb">filter</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="n">items</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">items</span><span class="p">)</span>
+<span class="w">       </span><span class="nb">empty</span>
+<span class="w">       </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">items</span><span class="p">))</span>
+<span class="w">           </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">items</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">filter</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">items</span><span class="p">)))</span>
+<span class="w">           </span><span class="p">(</span><span class="nb">filter</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">items</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">keep-long-strings</span><span class="w"> </span><span class="n">strings</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">long-string?</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="mi">10</span><span class="p">))</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">filter</span><span class="w"> </span><span class="n">long-string?</span><span class="w"> </span><span class="n">strings</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">keep-squares</span><span class="w"> </span><span class="n">numbers</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">square?</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">integer?</span><span class="w"> </span><span class="p">(</span><span class="nb">sqrt</span><span class="w"> </span><span class="n">x</span><span class="p">)))</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">filter</span><span class="w"> </span><span class="n">square?</span><span class="w"> </span><span class="n">numbers</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="other-generalizations">
+<h3>Other generalizations<a class="headerlink" href="#other-generalizations" title="Link to this heading">¶</a></h3>
+<p>There are many other such generalizations available in Racket that you can pick
+up by reading in the manual. Here are some useful ones – <a class="reference external" href="https://docs.racket-lang.org/reference/procedures.html#%28def._%28%28lib._racket%2Fprivate%2Flist..rkt%29._compose%29%29">compose</a>, <a class="reference external" href="https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28lib._racket%2Fprivate%2Fmap..rkt%29._ormap%29%29">ormap</a>,
+<a class="reference external" href="https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28lib._racket%2Fprivate%2Fmap..rkt%29._andmap%29%29">andmap</a>, <a class="reference external" href="https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28lib._racket%2Fprivate%2Fmap..rkt%29._for-each%29%29">for-each</a>, <a class="reference external" href="https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28lib._racket%2Fprivate%2Flist..rkt%29._sort%29%29">sort</a>, <a class="reference external" href="https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28lib._racket%2Fprivate%2Flist..rkt%29._findf%29%29">findf</a>.</p>
+<p>Learning about such generalized procedures is, strictly speaking, not necessary
+if you’re competent with building the generalizations yourself when the need
+arises. However, knowing about them will help you recognize common patterns
+where they tend to be needed, and avoid any potential mistakes in implementing
+the generalized procedures on your own.</p>
+</section>
+</section>
 <section id="generalization-finger-exercises">
 <h2>Generalization finger exercises<a class="headerlink" href="#generalization-finger-exercises" title="Link to this heading">¶</a></h2>
+<p>TODO</p>
 </section>
 </section>
 
@@ -356,6 +508,7 @@ Therefore such acts of creativity arise from extensive labour.</p>
 <li class="toctree-l2"><a class="reference internal" href="#generalization-as-the-reverse-of-reduction">Generalization as the reverse of reduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#mechanizing-generalization">Mechanizing generalization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#a-creative-act">A creative act</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#some-very-useful-generalizations">Some very useful generalizations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#generalization-finger-exercises">Generalization finger exercises</a></li>
 </ul>
 </li>
