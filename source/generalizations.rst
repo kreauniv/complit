@@ -231,7 +231,7 @@ performing the generalization is able to give meaning to the general construct.
 
 Consider another example --
 
-.. code-racket:: racket
+.. code-block:: racket
    :linenos:
    :caption: Calculating distance between two points.
 
