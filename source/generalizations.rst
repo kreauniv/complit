@@ -311,10 +311,179 @@ more the possible generalizations. If we have a mathematical bent of mind
 though, we can explore a given generalization to find its uses or discard it.
 Therefore such acts of creativity arise from extensive labour.
 
+Some very useful generalizations
+--------------------------------
+
+Mapping
+~~~~~~~
+
+We often come across situations where we have a sequence of values
+and we need to create a derived sequence where there is a one-to-one
+correspondence between the values in the input sequence and another
+sequence.
+
+For example, if we have a list of strings, the corresponding list
+of lengths of these strings can be defined like this --
+
+.. code:: racket
+
+   (define (string-lengths strings)
+      (if (empty? strings)
+         empty
+         (cons (string-length (first strings))
+               (string-lengths (rest strings)))))
+
+In another case, maybe we're looking computing the squares of a sequence of numbers --
+
+.. code:: racket
+
+   (define (squares list-of-numbers)
+      (if (empty? list-of-numbers)
+         empty
+         (cons (square (first list-of-numbers))
+               (squares (rest list-of-numbers)))))
+
+It is easy to see that these two look very similar to each other though. Much
+of the structure of these two definitions is the same and the sameness is
+particularly visible if you replace the argument with a generic word like
+"list-of-values". The only difference that leaps out is that in
+``string-lengths``, we use ``string-length`` and in ``squares``, we use
+``square``.
+
+So if we abstract ``string-length`` over the definition of string-lengths,
+we get --
+
+.. code:: racket
+
+   (define (string-lengths fn list-of-values)
+      (if (empty? list-of-values)
+          empty
+          (cons (fn (first list-of-values))
+                (string-lengths fn (rest list-of-values)))))
+
+   ; Example usage
+   > (string-lengths string-length (list "hello" "world"))
+   > (string-lengths square (list 1 2 3 4))
+
+It is now obvious that what we have here is no longer specific to
+"string-lengths" and what happens to the elements of the supplied
+list is entirely up to the behaviour of the procedure passed
+in as the first argument. Since now ``string-lengths`` is no longer
+an appropriate name, we need to choose a sufficiently generic name
+reflective of the flexibility of its usage. This generalization
+is readily available in Racket and is named ``map``.
+
+.. code:: racket
+
+   (define (map fn items)
+      (if (empty? items)
+          empty
+          (cons (fn (first items))
+                (map fn (rest items)))))
+
+Filtering
+~~~~~~~~~
+
+Another common pattern with sequences is where we want to derive another
+sequence by only keeping items that fit some condition. For example,
+given a list of numbers, only keeping the perfect squares in them. Or
+given a list of strings, only keeping the strings that are longer than,
+say, 10 characters. Definitions for these two are shown below --
+
+.. code:: racket
+
+   (define (keep-squares numbers)
+      (if (empty? numbers)
+          empty
+          (if (square? (first numbers))
+              (cons (first numbers)
+                    (keep-squares (rest numbers)))
+              (keep-squares (rest numbers)))))
+
+   (define (keep-long-strings strings)
+      (if (empty? strings)
+          empty
+          (if (> (string-length (first strings)) 10)
+              (cons (first strings)
+                    (keep-long-strings (rest strings)))
+              (keep-long-strings (rest strings)))))
+
+Again, just like ``map``, we can see much commonality of structure
+between these two definitions, with the majority of the difference
+coming from the "condition" in the second ``if`` expression.
+
+Consider the expression ``(> (string-length (first strings)) 10)``.
+If we abstract ``(first strings)`` over this expression, we get
+``((lambda (s) (> (string-length s) 10)) (first strings))``.
+This now has the same structure as ``(square? (first numbers))``
+where the ``(lambda (s) ...)`` occurs in place of ``square?``.
+So if we generalize over ``square?`` in the first definition,
+we get --
+
+.. code:: racket
+
+   (define (keep-squares/f f numbers)
+      (if (empty? numbers)
+          empty
+          (if (f (first numbers))
+              (cons (first numbers)
+                    (keep-squares/f f (rest numbers)))
+              (keep-squares/f f (rest numbers)))))
+
+   (define (keep-squares numbers)
+      (keep-squares/f square? numbers))
+
+   (define (keep-long-strings strings)
+      (keep-squares/f (lambda (s) (> (string-length s) 10)) strings))
+
+It is obvious that ``keep-squares/f`` (read "keep squares with f") 
+is no longer specific to lists of numbers from which to extract the
+square numbers. We've generalized it to also be applicable to our
+"keep long strings" case. 
+
+This turns out to be another very useful generalization that Racket
+provides it for us in the name of ``filter``.
+
+.. code:: racket
+
+   (define (filter f items)
+      (if (empty? items)
+          empty
+          (if (f (first items))
+              (cons (first items) (filter f (rest items)))
+              (filter f (rest items)))))
+
+   (define (keep-long-strings strings)
+      (define (long-string? str) (> (string-length str) 10))
+      (filter long-string? strings))
+
+   (define (keep-squares numbers)
+      (define (square? x) (integer? (sqrt x)))
+      (filter square? numbers))
+
+Other generalizations
+~~~~~~~~~~~~~~~~~~~~~
+
+There are many other such generalizations available in Racket that you can pick
+up by reading in the manual. Here are some useful ones -- compose_, ormap_,
+andmap_, for-each_, sort_, findf_.
+
+.. _compose: https://docs.racket-lang.org/reference/procedures.html#%28def._%28%28lib._racket%2Fprivate%2Flist..rkt%29._compose%29%29
+.. _ormap: https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28lib._racket%2Fprivate%2Fmap..rkt%29._ormap%29%29
+.. _andmap: https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28lib._racket%2Fprivate%2Fmap..rkt%29._andmap%29%29
+.. _for-each: https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28lib._racket%2Fprivate%2Fmap..rkt%29._for-each%29%29
+.. _sort: https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28lib._racket%2Fprivate%2Flist..rkt%29._sort%29%29
+.. _findf: https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28lib._racket%2Fprivate%2Flist..rkt%29._findf%29%29
+
+Learning about such generalized procedures is, strictly speaking, not necessary
+if you're competent with building the generalizations yourself when the need
+arises. However, knowing about them will help you recognize common patterns
+where they tend to be needed, and avoid any potential mistakes in implementing
+the generalized procedures on your own.
+
 Generalization finger exercises
 -------------------------------
 
-.. collapse:: 
-
+TODO
 
       
