@@ -201,10 +201,113 @@ first part ``(lambda (exprname) <containing-expression>)`` is a generalization
 over the ``<sub-expression>`` and can now be separated out as a definition
 with a name.
 
+A creative act
+--------------
+
+There are many valid generalizations that lie in the possible combinations
+of sub-expressions and containing expressions. For example, even in the simple
+example we have, all the following candidate combinations are *possible*.
+
+.. code:: racket
+
+   ; Original expression
+   (+ 32 (* 9/5 35))
+
+   ; Candidate sub-expressions for abstractions.
+   (+ 32 (* 9/5 ___))
+   (+ ___ (* 9/5 35))
+   (+ 32 (* ___ 35))
+   (+ 32 ___)
+   (___ 32 (* 9/5 35))
+   (+ 32 (___ 9/5 35))
+
+But not all *possible* generalizations are meaningful. The "meaning" here lies
+in whether a particular generalization helps connect the general construct
+across a number of different scenarios, like what ``celsius->fahrenheit`` might
+be used for.
+
+"Good" generalizations are therefore creative acts that rely on how the one
+performing the generalization is able to give meaning to the general construct.
+
+Consider another example --
+
+.. code-racket:: racket
+   :linenos:
+   :caption: Calculating distance between two points.
+
+   (define (distance x1 y1 x2 y2)
+      (sqrt (+ (* (- x1 x2) (- x1 x2))
+               (* (- y1 y2) (- y1 y2)))))
+
+We see some obvious repetitions here. For example, within
+``(* (- x1 x2) (- x1 x2))``, the sub-expression ``(- x1 x2)``
+is repeated and therefore is a candidate for being abstracted
+over. If we follow the abstraction process, we get --
+
+.. code:: racket
+
+   (* (- x1 x2) (- x1 x2))
+   ; => ((lambda (dx) (* dx dx)) (- x1 x2))
+
+We can do the same for the ``(* (- y1 y2) (- y1 y2))`` expression
+as well --
+
+.. code:: racket
+
+   (* (- y1 y2) (- y1 y2))
+   ; => ((lambda (dy) (* dy dy)) (- y1 y2))
+
+The two transformed expressions **seem** different, but if we look
+closer, there is really nothing to distinguish between
+``(lambda (dx) (* dx dx))`` and ``(lambda (dy) (* dy dy))``. Since
+the meanins of ``dx`` and ``dy`` are purely local to the context of
+each respective lambda expression, we could've named them whatever
+we wanted and the **meaning** of the lambda expression will not
+change. In this sense, we can say that these two are **the same**
+function.
+
+.. code:: racket
+
+   (define (distance x1 y1 x2 y2)
+      (sqrt (+ ((lambda (dx) (* dx dx)) (- x1 x2))
+               ((lambda (dy) (* dy dy)) (- y1 y2)))))
+
+   ; =>
+
+   (define (distance x1 y1 x2 y2)
+      (sqrt (+ ((lambda (x) (* x x)) (- x1 x2))
+               ((lambda (x) (* x x)) (- y1 y2)))))
+
+Now if we shift our context to the whole ``(sqrt ...)`` expression,
+we can abstract over the redundant ``(lambda (x) (* x x))`` to get --
+
+.. code:: racket
+
+   (define square (lambda (x) (* x x)))
+
+   (define (distance/f f x1 y1 x2 y2)
+      (sqrt (+ (f (- x1 x2)) (f (- y1 y2)))))
+
+Now we have a more general form ``distance/f`` (read as "distance with ``f``"),
+where the additional ``f`` argument can be varied according to circumstance.
+Apart from ``square``, we can also pass ``abs`` for the ``f`` argument to get a
+different measure. In mathematics, this notion of "k-norm" refers to sums of
+the form :math:`|a_1|^k + |a_2|^k` and we simply landed on this idea (though
+incomplete and needing more thought) through a "mechanical" process of
+identifying redundant sub-expressions.
+
+When we say this is "a creative act", what I'm really saying is that I cheated
+in performing this *specific* generalization over all other possible ones,
+because I've encountered the need for this generalization in my experience many
+times, while you probably haven't. The larger the containing expression, the
+more the possible generalizations. If we have a mathematical bent of mind
+though, we can explore a given generalization to find its uses or discard it.
+Therefore such acts of creativity arise from extensive labour.
+
 Generalization finger exercises
 -------------------------------
 
-TODO
+.. collapse:: 
 
 
       
