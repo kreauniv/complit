@@ -120,11 +120,20 @@
 
 (define digit (character-in "0123456789"))
 
+(define (decimal-pattern->number result)
+  (let ([sign (first result)]
+        [main (second result)]
+        [dec (third result)])
+    (string->number (list->string (apply append
+                                         (if (empty? sign) empty (list sign))
+                                         (rest result))))))
+
 (define decimal-number
-  (sequence* (optional (character-in "-+"))
-             (one-or-more digit)
-             (optional (sequence (character-in ".")
-                                 (one-or-more digit)))))
+  (reinterpret decimal-pattern->number
+               (sequence* (optional (character-in "-+"))
+                          (one-or-more digit)
+                          (optional (sequence (character-in ".")
+                                              (one-or-more digit))))))
 
 
 
