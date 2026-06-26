@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Generalizing &#8212; CompLIT: Programming Literacy v1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d8a2add5" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=17171a54" />
+    <script src="_static/documentation_options.js?v=5cb08e4e"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Representations" href="representations.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="generalizing">
+<h1>Generalizing<a class="headerlink" href="#generalizing" title="Link to this heading">¶</a></h1>
+<p>Programs afford a unique capability where a procedure that was made
+specifically for some circumstance can be (almost) mechanically generalized in
+many ways to produce procedures that can be applied in many other
+circumstances. A generalization is said to be useful if it provides a concept
+that be applied in a number of circumstances other than the one in which it was
+constructed. This goes to say that not _all_ generalizations are worth the
+effort and, more importantly, the cost of inventing a vocabulary for the
+generalization.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Constructing good generalizations is an art learnt by experience,
+but we can give some guidelines towards that.</p>
+</div>
+<p>We’ll look at how to generalize procedures in this section, and some examples
+of generalizations that people have arrived at that have found such wide use
+that they’re now part of common vocabulary of programming.</p>
+<p>Let’s take a simple example to illustrate the “mechanical” process of
+generalizing a procedure. Below is a procedure/function to interprets
+a temperature given in ℃  as ℉ .</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-number">Listing 11 </span><span class="caption-text">Interpreting a temperature given in ℃  as ℉ .</span><a class="headerlink" href="#id1" title="Link to this code">¶</a></div>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">celsius-&gt;fahrenheit</span><span class="w"> </span><span class="n">celsius</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="m">9/5</span><span class="w"> </span><span class="n">celsius</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<details class="summary-racket-and-fractional-numbers">
+<summary>Racket and fractional numbers</summary><p>Racket lets you notate exact fractions like 9/5 directly. Such fractions are
+dealt with as fractions without conversion to decimal representation. For
+example, in python -</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">237</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
+<span class="go">0.004219409282700422</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">*</span> <span class="mi">237</span>
+<span class="go">0.9999999999999999</span>
+</pre></div>
+</div>
+<p>… and the same in Racket is -</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="m">1/237</span><span class="p">)</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="n">x</span>
+<span class="m">1/237</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="mi">237</span><span class="p">)</span>
+<span class="mi">1</span>
+</pre></div>
+</div>
+<p>With lower level programming languages, therefore, we need to be wary about
+the level of precision with which numbers are being represented internally
+when performing certain types of computations. This is not necessarily a bad
+thing, since systems programming languages like Rust, OCaML and C provide
+access to machine representations of numbers and therefore opportunity to
+optimize computations with them explicitly.</p>
+</details><p>Another way we can write this is to make it explicit that <code class="docutils literal notranslate"><span class="pre">celsius-&gt;fahrenheit</span></code>
+is a “procedure” (or, in this case, a “function” since what it means only depends on
+its arguments).</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-number">Listing 12 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">celsius-&gt;fahreheit</span></code> using <code class="docutils literal notranslate"><span class="pre">lambda</span></code></span><a class="headerlink" href="#id2" title="Link to this code">¶</a></div>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">celsius-&gt;fahrenheit</span>
+<span class="hll"><span class="linenos">2</span><span class="w">   </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">celsius</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos">3</span><span class="w">     </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="m">9/5</span><span class="w"> </span><span class="n">celsius</span><span class="p">))))</span>
+</span></pre></div>
+</div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Remember that you can always read <code class="docutils literal notranslate"><span class="pre">lambda</span></code> as <code class="docutils literal notranslate"><span class="pre">procedure</span></code> or
+<code class="docutils literal notranslate"><span class="pre">function</span></code> – with the distinction between the two being a matter of
+whether the computations being described depend only on the argument values
+or have some other extraneous dependency that might cause them to produce
+different values for the same arguments on different occasions.</p>
+</div>
+<p>Now consider how we’ll use this definition to figure out what
+<code class="docutils literal notranslate"><span class="pre">(celsius-&gt;fahrenheit</span> <span class="pre">35)</span></code> means. First we’ll have to substitute the value
+referred to by <code class="docutils literal notranslate"><span class="pre">celsius-&gt;fahrenheit</span></code> (which happens to be a procedure) and
+then substitute the value of <code class="docutils literal notranslate"><span class="pre">32</span></code> for <code class="docutils literal notranslate"><span class="pre">celsius</span></code> within the body.</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<span id="reduction"></span><div class="code-block-caption"><span class="caption-number">Listing 13 </span><span class="caption-text">Reducing an expression to what it means.</span><a class="headerlink" href="#id3" title="Link to this code">¶</a></div>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="p">(</span><span class="n">celsius-&gt;fahrenheit</span><span class="w"> </span><span class="mi">35</span><span class="p">)</span>
+<span class="hll"><span class="linenos">2</span><span class="c1">; =&gt; ((lambda (celsius) (+ 32 (* 9/5 celsius))) 35)</span>
+</span><span class="hll"><span class="linenos">3</span><span class="c1">; =&gt; (+ 32 (* 9/5 35))</span>
+</span><span class="linenos">4</span><span class="c1">; =&gt; (+ 32 63)</span>
+<span class="linenos">5</span><span class="c1">; =&gt; 95</span>
+</pre></div>
+</div>
+</div>
+<p>The key step above is where we replaced the <code class="docutils literal notranslate"><span class="pre">(lambda</span> <span class="pre">..)</span></code> with
+just its “body” and substituted <code class="docutils literal notranslate"><span class="pre">35</span></code> for all occurrences of the argument
+identifier <code class="docutils literal notranslate"><span class="pre">celsius</span></code> within the body. We then continued to replace
+sub-expressions with whatever we know they mean until all we’re left
+with is an irreducible value – <code class="docutils literal notranslate"><span class="pre">95</span></code> in this case.</p>
+<section id="generalization-as-the-reverse-of-reduction">
+<h2>Generalization as the reverse of reduction<a class="headerlink" href="#generalization-as-the-reverse-of-reduction" title="Link to this heading">¶</a></h2>
+<p>Let’s look at what a reversal of the highlighted steps in <a class="reference internal" href="#reduction"><span class="std std-numref">Listing 13</span></a>
+looks like –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="c1">; =&gt; (+ 32 (* 9/5 35))</span>
+<span class="c1">; =&gt; ((lambda (celsius) (+ 32 (* 9/5 celsius))) 35)</span>
+</pre></div>
+</div>
+<p>You might imagine a program where we’ve done celsius to fahrenheit conversions
+in a number of places using explicit expressions like <code class="docutils literal notranslate"><span class="pre">(+</span> <span class="pre">32</span> <span class="pre">(*</span> <span class="pre">9/5</span> <span class="pre">35))</span></code>,
+<code class="docutils literal notranslate"><span class="pre">(+</span> <span class="pre">32</span> <span class="pre">(*</span> <span class="pre">9/5</span> <span class="pre">100))</span></code> and so on. Where we’ve used the same expression pattern
+<code class="docutils literal notranslate"><span class="pre">(+</span> <span class="pre">32</span> <span class="pre">(*</span> <span class="pre">9/5</span> <span class="pre">__))</span></code> to do the conversion calculation. What this reversal
+of steps does is give you a valid expressions from which we can capture the
+generalization <code class="docutils literal notranslate"><span class="pre">(lambda</span> <span class="pre">(celsius)</span> <span class="pre">(+</span> <span class="pre">32</span> <span class="pre">(*</span> <span class="pre">9/5</span> <span class="pre">celsius)))</span></code> into its own
+definition so that the whole expression reads more clearly.</p>
+<p>Unless the reader knows what 32 and 9/5 are for in such expressions, it may not
+be clear to them why the calculation is being done, but if they see
+<code class="docutils literal notranslate"><span class="pre">(celsius-&gt;fahrenheit</span> <span class="pre">35)</span></code> instead, it would make clear to them that <code class="docutils literal notranslate"><span class="pre">35</span></code>
+is a temperature in degrees celsius and the result expression is the
+corresponding temperature in degrees fahrenheit.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">celsius-&gt;fahrenheit</span><span class="w"> </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">celsius</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="m">9/5</span><span class="w"> </span><span class="n">celsius</span><span class="p">))))</span>
+<span class="p">(</span><span class="n">celsius-&gt;fahrenheit</span><span class="w"> </span><span class="mi">35</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note what we’ve done here –</p>
+<ol class="arabic simple">
+<li><p>We’ve now gained a reusable “word” in our vocabulary.</p></li>
+<li><p>We’ve also given a name for the changeable parts of the expression,
+thus clarifying what kind of a thing is expected in the <code class="docutils literal notranslate"><span class="pre">___</span></code> area
+of <code class="docutils literal notranslate"><span class="pre">(+</span> <span class="pre">32</span> <span class="pre">(*</span> <span class="pre">9/5</span> <span class="pre">___))</span></code>.</p></li>
+</ol>
+<p>Therefore with each such reverse step, we need to invent two words
+– one for the pattern and one for the <code class="docutils literal notranslate"><span class="pre">___</span></code> within the pattern.</p>
+<div class="admonition-repeated-code-patterns admonition">
+<p class="admonition-title"><strong>Repeated code patterns</strong></p>
+<p>Whenever you find code patterns – expressions or whole blocks –
+repeated with minor variations in some parts of them, these are
+ripe candidates for generalization because doing so can help reduce
+the redundancy in the code and, more importantly, clarify the
+concept that the repetition is hinting at that we may not have
+acknowledged earlier.</p>
+</div>
+<div class="admonition-terminology-abstracting-over admonition">
+<p class="admonition-title"><strong>Terminology: “Abstracting over ___”</strong></p>
+<p>We derived a definition for <code class="docutils literal notranslate"><span class="pre">celsius-&gt;fahrenheit</span></code> by replacing
+the changeable <code class="docutils literal notranslate"><span class="pre">35</span></code> part with an identifier <code class="docutils literal notranslate"><span class="pre">celsius</span></code> and
+constructing a <code class="docutils literal notranslate"><span class="pre">(lambda</span> <span class="pre">(celsius)</span> <span class="pre">...)</span></code> capturing the pattern
+using that newly introduced identifier. We refer to this as
+“abstracting over &lt;the-sub-expression&gt;”.</p>
+</div>
+<p>These words we add take thought and communicate intent to the reader of the
+program. If either word ends up being reusable in many circumstances, then
+creating such words becomes valuable cognitive arsenal, much like learning new
+words in a language can improve one’s understanding of nuances with certain
+kinds of expression.</p>
+<div class="admonition-ponder-this admonition">
+<p class="admonition-title"><strong>Ponder this</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">32</span></code> and <code class="docutils literal notranslate"><span class="pre">9/5</span></code> are obvious “constants” in this situation. But “constant”
+w.r.t. what? These are constant in the scope of the definition of
+<code class="docutils literal notranslate"><span class="pre">celsius-&gt;fahrenheit</span></code> – i.e. values that remain fixed irrespective of the
+context in which the abstraction gets used (sometimes referred to as the
+“invocation context”). Being the argument identifier, <code class="docutils literal notranslate"><span class="pre">celsius</span></code> is not a
+constant. Identify the other references that are also constant in this
+scope?</p>
+</div>
+</section>
+<section id="mechanizing-generalization">
+<h2>Mechanizing generalization<a class="headerlink" href="#mechanizing-generalization" title="Link to this heading">¶</a></h2>
+<p>Our previous construction of the <code class="docutils literal notranslate"><span class="pre">celsius-&gt;fahrenheit</span></code> function as an
+abstraction over repeated conversion patterns is a simple example, but the same
+process applies for abstracting a sub-expression over a containing expression.
+In this case, we “abstracted <code class="docutils literal notranslate"><span class="pre">35</span></code> over the containing expression <code class="docutils literal notranslate"><span class="pre">(+</span> <span class="pre">32</span> <span class="pre">(*</span>
+<span class="pre">9/5</span> <span class="pre">35))</span></code> to get <code class="docutils literal notranslate"><span class="pre">((lambda</span> <span class="pre">(celsius)</span> <span class="pre">(+</span> <span class="pre">32</span> <span class="pre">(*</span> <span class="pre">9/5</span> <span class="pre">celsius)))</span> <span class="pre">35)</span></code>, from
+which we can extract the function <code class="docutils literal notranslate"><span class="pre">(lambda</span> <span class="pre">(celsius)</span> <span class="pre">(+</span> <span class="pre">32</span> <span class="pre">(*</span> <span class="pre">9/5</span> <span class="pre">celsius)))</span></code>
+as the generalization.</p>
+<p>To abstract a sub-expression over a containing expression,</p>
+<ol class="arabic simple">
+<li><p>Select the sub-expression in DrRacket.</p></li>
+<li><p>Figure out a name that describes the sub-expression. (say <code class="docutils literal notranslate"><span class="pre">exprname</span></code>)</p></li>
+<li><p>“Cut” the selected sub-expression.</p></li>
+<li><p>Type in the name (identifier).</p></li>
+<li><p>Replace the containing expression with
+<code class="docutils literal notranslate"><span class="pre">((lambda</span> <span class="pre">(exprname)</span> <span class="pre">&lt;containing-expression&gt;)</span> <span class="pre">&lt;sub-expression&gt;)</span></code></p></li>
+</ol>
+<p>This actually doesn’t perform the abstraction. It simply replaces one
+expression with another that means exactly the same thing. However, the
+first part <code class="docutils literal notranslate"><span class="pre">(lambda</span> <span class="pre">(exprname)</span> <span class="pre">&lt;containing-expression&gt;)</span></code> is a generalization
+over the <code class="docutils literal notranslate"><span class="pre">&lt;sub-expression&gt;</span></code> and can now be separated out as a definition
+with a name.</p>
+</section>
+<section id="generalization-finger-exercises">
+<h2>Generalization finger exercises<a class="headerlink" href="#generalization-finger-exercises" title="Link to this heading">¶</a></h2>
+<p>TODO</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">CompLIT: Programming Literacy</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="words.html">Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interrogation.html">Interrogating programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strings.html">Strings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample-programs.html">Sample programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structures.html">Structures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing2.html">More parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="alternative-syntax.html">Optional: Alternative language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recap.html">Recap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="technical-terms.html">Optional: Technical terms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelling-images.html">Modelling a domain - Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="representations.html">Representations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Generalizing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#generalization-as-the-reverse-of-reduction">Generalization as the reverse of reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mechanizing-generalization">Mechanizing generalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generalization-finger-exercises">Generalization finger exercises</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="representations.html" title="previous chapter">Representations</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Srikumar K. S..
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/generalizations.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

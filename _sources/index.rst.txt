@@ -20,4 +20,5 @@ CompLIT: Programming Literacy (WORK-IN-PROGRESS)
    technical-terms
    modelling-images
    representations
+   generalizations
 
