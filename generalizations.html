@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Generalizing &#8212; CompLIT: Programming Literacy v1 documentation</title>
+    <title>Generalizations &#8212; CompLIT: Programming Literacy v1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d8a2add5" />
     <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
@@ -36,8 +36,8 @@
 
           <div class="body" role="main">
             
-  <section id="generalizing">
-<h1>Generalizing<a class="headerlink" href="#generalizing" title="Link to this heading">¶</a></h1>
+  <section id="generalizations">
+<h1>Generalizations<a class="headerlink" href="#generalizations" title="Link to this heading">¶</a></h1>
 <p>Programs afford a unique capability where a procedure that was made
 specifically for some circumstance can be (almost) mechanically generalized in
 many ways to produce procedures that can be applied in many other
@@ -459,8 +459,65 @@ the generalized procedures on your own.</p>
 </section>
 <section id="generalization-finger-exercises">
 <h2>Generalization finger exercises<a class="headerlink" href="#generalization-finger-exercises" title="Link to this heading">¶</a></h2>
-<p>TODO</p>
-</section>
+<details class="summary-split-a-string-into-lines">
+<summary>Split a string into lines</summary><p>You’re given a multi-line text as a single string. The task is
+to split the string into a list of strings wherever there is a
+line break. A definition is given below for this task. In what
+ways can you generalize this? Can you imagine purposes for which
+the generalizations could be useful? How would you name the
+generalizations?</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">string-&gt;lines</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
+<span class="w">  </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">scan-line</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;=</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">str</span><span class="p">))</span>
+<span class="w">        </span><span class="n">str</span>
+<span class="w">        </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">equal?</span><span class="w"> </span><span class="p">(</span><span class="nb">string-ref</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span><span class="w"> </span><span class="sc">#\newline</span><span class="p">)</span>
+<span class="w">            </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span>
+<span class="w">            </span><span class="p">(</span><span class="n">scan-line</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="mi">1</span><span class="p">)))))</span>
+
+<span class="w">  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">first-line</span><span class="w"> </span><span class="p">(</span><span class="n">scan-line</span><span class="w"> </span><span class="mi">0</span><span class="p">)])</span>
+<span class="w">    </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;=</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">first-line</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">str</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="nb">list</span><span class="w"> </span><span class="n">first-line</span><span class="p">)</span>
+<span class="w">        </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="n">first-line</span>
+<span class="w">              </span><span class="p">(</span><span class="n">string-&gt;lines</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">first-line</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span><span class="p">)))))))</span>
+</pre></div>
+</div>
+<p><strong>Understand</strong> how the definition functions by interrogating it using
+DrRacket’s “interaction window”, before you attempt to make generalizations.
+Would you want to rewrite this definition in any other way?</p>
+</details><details class="summary-drive-a-car">
+<summary>Drive a car</summary><p>So you’re driving a car on a straight course and leave the starting point at
+60kmph. You accelerate at <span class="math notranslate nohighlight">\(7m/s^2\)</span> for 30 seconds and then decelerate
+at <span class="math notranslate nohighlight">\(5m/s^2\)</span> for 30 seconds. A HS student tasked with calculating the
+result wrote down the following expression for the scenario. Your task is to
+construct suitable abstractions that help clarify the calculation, and to given
+appropriate names to the concepts that arise.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">distance-driven-in-metres</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="m">1000/3600</span><span class="p">)</span><span class="w"> </span><span class="mi">30</span><span class="p">)</span>
+<span class="w">         </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="m">1/2</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="mi">30</span><span class="p">)))</span>
+<span class="w">      </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="m">1000/3600</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="mi">30</span><span class="p">))</span><span class="w"> </span><span class="mi">30</span><span class="p">)</span>
+<span class="w">         </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="m">1/2</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="mi">30</span><span class="p">)))))</span>
+</pre></div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Remember that parentheses here are not of the “mathematical
+brackets” kind, but are Racket’s parentheses of the form <code class="docutils literal notranslate"><span class="pre">(&lt;operator&gt;</span>
+<span class="pre">&lt;operand1&gt;</span> <span class="pre">&lt;operand2&gt;</span> <span class="pre">..)</span></code>. The forms of the expressions have been kept
+structured with repeating elements to help you identify patterns … though
+I don’t expect a HS student to be so considerate :)</p>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Not all occurrences of <code class="docutils literal notranslate"><span class="pre">30</span></code> have the same meaning.</p>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Keep in mind that multiple concepts might need to be elucidated
+via the generalization process. You might want to start by turning
+<code class="docutils literal notranslate"><span class="pre">distance-driven-in-metres</span></code> into a function instead of a calculated
+number.</p>
+</div>
+</details></section>
 </section>
 
 
@@ -504,7 +561,7 @@ the generalized procedures on your own.</p>
 <li class="toctree-l1"><a class="reference internal" href="technical-terms.html">Optional: Technical terms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modelling-images.html">Modelling a domain - Images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="representations.html">Representations</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Generalizing</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Generalizations</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#generalization-as-the-reverse-of-reduction">Generalization as the reverse of reduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#mechanizing-generalization">Mechanizing generalization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#a-creative-act">A creative act</a></li>

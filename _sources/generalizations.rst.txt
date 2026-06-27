@@ -1,5 +1,5 @@
-Generalizing
-============
+Generalizations
+===============
 
 Programs afford a unique capability where a procedure that was made
 specifically for some circumstance can be (almost) mechanically generalized in
@@ -484,6 +484,64 @@ the generalized procedures on your own.
 Generalization finger exercises
 -------------------------------
 
-TODO
+.. collapse:: Split a string into lines
 
-      
+   You're given a multi-line text as a single string. The task is
+   to split the string into a list of strings wherever there is a
+   line break. A definition is given below for this task. In what
+   ways can you generalize this? Can you imagine purposes for which
+   the generalizations could be useful? How would you name the
+   generalizations?
+
+   .. code:: racket
+
+      (define (string->lines str)
+        (define (scan-line pos)
+          (if (>= pos (string-length str))
+              str
+              (if (equal? (string-ref str pos) #\newline)
+                  (substring str 0 pos)
+                  (scan-line (+ pos 1)))))
+
+        (let ([first-line (scan-line 0)])
+          (if (>= (string-length first-line) (string-length str))
+              (list first-line)
+              (cons first-line
+                    (string->lines (substring str (+ (string-length first-line) 1)))))))
+
+   **Understand** how the definition functions by interrogating it using
+   DrRacket's "interaction window", before you attempt to make generalizations.
+   Would you want to rewrite this definition in any other way?
+               
+.. collapse:: Drive a car
+
+   So you're driving a car on a straight course and leave the starting point at
+   60kmph. You accelerate at :math:`7m/s^2` for 30 seconds and then decelerate
+   at :math:`5m/s^2` for 30 seconds. A HS student tasked with calculating the
+   result wrote down the following expression for the scenario. Your task is to
+   construct suitable abstractions that help clarify the calculation, and to given
+   appropriate names to the concepts that arise.
+
+   .. code:: racket
+
+      (define distance-driven-in-metres
+         (+ (+ (* (* 60 1000/3600) 30)
+               (* 1/2 7 (* 30 30)))
+            (- (* (+ (* 60 1000/3600) (* 7 30)) 30)
+               (* 1/2 5 (* 30 30)))))
+
+   .. hint:: Remember that parentheses here are not of the "mathematical
+      brackets" kind, but are Racket's parentheses of the form ``(<operator>
+      <operand1> <operand2> ..)``. The forms of the expressions have been kept
+      structured with repeating elements to help you identify patterns ... though
+      I don't expect a HS student to be so considerate :) 
+
+   .. hint:: Not all occurrences of ``30`` have the same meaning.
+
+   .. hint:: Keep in mind that multiple concepts might need to be elucidated
+      via the generalization process. You might want to start by turning
+      ``distance-driven-in-metres`` into a function instead of a calculated
+      number.
+
+.. collapse:: 
+
