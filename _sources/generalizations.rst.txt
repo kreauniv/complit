@@ -543,5 +543,32 @@ Generalization finger exercises
       ``distance-driven-in-metres`` into a function instead of a calculated
       number.
 
-.. collapse:: 
+.. collapse:: Construct a list of numbers
+
+   Write a definition that gets you a list of the first 20 square numbers of the form :math:`n^2` for n = 1 to 20.
+   A definition with such a value is given below. Identify opportunities for
+   generalization. Modify the definitions accordingly and choose appropriate
+   names.
+   
+   .. code:: racket
+
+      (define twenty-squares
+         (let squares ([k 1])
+            (if (<= k 20)
+               (cons (* k k) (squares (+ k 1)))
+               empty)))
+
+   What if the definition was the following? Would the generalizations differ?
+
+   .. code:: racket
+
+      (define twenty-squares
+         (let squares ([k 1] [ls empty])
+            (if (<= k 20)
+               (squares (+ k 1) (cons (* k k) ls))
+               (reverse ls))))
+
+   Think about whether your generalizations will be usable in a wider context
+   and construct some examples to illustrate some of these contexts (even if
+   just imagined) where they might be of use.
 
