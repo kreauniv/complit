@@ -15,7 +15,7 @@ open it in your browser.
 
 .. _ex-svg:
 
-.. code-block:: svg
+.. code-block:: html
    :linenos:
    :caption: An example svg image.
 
