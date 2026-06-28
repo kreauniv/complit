@@ -18,7 +18,7 @@
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Representations" href="representations.html" />
+    <link rel="prev" title="Interlude: SVG" href="svg.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -58,7 +58,7 @@ that they’re now part of common vocabulary of programming.</p>
 generalizing a procedure. Below is a procedure/function to interprets
 a temperature given in ℃  as ℉ .</p>
 <div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-number">Listing 11 </span><span class="caption-text">Interpreting a temperature given in ℃  as ℉ .</span><a class="headerlink" href="#id1" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 12 </span><span class="caption-text">Interpreting a temperature given in ℃  as ℉ .</span><a class="headerlink" href="#id1" title="Link to this code">¶</a></div>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">celsius-&gt;fahrenheit</span><span class="w"> </span><span class="n">celsius</span><span class="p">)</span>
 <span class="w">   </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="m">9/5</span><span class="w"> </span><span class="n">celsius</span><span class="p">)))</span>
 </pre></div>
@@ -93,7 +93,7 @@ optimize computations with them explicitly.</p>
 is a “procedure” (or, in this case, a “function” since what it means only depends on
 its arguments).</p>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-number">Listing 12 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">celsius-&gt;fahreheit</span></code> using <code class="docutils literal notranslate"><span class="pre">lambda</span></code></span><a class="headerlink" href="#id2" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 13 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">celsius-&gt;fahreheit</span></code> using <code class="docutils literal notranslate"><span class="pre">lambda</span></code></span><a class="headerlink" href="#id2" title="Link to this code">¶</a></div>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">celsius-&gt;fahrenheit</span>
 <span class="hll"><span class="linenos">2</span><span class="w">   </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">celsius</span><span class="p">)</span>
 </span><span class="hll"><span class="linenos">3</span><span class="w">     </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="m">9/5</span><span class="w"> </span><span class="n">celsius</span><span class="p">))))</span>
@@ -113,7 +113,7 @@ different values for the same arguments on different occasions.</p>
 referred to by <code class="docutils literal notranslate"><span class="pre">celsius-&gt;fahrenheit</span></code> (which happens to be a procedure) and
 then substitute the value of <code class="docutils literal notranslate"><span class="pre">32</span></code> for <code class="docutils literal notranslate"><span class="pre">celsius</span></code> within the body.</p>
 <div class="literal-block-wrapper docutils container" id="id3">
-<span id="reduction"></span><div class="code-block-caption"><span class="caption-number">Listing 13 </span><span class="caption-text">Reducing an expression to what it means.</span><a class="headerlink" href="#id3" title="Link to this code">¶</a></div>
+<span id="reduction"></span><div class="code-block-caption"><span class="caption-number">Listing 14 </span><span class="caption-text">Reducing an expression to what it means.</span><a class="headerlink" href="#id3" title="Link to this code">¶</a></div>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="p">(</span><span class="n">celsius-&gt;fahrenheit</span><span class="w"> </span><span class="mi">35</span><span class="p">)</span>
 <span class="hll"><span class="linenos">2</span><span class="c1">; =&gt; ((lambda (celsius) (+ 32 (* 9/5 celsius))) 35)</span>
 </span><span class="hll"><span class="linenos">3</span><span class="c1">; =&gt; (+ 32 (* 9/5 35))</span>
@@ -129,7 +129,7 @@ sub-expressions with whatever we know they mean until all we’re left
 with is an irreducible value – <code class="docutils literal notranslate"><span class="pre">95</span></code> in this case.</p>
 <section id="generalization-as-the-reverse-of-reduction">
 <h2>Generalization as the reverse of reduction<a class="headerlink" href="#generalization-as-the-reverse-of-reduction" title="Link to this heading">¶</a></h2>
-<p>Let’s look at what a reversal of the highlighted steps in <a class="reference internal" href="#reduction"><span class="std std-numref">Listing 13</span></a>
+<p>Let’s look at what a reversal of the highlighted steps in <a class="reference internal" href="#reduction"><span class="std std-numref">Listing 14</span></a>
 looks like –</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="c1">; =&gt; (+ 32 (* 9/5 35))</span>
 <span class="c1">; =&gt; ((lambda (celsius) (+ 32 (* 9/5 celsius))) 35)</span>
@@ -242,7 +242,7 @@ be used for.</p>
 performing the generalization is able to give meaning to the general construct.</p>
 <p>Consider another example –</p>
 <div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-number">Listing 14 </span><span class="caption-text">Calculating distance between two points.</span><a class="headerlink" href="#id4" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 15 </span><span class="caption-text">Calculating distance between two points.</span><a class="headerlink" href="#id4" title="Link to this code">¶</a></div>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">distance</span><span class="w"> </span><span class="n">x1</span><span class="w"> </span><span class="n">y1</span><span class="w"> </span><span class="n">x2</span><span class="w"> </span><span class="n">y2</span><span class="p">)</span>
 <span class="linenos">2</span><span class="w">   </span><span class="p">(</span><span class="nb">sqrt</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">x1</span><span class="w"> </span><span class="n">x2</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">x1</span><span class="w"> </span><span class="n">x2</span><span class="p">))</span>
 <span class="linenos">3</span><span class="w">            </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">y1</span><span class="w"> </span><span class="n">y2</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">y1</span><span class="w"> </span><span class="n">y2</span><span class="p">)))))</span>
@@ -584,6 +584,7 @@ just imagined) where they might be of use.</p>
 <li class="toctree-l1"><a class="reference internal" href="technical-terms.html">Optional: Technical terms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modelling-images.html">Modelling a domain - Images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="representations.html">Representations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="svg.html">Interlude: SVG</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Generalizations</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#generalization-as-the-reverse-of-reduction">Generalization as the reverse of reduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#mechanizing-generalization">Mechanizing generalization</a></li>
@@ -598,7 +599,7 @@ just imagined) where they might be of use.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="representations.html" title="previous chapter">Representations</a></li>
+      <li>Previous: <a href="svg.html" title="previous chapter">Interlude: SVG</a></li>
   </ul></li>
 </ul>
 </div>

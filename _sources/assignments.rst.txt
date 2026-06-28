@@ -29,7 +29,7 @@ Mathy stuff
 -----------
 
 1. Number guessing game (simple)
-2. Compute approximate square root (simple)
+2. Compute approximate square root (simple) using :math:`x_{n+1} = \frac{1}{2}(x_n + \frac{a}{x_n})`.
 3. Generalize (2) to n-th root. (involved)
 4. Model a rocket launch. (advanced)
 5. Draw the paths of a double pendulum. (advanced)
