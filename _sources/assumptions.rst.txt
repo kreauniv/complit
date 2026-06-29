@@ -249,7 +249,7 @@ message.
 
 
 .. _Function contracts: https://docs.racket-lang.org/reference/function-contracts.html
-.. _Racket contract: https://docs.racket-lang.org/reference/contracts.html
+.. _Racket contracts: https://docs.racket-lang.org/reference/contracts.html
 .. _Lean: https://lean-lang.org
 .. _Isabelle: https://isabelle.in.tum.de
 .. _Rocq: https://rocq-prover.org
@@ -262,5 +262,7 @@ message.
 .. _quickcheck: https://docs.racket-lang.org/quickcheck/index.html#%28form._%28%28lib._quickcheck%2Fmain..rkt%29._with-small-test-count%29%29
 .. _rackcheck: https://docs.racket-lang.org/rackcheck/index.html
 
-.. [#tsmean] Actually in some cases they do, such as with type systems, but that's
-a subtlety we can gloss over given the introductory nature of this course.
+.. [#tsmean] Actually in some cases they do, such as with type systems, but
+   that's a subtlety we can gloss over given the introductory nature of this
+   course.
+
