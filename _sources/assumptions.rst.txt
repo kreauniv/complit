@@ -213,7 +213,7 @@ error messages that the programmer can understand.
 
 .. note:: For our purpose, the main take away from contracts is that for the
    person reading your code, they help clarify the assumptions under which your
-   definition(s) can be used and when used appropriately the implications they
+   definition(s) can be used and, when used appropriately, the implications they
    guarantee. It is an added bonus that contracts are live and will check and
    report on these assumptions and guarantees wherever the definitions are
    used. Contracts are therefore a limited but useful way in which your
