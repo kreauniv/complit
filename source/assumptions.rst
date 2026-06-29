@@ -35,12 +35,16 @@ kinds --
    as a library into many programming languages (See `wikipedia:QuickCheck
    <wikiqc_>`_).
 
-3. **Contracts** : Contracts are checks inserted for the arguments and results
-   of procedure definitions "provided" by modules, which ensure that all the
-   necessary pre-conditions for a definition to apply are met before the definition
-   is used, and also that the definition indeed defines what it intends to define.
-   These checks are run for each invocation of the definition, much like the way
-   we inserted ``(when <cond> <error>)`` expressions to check arguments.
+3. **Contracts** : Contracts declared on identifiers help clarify the
+   assumptions under which the identifiers can be meaningfully deployed and the
+   implications they guarantee when meaningfully deployed. Operationally, they
+   are checks inserted for the arguments and results of procedure definitions
+   "provided" by modules, which ensure that all the necessary pre-conditions
+   for a definition to apply (the assumptions) are met before the definition is
+   used, and also that the definition indeed defines what it intends to define
+   (the implication). These checks are run for each invocation of the
+   definition, much like the way we inserted ``(when <cond> <error>)``
+   expressions to check arguments.
 
    Racket provides definitions that make declaring such contracts_ an integral 
    part of the language. We've seen contracts in the documentation, though we
@@ -82,18 +86,20 @@ kinds --
    specification. This means, the problem now shifts to ensuring that the
    specifications are encoded correctly!
 
-We won't be looking at these in detail in this course. However we'll look
-at "contracts" a bit closer as it is involved in the documentation you'll
-be referencing. Also, when you're working with other languages, you should
-look for the equivalent of contracts to understand the behaviour of definitions
-you're borrowing from a library.
+We won't be looking at these in detail in this course. However we'll look at
+"contracts" a bit closer as it is involved in the documentation you'll be
+referencing. Also, when you're working with other languages, you should look
+for the equivalent of contracts to understand the behaviour of definitions
+you're borrowing from a library. Furthermore, type systems are closely related
+to contracts in what they help clarify, though operationally they're different.
 
 The **reason** we won't be looking at these in depth is that they all
 constitute a set of tools that turn the mechanism of computing on to validating
 what we're expressing in programming languages. They do not alter the "meaning"
 of the programs we write [#tsmean]_ except to make clear to those making use of
 definitions written by others as to the conditions under which those
-definitions are usable.
+definitions are usable and the guarantees they provide when used under those
+valid conditions.
 
 Contracts
 ---------
