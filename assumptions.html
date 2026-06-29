@@ -204,7 +204,7 @@ procedure that accepts one argument) are treated as “predicates” and are
 expected to produce <code class="docutils literal notranslate"><span class="pre">#f</span></code> to indicate that the argument does not meet the
 contract. This means you can write your own contracts as ordinary procedures.
 For example –</p>
-<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">one-to-ten/c</span><span class="w"> </span><span class="n">n</span><span class="p">)</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">one-to-ten?</span><span class="w"> </span><span class="n">n</span><span class="p">)</span>
 <span class="w">   </span><span class="p">(</span><span class="k">and</span><span class="w"> </span><span class="p">(</span><span class="nb">integer?</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="mi">10</span><span class="p">)))</span>
 </pre></div>
 </div>
@@ -216,10 +216,10 @@ For example –</p>
 <span class="c1">; (define one-to-ten/c (integer-in 1 10))</span>
 </pre></div>
 </div>
-<p>Though these predicates we write can now be used to declare contracts, there is
-more to making them a full fledged contract, because we also need to account
-for what happens when contracts fail and how to produce error messages that the
-programmer can understand.</p>
+<p>Though predicates like <code class="docutils literal notranslate"><span class="pre">one-to-ten?</span></code> that we write can now be used to declare
+contracts, there is more to making them a full fledged contract, because we
+also need to account for what happens when contracts fail and how to produce
+error messages that the programmer can understand.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For our purpose, the main take away from contracts is that for the
