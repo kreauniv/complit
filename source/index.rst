@@ -12,9 +12,9 @@ CompLIT: Programming Literacy (WORK-IN-PROGRESS)
    interrogation
    strings
    sample-programs
-   assumptions
    structures
    parsing
+   assumptions
    parsing2
    alternative-syntax
    recap

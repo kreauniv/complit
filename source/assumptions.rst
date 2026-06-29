@@ -1,5 +1,5 @@
-Assumptions
-===========
+Assumptions and implications
+============================
 
 When writing procedure and function definitions to express a problem's
 solution, the HtDP documentation requirements help us clarify the meaning of
@@ -17,7 +17,7 @@ kinds --
    in a variety of contexts including extremities where failures are more likely
    and expected. In Racket, the package ``rackunit`` provides definitions that
    help write such "unit tests". We saw some of these in use in
-   :numref:`knowing-it-works` where we checked some expectations of our parsing
+   :ref:`knowing-it-works` where we checked some expectations of our parsing
    definitions.
 
 2. **Property testing** : This refers to an approach of checking whether
