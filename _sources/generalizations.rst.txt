@@ -545,10 +545,10 @@ Generalization finger exercises
 
 .. collapse:: Construct a list of numbers
 
-   Write a definition that gets you a list of the first 20 square numbers of the form :math:`n^2` for n = 1 to 20.
-   A definition with such a value is given below. Identify opportunities for
-   generalization. Modify the definitions accordingly and choose appropriate
-   names.
+   Write a definition that gets you a list of the first 20 square numbers of
+   the form :math:`n^2` for n = 1 to 20. A definition with such a value is
+   given below. Identify opportunities for generalization. Modify the
+   definitions accordingly and choose appropriate names.
    
    .. code:: racket
 
@@ -568,7 +568,17 @@ Generalization finger exercises
                (squares (+ k 1) (cons (* k k) ls))
                (reverse ls))))
 
+   First work on understanding how either definition works to mean a list of 20
+   squares before trying to generalize.
+
    Think about whether your generalizations will be usable in a wider context
-   and construct some examples to illustrate some of these contexts (even if
-   just imagined) where they might be of use.
+   and construct some examples to illustrate some of these contexts where they
+   might be of use.
+
+   .. collapse:: Hint
+
+      It is ok if such contexts are based on your imagination, since there is
+      no expectation that you have the experience to pull real valid contexts
+      into this exercise. What is important is that you go for rather distinct
+      variations. Go for 3-5 examples, the more the merrier.
 

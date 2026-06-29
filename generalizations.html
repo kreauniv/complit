@@ -518,10 +518,10 @@ via the generalization process. You might want to start by turning
 number.</p>
 </div>
 </details><details class="summary-construct-a-list-of-numbers">
-<summary>Construct a list of numbers</summary><p>Write a definition that gets you a list of the first 20 square numbers of the form <span class="math notranslate nohighlight">\(n^2\)</span> for n = 1 to 20.
-A definition with such a value is given below. Identify opportunities for
-generalization. Modify the definitions accordingly and choose appropriate
-names.</p>
+<summary>Construct a list of numbers</summary><p>Write a definition that gets you a list of the first 20 square numbers of
+the form <span class="math notranslate nohighlight">\(n^2\)</span> for n = 1 to 20. A definition with such a value is
+given below. Identify opportunities for generalization. Modify the
+definitions accordingly and choose appropriate names.</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">twenty-squares</span>
 <span class="w">   </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="n">squares</span><span class="w"> </span><span class="p">([</span><span class="n">k</span><span class="w"> </span><span class="mi">1</span><span class="p">])</span>
 <span class="w">      </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;=</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="mi">20</span><span class="p">)</span>
@@ -537,10 +537,17 @@ names.</p>
 <span class="w">         </span><span class="p">(</span><span class="nb">reverse</span><span class="w"> </span><span class="n">ls</span><span class="p">))))</span>
 </pre></div>
 </div>
+<p>First work on understanding how either definition works to mean a list of 20
+squares before trying to generalize.</p>
 <p>Think about whether your generalizations will be usable in a wider context
-and construct some examples to illustrate some of these contexts (even if
-just imagined) where they might be of use.</p>
-</details></section>
+and construct some examples to illustrate some of these contexts where they
+might be of use.</p>
+<details class="summary-hint">
+<summary>Hint</summary><p>It is ok if such contexts are based on your imagination, since there is
+no expectation that you have the experience to pull real valid contexts
+into this exercise. What is important is that you go for rather distinct
+variations. Go for 3-5 examples, the more the merrier.</p>
+</details></details></section>
 </section>
 
 
