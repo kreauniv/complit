@@ -261,19 +261,19 @@ list by prepending an item to a given list”.</p>
 <h2>Mapping the problem<a class="headerlink" href="#mapping-the-problem" title="Link to this heading">¶</a></h2>
 <p>So now that we know about how to build up and take apart lists, we can use this
 to think about “list of words”.</p>
-<figure class="align-center" id="id1">
+<figure class="align-center" id="id2">
 <img alt="_images/simple-sentence.png" src="_images/simple-sentence.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 9 </span><span class="caption-text">How we’d like to map the “words” we find in a simple sentence
-to elements of a list.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+to elements of a list.</span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>The below figure shows how we wish to think of the problem.</p>
-<figure class="align-center" id="id2">
+<figure class="align-center" id="id3">
 <img alt="_images/simple-sentence-parse.png" src="_images/simple-sentence-parse.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 10 </span><span class="caption-text">Collecting words is about finding the next word, and collecting
-the remaining words.</span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
+the remaining words.</span><a class="headerlink" href="#id3" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>As long as at each stage we’re only dealing with a shorter string, we’re
@@ -351,8 +351,8 @@ of the “next word”.</p>
 </pre></div>
 </div>
 <p>Putting it all together, we have –</p>
-<div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-number">Listing 8 </span><span class="caption-text">Collecting the list of words from a given string.</span><a class="headerlink" href="#id3" title="Link to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-number">Listing 8 </span><span class="caption-text">Collecting the list of words from a given string.</span><a class="headerlink" href="#id4" title="Link to this code">¶</a></div>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">list-of-words-between</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="n">start-pos</span><span class="w"> </span><span class="n">end-pos</span><span class="p">)</span>
 <span class="linenos"> 2</span><span class="w">  </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;=</span><span class="w"> </span><span class="n">start-pos</span><span class="w"> </span><span class="n">end-pos</span><span class="p">)</span>
 <span class="linenos"> 3</span><span class="w">      </span><span class="nb">empty</span>
@@ -399,7 +399,7 @@ down adding detail in each step.</p>
 </div>
 </section>
 <section id="how-do-we-know-it-works">
-<h2>How do we know it works?<a class="headerlink" href="#how-do-we-know-it-works" title="Link to this heading">¶</a></h2>
+<span id="knowing-it-works"></span><h2>How do we know it works?<a class="headerlink" href="#how-do-we-know-it-works" title="Link to this heading">¶</a></h2>
 <p>Every procedure definition is made with some assumptions about the contexts
 in which it will be used, usually, by another programmer. To clarify to
 this programmer that we do know that the procedure works “as advertised”,
@@ -471,11 +471,29 @@ section. Include your own variations as well.</p>
 <p>Since we’ve articulated the cases to be considered <strong>before</strong> we
 wrote the function definitions, we could’ve articulated these tests before
 we even wrote the function in the first place. In general doing that is
-considered a good idea and is referred to as “test driven development”
-since as you implement the procedures, you use the tests at every stage
-to check what aspects of the functionality you’re yet to cover. Thus the
-test is said to “drive” the development.</p>
+considered a good idea and is referred to as “test driven development” since
+as you implement the procedures, you use the tests at every stage to check
+what aspects of the functionality you’re yet to cover. Thus the test is said
+to “drive” the “development”. Besides helping produce code with some
+validation <a class="footnote-reference brackets" href="#tddcaveat" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> , have pre-written tests that cover all expected
+functionality can tell you when you’re likely to be “done” and therefore
+help avoid over-engineering a solution.</p>
 </div>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="tddcaveat" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Note that your code passing your tests does not imply that it
+is correct. The only thing tests can tell you is that if the tests fail,
+your code is wrong or incomplete in some way. This is very like the way
+scientific hypotheses are tested – where an experiment checks for a
+deduce-able consequence of a hypothesis stated a priori and when the
+experiment fails to find evidence for the consequence, the hypothesis is
+declared to be invalid. However, if evidence for the consequence is found,
+it doesn’t directly mean the hypothesis chosen is valid, because another
+hypothesis could also possibly have the same consequence, so further
+experiments will need to eliminate other hypotheses.</p>
+</aside>
+</aside>
 </section>
 </section>
 
@@ -526,6 +544,9 @@ test is said to “drive” the development.</p>
 <li class="toctree-l1"><a class="reference internal" href="technical-terms.html">Optional: Technical terms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modelling-images.html">Modelling a domain - Images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="representations.html">Representations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="svg.html">Interlude: SVG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generalizations.html">Generalizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assumptions.html">Assumptions</a></li>
 </ul>
 
 <div class="relations">

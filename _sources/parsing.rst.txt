@@ -392,6 +392,8 @@ Putting it all together, we have --
    the intended solution starting from the top-level and working your way
    down adding detail in each step.
 
+.. _knowing-it-works:
+
 How do we know it works?
 ------------------------
 
@@ -478,10 +480,25 @@ granted. Let's focus on the actual utility cases first.
 .. note:: Since we've articulated the cases to be considered **before** we
    wrote the function definitions, we could've articulated these tests before
    we even wrote the function in the first place. In general doing that is
-   considered a good idea and is referred to as "test driven development"
-   since as you implement the procedures, you use the tests at every stage
-   to check what aspects of the functionality you're yet to cover. Thus the
-   test is said to "drive" the development.
+   considered a good idea and is referred to as "test driven development" since
+   as you implement the procedures, you use the tests at every stage to check
+   what aspects of the functionality you're yet to cover. Thus the test is said
+   to "drive" the "development". Besides helping produce code with some
+   validation [#tddcaveat]_ , have pre-written tests that cover all expected
+   functionality can tell you when you're likely to be "done" and therefore
+   help avoid over-engineering a solution.
+
+
+.. [#tddcaveat] Note that your code passing your tests does not imply that it
+   is correct. The only thing tests can tell you is that if the tests fail,
+   your code is wrong or incomplete in some way. This is very like the way
+   scientific hypotheses are tested -- where an experiment checks for a
+   deduce-able consequence of a hypothesis stated a priori and when the
+   experiment fails to find evidence for the consequence, the hypothesis is
+   declared to be invalid. However, if evidence for the consequence is found,
+   it doesn't directly mean the hypothesis chosen is valid, because another
+   hypothesis could also possibly have the same consequence, so further
+   experiments will need to eliminate other hypotheses.
 
 
 
