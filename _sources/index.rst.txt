@@ -12,6 +12,7 @@ CompLIT: Programming Literacy (WORK-IN-PROGRESS)
    interrogation
    strings
    sample-programs
+   assumptions
    structures
    parsing
    parsing2
@@ -22,5 +23,4 @@ CompLIT: Programming Literacy (WORK-IN-PROGRESS)
    representations
    svg
    generalizations
-   assumptions
 
