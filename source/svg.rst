@@ -27,8 +27,14 @@ open it in your browser.
        <rect x="207" y="45" width="17" height="5" fill="red"/>
    </svg>
 
-What we've drawn in a bunch of rectangles, but when you see the image, you
-might recognize the image as crickets stumps with bales. This is partly what
+That should look like the picture shown below --
+
+.. figure:: images/example-svg.png
+   
+   The rendered image of the SVG shown in :numref:`ex-svg`.
+
+What we've drawn is a bunch of rectangles, but when you see the image, you
+might recognize the image as cricket stumps with bales. This is partly what
 we've been labouring about as the distinction between represented information
 and the "meaning" we attribute to it.
 
