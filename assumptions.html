@@ -132,14 +132,14 @@ definitions are usable and the guarantees they provide when used under those
 valid conditions.</p>
 <section id="contracts">
 <h2>Contracts<a class="headerlink" href="#contracts" title="Link to this heading">¶</a></h2>
+<p>We saw in an earlier section when working with the “image” package from HtDP,
+the documentation for <code class="docutils literal notranslate"><span class="pre">triangle</span></code> shown in <a class="reference internal" href="#fig-triangle-docs"><span class="std std-numref">Fig. 11</span></a>.</p>
 <figure class="align-center" id="id3">
 <span id="fig-triangle-docs"></span><img alt="_images/triangle-docs2.png" src="_images/triangle-docs2.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 11 </span><span class="caption-text">The Racket documentation for <code class="docutils literal notranslate"><span class="pre">triangle</span></code> from the <code class="docutils literal notranslate"><span class="pre">2htdp/image</span></code> package.</span><a class="headerlink" href="#id3" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>We saw in an earlier section when working with the “image” package from HtDP,
-the documentation for <code class="docutils literal notranslate"><span class="pre">triangle</span></code> shown in <a class="reference internal" href="#fig-triangle-docs"><span class="std std-numref">Fig. 11</span></a>.</p>
 <p>We’re now going to dive a little into some of what this documentation tells us.
 In particular, pay attention to the following declaration –</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="n">side-length:</span><span class="w"> </span><span class="p">(</span><span class="nb">and/c</span><span class="w"> </span><span class="nb">real?</span><span class="w"> </span><span class="p">(</span><span class="nb">not/c</span><span class="w"> </span><span class="nb">negative?</span><span class="p">))</span>
