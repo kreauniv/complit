@@ -104,15 +104,15 @@ valid conditions.
 Contracts
 ---------
 
+We saw in an earlier section when working with the "image" package from HtDP,
+the documentation for ``triangle`` shown in :numref:`fig-triangle-docs`.
+
 .. _fig-triangle-docs:
 
 .. figure:: images/triangle-docs2.png
    :align: center
 
    The Racket documentation for ``triangle`` from the ``2htdp/image`` package. 
-
-We saw in an earlier section when working with the "image" package from HtDP,
-the documentation for ``triangle`` shown in :numref:`fig-triangle-docs`.
 
 We're now going to dive a little into some of what this documentation tells us.
 In particular, pay attention to the following declaration --
