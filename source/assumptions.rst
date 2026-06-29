@@ -193,7 +193,7 @@ For example --
 
 .. code:: racket
 
-   (define (one-to-ten/c n)
+   (define (one-to-ten? n)
       (and (integer? n) (>= n 1) (<= n 10)))
 
 The above contract can also equivalently be given explicitly like this -
@@ -206,10 +206,10 @@ The above contract can also equivalently be given explicitly like this -
    ; (define one-to-ten/c (and/c integer? (between/c 1 10)))
    ; (define one-to-ten/c (integer-in 1 10))
 
-Though these predicates we write can now be used to declare contracts, there is
-more to making them a full fledged contract, because we also need to account
-for what happens when contracts fail and how to produce error messages that the
-programmer can understand.
+Though predicates like ``one-to-ten?`` that we write can now be used to declare
+contracts, there is more to making them a full fledged contract, because we
+also need to account for what happens when contracts fail and how to produce
+error messages that the programmer can understand.
 
 .. note:: For our purpose, the main take away from contracts is that for the
    person reading your code, they help clarify the assumptions under which your
