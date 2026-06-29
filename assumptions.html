@@ -67,12 +67,16 @@ help articulate properties of our definitions. After <a class="reference externa
 was published with an implementation first for Haskell, it was quickly ported
 as a library into many programming languages (See <a class="reference external" href="https://en.wikipedia.org/wiki/QuickCheck">wikipedia:QuickCheck</a>).</p>
 </li>
-<li><p><strong>Contracts</strong> : Contracts are checks inserted for the arguments and results
-of procedure definitions “provided” by modules, which ensure that all the
-necessary pre-conditions for a definition to apply are met before the definition
-is used, and also that the definition indeed defines what it intends to define.
-These checks are run for each invocation of the definition, much like the way
-we inserted <code class="docutils literal notranslate"><span class="pre">(when</span> <span class="pre">&lt;cond&gt;</span> <span class="pre">&lt;error&gt;)</span></code> expressions to check arguments.</p>
+<li><p><strong>Contracts</strong> : Contracts declared on identifiers help clarify the
+assumptions under which the identifiers can be meaningfully deployed and the
+implications they guarantee when meaningfully deployed. Operationally, they
+are checks inserted for the arguments and results of procedure definitions
+“provided” by modules, which ensure that all the necessary pre-conditions
+for a definition to apply (the assumptions) are met before the definition is
+used, and also that the definition indeed defines what it intends to define
+(the implication). These checks are run for each invocation of the
+definition, much like the way we inserted <code class="docutils literal notranslate"><span class="pre">(when</span> <span class="pre">&lt;cond&gt;</span> <span class="pre">&lt;error&gt;)</span></code>
+expressions to check arguments.</p>
 <p>Racket provides definitions that make declaring such <a class="reference external" href="https://docs.racket-lang.org/reference/contracts.html">contracts</a> an integral
 part of the language. We’ve seen contracts in the documentation, though we
 haven’t used them ourselves yet.</p>
@@ -113,17 +117,19 @@ specification. This means, the problem now shifts to ensuring that the
 specifications are encoded correctly!</p>
 </li>
 </ol>
-<p>We won’t be looking at these in detail in this course. However we’ll look
-at “contracts” a bit closer as it is involved in the documentation you’ll
-be referencing. Also, when you’re working with other languages, you should
-look for the equivalent of contracts to understand the behaviour of definitions
-you’re borrowing from a library.</p>
+<p>We won’t be looking at these in detail in this course. However we’ll look at
+“contracts” a bit closer as it is involved in the documentation you’ll be
+referencing. Also, when you’re working with other languages, you should look
+for the equivalent of contracts to understand the behaviour of definitions
+you’re borrowing from a library. Furthermore, type systems are closely related
+to contracts in what they help clarify, though operationally they’re different.</p>
 <p>The <strong>reason</strong> we won’t be looking at these in depth is that they all
 constitute a set of tools that turn the mechanism of computing on to validating
 what we’re expressing in programming languages. They do not alter the “meaning”
 of the programs we write <a class="footnote-reference brackets" href="#tsmean" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> except to make clear to those making use of
 definitions written by others as to the conditions under which those
-definitions are usable.</p>
+definitions are usable and the guarantees they provide when used under those
+valid conditions.</p>
 <section id="contracts">
 <h2>Contracts<a class="headerlink" href="#contracts" title="Link to this heading">¶</a></h2>
 <figure class="align-center" id="id3">
