@@ -176,7 +176,7 @@ as shown in :numref:`fig-andc`.
 .. figure:: images/andc.png
    :align: center
 
-   The ``and/c`` expression is a "contract" and contracts can be used as
+   The ``(and/c ...)`` expression is a "contract" and contracts can be used as
    predicates to check whether a value meets some criterion.
 
 As you might've guessed by now, the ``/c`` in the names ``and/c`` and ``not/c``
@@ -200,11 +200,26 @@ The above contract can also equivalently be given explicitly like this -
 
 .. code:: racket
    
-   (define one-to-ten/c (and/c 1 2 3 4 5 6 7 8 9 10))
+   (define one-to-ten/c (or/c 1 2 3 4 5 6 7 8 9 10))
+   ; or alternatively as any of the following --
+   ; (define one-to-ten/c (and/c integer? (>=/c 1) (<=/c 10)))
+   ; (define one-to-ten/c (and/c integer? (between/c 1 10)))
+   ; (define one-to-ten/c (integer-in 1 10))
 
-Though these can now be used to declare contracts, there is more to them,
-because we also need to account for what happens when contracts fail and how
-to produce error messages that the programmer can understand.
+Though these predicates we write can now be used to declare contracts, there is
+more to making them a full fledged contract, because we also need to account
+for what happens when contracts fail and how to produce error messages that the
+programmer can understand.
+
+.. note:: For our purpose, the main take away from contracts is that for the
+   person reading your code, they help clarify the assumptions under which your
+   definition(s) can be used and when used appropriately the implications they
+   guarantee. It is an added bonus that contracts are live and will check and
+   report on these assumptions and guarantees wherever the definitions are
+   used. Contracts are therefore a limited but useful way in which your
+   program can be interrogated without you explicitly interrogating it.
+   If a contract does not fail, all is well. However, when it does, you get
+   rich information about what exact assumption or implication was not met.
 
 Writing definitions with contracts
 ----------------------------------
