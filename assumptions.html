@@ -190,7 +190,7 @@ as shown in <a class="reference internal" href="#fig-andc"><span class="std std-
 <figure class="align-center" id="id7">
 <span id="fig-andc"></span><img alt="_images/andc.png" src="_images/andc.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 15 </span><span class="caption-text">The <code class="docutils literal notranslate"><span class="pre">and/c</span></code> expression is a “contract” and contracts can be used as
+<p><span class="caption-number">Fig. 15 </span><span class="caption-text">The <code class="docutils literal notranslate"><span class="pre">(and/c</span> <span class="pre">...)</span></code> expression is a “contract” and contracts can be used as
 predicates to check whether a value meets some criterion.</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
@@ -209,12 +209,29 @@ For example –</p>
 </pre></div>
 </div>
 <p>The above contract can also equivalently be given explicitly like this -</p>
-<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">one-to-ten/c</span><span class="w"> </span><span class="p">(</span><span class="nb">and/c</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="mi">9</span><span class="w"> </span><span class="mi">10</span><span class="p">))</span>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">one-to-ten/c</span><span class="w"> </span><span class="p">(</span><span class="nb">or/c</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="mi">9</span><span class="w"> </span><span class="mi">10</span><span class="p">))</span>
+<span class="c1">; or alternatively as any of the following --</span>
+<span class="c1">; (define one-to-ten/c (and/c integer? (&gt;=/c 1) (&lt;=/c 10)))</span>
+<span class="c1">; (define one-to-ten/c (and/c integer? (between/c 1 10)))</span>
+<span class="c1">; (define one-to-ten/c (integer-in 1 10))</span>
 </pre></div>
 </div>
-<p>Though these can now be used to declare contracts, there is more to them,
-because we also need to account for what happens when contracts fail and how
-to produce error messages that the programmer can understand.</p>
+<p>Though these predicates we write can now be used to declare contracts, there is
+more to making them a full fledged contract, because we also need to account
+for what happens when contracts fail and how to produce error messages that the
+programmer can understand.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For our purpose, the main take away from contracts is that for the
+person reading your code, they help clarify the assumptions under which your
+definition(s) can be used and when used appropriately the implications they
+guarantee. It is an added bonus that contracts are live and will check and
+report on these assumptions and guarantees wherever the definitions are
+used. Contracts are therefore a limited but useful way in which your
+program can be interrogated without you explicitly interrogating it.
+If a contract does not fail, all is well. However, when it does, you get
+rich information about what exact assumption or implication was not met.</p>
+</div>
 </section>
 <section id="writing-definitions-with-contracts">
 <h2>Writing definitions with contracts<a class="headerlink" href="#writing-definitions-with-contracts" title="Link to this heading">¶</a></h2>
