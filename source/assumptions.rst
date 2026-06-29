@@ -239,6 +239,14 @@ The ``(>/c 1)`` expression is to be read something like "contractually
 greater than 1" and the contract is equivalent to the predicate
 ``(lambda (n) (> n 1))``.
 
+The reason ``->`` which looks like an "implication arrow" is used to declare
+the contract for a function/procedure is because it is in essence saying "if
+the assumptions for the arguments hold, then I grant that the implied result
+will honour the result contract". It is, of course, to the body of the
+definition to fully conform to the contract laid out. If it fails in some
+circumstance, the contract mechanism will call it out with an appropriate error
+message.
+
 
 .. _Function contracts: https://docs.racket-lang.org/reference/function-contracts.html
 .. _Racket contract: https://docs.racket-lang.org/reference/contracts.html
