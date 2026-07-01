@@ -1,0 +1,150 @@
+Optional: Modelling quantum computations
+========================================
+
+.. note:: This section is only for those who might be interested
+   in quantum computation. Others feel free to ignore, though it
+   is simple enough to follow if you are somewhat conversant with
+   basic mathematics.
+
+One of the ways in which fluent literacy with programming helps
+is to help you understand a domain through constructing programs
+for it. Here we'll briefly touch on understanding quantum-classical
+computation by building a simulator for it. We won't go all the way
+to explaining how the mathematics works, but the purpose is to just
+give a gist of how one might go about it.
+
+Properties of quantum systems
+-----------------------------
+
+When writing programs for a quantum computer, we'll need our
+programs to be realistic in the sense that it shouldn't be possible
+to violate some core principles of quantum systems.
+
++ A quantum state, usually written :math:`|\psi>` is not directly
+  observable.
+
++ Given a quantum state, we can apply "operators" on it, which stand
+  for physical processes that manipulate the state. This results in the
+  system changing its state. We write this as :math:`|\psi'> = \hat{H}|\psi>`
+  where :math:`\hat{H}` is a "unitary" operator. 
+
++ When we "measure" a quantum state in some "basis", it collapses to 
+  one of the "eigenstates" -- i.e. measuring will project the state
+  such that measuring the state again will yield the same state.
+  So in this condition, we can know which of the basis states manifested.
+  For example, if a quantum system is described by 4 mixed states numbered
+  :math:`\alpha_1|1> + \alpha_2|2> + \alpha_3|3> + \alpha_4|4>`, measuring it will
+  result in one of the four :math:`|k>` states with a probability of
+  :math:`|\alpha_k|^2`. [#norm]_
+
++ We cannot "copy" a quantum state to another quantum system (called the
+  `No-Cloning theorem`_).
+
++ We cannot "erase" a quantum state (the `No hiding theorem`_). Quantum
+  information is always preserved. Even the act of measurement is about
+  letting a quantum system interact with its environment and have the
+  information in it leak away into the environment.
+
+.. _No hiding theorem: https://en.wikipedia.org/wiki/No-hiding_theorem
+.. _No-Cloning theorem: https://en.wikipedia.org/wiki/No-cloning_theorem
+
+The "circuit" formulation of a quantum computer consists of a "register"
+of N "qubits" that can be manipulated together using some provided "operators".
+These are also called `Quantum logic gates`_.
+
+.. _Quantum logic gates: https://en.wikipedia.org/wiki/Quantum_logic_gate
+
+So the question for us is, given we can compute anything we can compute,
+how can we construct a "quantum program" in which the forbidden things
+are not possible?
+
+One approach
+------------
+
+Since applying an operator to a quantum system changes its state, we can
+think of this step as a "mutation" on a state that is not visible to the
+"classical" part of our program. When we do need information out of the
+quantum register, we need to "measure" it, at which point we get a single
+integer identifying which of the various states it "collapsed" into.
+Subsequent measurements should give us the same number, and this number
+must be random based on the probabilities of the various states possible.
+
+We know that a procedure constructed in a particular context can refer to 
+values in that context even when those values are no longer visible by 
+other means anywhere else. For example --
+
+.. code:: racket
+
+   > (define (wrap secret password)
+       (lambda (given-password)
+          (if (equal? password given-password)
+              secret
+              (error "Wrong password"))))
+   > (define packet (wrap "hello" "2874r2"))
+   > (packet "afjn") 
+   error: Wrong password
+   > (packet "2874r2")
+   "hello"
+
+We see that the "secret" has been remembered by the procedure because it can
+"see" it though we can no longer see the secret after constructing the ``packet``.
+
+We can use this perhaps to hide the full quantum state from our quantum-classical
+"program". First off, we can model our program itself as an ordinary procedure,
+which has access to quantum operators and measurement that obey the principles
+laid out above.
+
+.. code:: racket
+
+    ; A quantum program might look like this
+    (lambda (H cnot swap cswap toffoli X Y Z measure)
+        ...)
+
+The "operators" can be simply modelled as procedures themselves, but ones which
+don't produce any value and only manipulate the invisible quantum state. The only
+procedure that produces a "read out" of the quantum register is ``measure`` which
+gives us an integer state identifier.
+
+We know how the operators ``H``, ``cnot``, etc. work and how to implement them
+on a classical computer, so a  quantum circuit simulator can be written as --
+
+.. code:: racket
+
+   (define (run-circuit num-qubits initial-state program)
+      ... initialize the state of the quantum register as a
+          vector of complex values to the given state ...
+      (let ([H (lambda (i)
+                  .. manipulate the state by applying H to the i-th qubit ..)]
+            [cnot (lambda (c i)
+                ..manipulate the state by controlling the i-th qubit
+                  using the c-th qubit as the control ..)]
+            [Rx (lambda (i angle)
+                ..quantum state "rotation" ..)]
+            ...
+            [measure (lambda (which-qubits)
+                       .. collapse the state to one of the states
+                          randomly according to the probabilities
+                          given by the current amplitudes ..)])
+        (program H cnot Rx ... measure)))
+
+Note that while ``run-circuit`` has full visibility to the quantum state,
+the supplied ``program`` procedure will not. It can only manipulate the
+state using the given operators (which produce no result values),
+or make a measurement to get a value, but which will collapse the state.
+It is therefore impossible (by construction) to provide a program that
+uses these gates in a manner that is inconsistent with the rules of
+quantum mechanics. Now you're free to explore the world of quantum
+computing given such a simulator. What's more, if you imagine a new
+kind of gate, you can always implement it (correctly obeying the
+rules, of course) in your simulator and write your programs with it.
+
+An interesting consequence of modelling the computation like this is
+that we can also now be sure that **any** classical computation can be
+mixed in with quantum computation and therefore we have access to a
+simulation of a "universal" quantum-classical computer, as long as 
+we have all the gates we'll ever need. For example, our ``program``
+can make a measurement and take decisions about which further
+quantum steps to run based on the results of the measurement.
+
+.. [#norm] These "alphas" (called "amplitudes") can be complex numbers,
+   but they must obey :math:`|\alpha_1|^2 + |\alpha_2|^2 + |\alpha_3|^2 + |\alpha_4|^2 = 1`. 
