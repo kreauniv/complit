@@ -113,19 +113,25 @@ on a classical computer, so a  quantum circuit simulator can be written as --
    (define (run-circuit num-qubits initial-state program)
       ... initialize the state of the quantum register as a
           vector of complex values to the given state ...
-      (let ([H (lambda (i)
-                  .. manipulate the state by applying H to the i-th qubit ..)]
-            [cnot (lambda (c i)
-                ..manipulate the state by controlling the i-th qubit
-                  using the c-th qubit as the control ..)]
-            [Rx (lambda (i angle)
-                ..quantum state "rotation" ..)]
-            ...
-            [measure (lambda (which-qubits)
-                       .. collapse the state to one of the states
-                          randomly according to the probabilities
-                          given by the current amplitudes ..)])
-        (program H cnot Rx ... measure)))
+      (define (H i)
+         .. manipulate the state by applying H to the i-th qubit ..
+         )
+      (define (cnot c i)
+         ..manipulate the state by controlling the i-th qubit
+           using the c-th qubit as the control ..
+         )
+      (define (Rx i angle)
+         ..quantum state "rotation" ..
+         )
+      ...
+      (define (measure which-qubits)
+        .. collapse the state to one of the states
+           randomly according to the probabilities
+           given by the current amplitudes ..
+           )
+      ; Note that the "state" will be secret to all the
+      ; operators and not be visible to `program`.
+      (program H cnot Rx ... measure))
 
 Note that while ``run-circuit`` has full visibility to the quantum state,
 the supplied ``program`` procedure will not. It can only manipulate the
