@@ -57,12 +57,13 @@ give a gist of how one might go about it.</p>
 programs to be realistic in the sense that it shouldn’t be possible
 to violate some core principles of quantum systems.</p>
 <ol class="arabic simple">
-<li><p>A quantum state, usually written <span class="math notranslate nohighlight">\(|\psi&gt;\)</span> is not directly
+<li><p>A quantum state, usually written <span class="math notranslate nohighlight">\(\ket{\psi}\)</span> is not directly
 observable.</p></li>
-<li><p>Given a quantum state, we can apply “operators” on it, which stand
-for physical processes that manipulate the state. This results in the
-system changing its state. We write this as <span class="math notranslate nohighlight">\(|\psi'&gt; = \hat{H}|\psi&gt;\)</span>
-where <span class="math notranslate nohighlight">\(\hat{H}\)</span> is a “unitary” operator.</p></li>
+<li><p>Given a quantum state, we can apply <strong>unitary operators</strong> on it, which stand
+for physical processes that manipulate the state. This results in the system
+changing its state. We write this as <span class="math notranslate nohighlight">\(\ket{\psi'} = \hat{H}\ket{\psi}\)</span>
+where <span class="math notranslate nohighlight">\(\hat{H}\)</span> is some unitary operator. Such operators can mix
+the various states into superpositions without destroying information.</p></li>
 <li><p>When we “measure” a quantum state in some “basis”, it collapses to
 one of the “eigenstates” – i.e. measuring will project the state
 such that measuring the state again will yield the same state.
