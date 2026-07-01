@@ -20,30 +20,30 @@ When writing programs for a quantum computer, we'll need our
 programs to be realistic in the sense that it shouldn't be possible
 to violate some core principles of quantum systems.
 
-+ A quantum state, usually written :math:`|\psi>` is not directly
-  observable.
+1. A quantum state, usually written :math:`|\psi>` is not directly
+   observable.
 
-+ Given a quantum state, we can apply "operators" on it, which stand
-  for physical processes that manipulate the state. This results in the
-  system changing its state. We write this as :math:`|\psi'> = \hat{H}|\psi>`
-  where :math:`\hat{H}` is a "unitary" operator. 
+2. Given a quantum state, we can apply "operators" on it, which stand
+   for physical processes that manipulate the state. This results in the
+   system changing its state. We write this as :math:`|\psi'> = \hat{H}|\psi>`
+   where :math:`\hat{H}` is a "unitary" operator. 
 
-+ When we "measure" a quantum state in some "basis", it collapses to 
-  one of the "eigenstates" -- i.e. measuring will project the state
-  such that measuring the state again will yield the same state.
-  So in this condition, we can know which of the basis states manifested.
-  For example, if a quantum system is described by 4 mixed states numbered
-  :math:`\alpha_1|1> + \alpha_2|2> + \alpha_3|3> + \alpha_4|4>`, measuring it will
-  result in one of the four :math:`|k>` states with a probability of
-  :math:`|\alpha_k|^2`. [#norm]_
+3. When we "measure" a quantum state in some "basis", it collapses to 
+   one of the "eigenstates" -- i.e. measuring will project the state
+   such that measuring the state again will yield the same state.
+   So in this condition, we can know which of the basis states manifested.
+   For example, if a quantum system is described by 4 mixed states numbered
+   :math:`\alpha_1|1> + \alpha_2|2> + \alpha_3|3> + \alpha_4|4>`, measuring it will
+   result in one of the four :math:`|k>` states with a probability of
+   :math:`|\alpha_k|^2`. [#norm]_
 
-+ We cannot "copy" a quantum state to another quantum system (called the
-  `No-Cloning theorem`_).
+4. We cannot "copy" a quantum state to another quantum system (called the
+   `No-Cloning theorem`_).
 
-+ We cannot "erase" a quantum state (the `No hiding theorem`_). Quantum
-  information is always preserved. Even the act of measurement is about
-  letting a quantum system interact with its environment and have the
-  information in it leak away into the environment.
+5. We cannot "erase" a quantum state (the `No hiding theorem`_). Quantum
+   information is always preserved. Even the act of measurement is about
+   letting a quantum system interact with its environment and have the
+   information in it leak away into the environment.
 
 .. _No hiding theorem: https://en.wikipedia.org/wiki/No-hiding_theorem
 .. _No-Cloning theorem: https://en.wikipedia.org/wiki/No-cloning_theorem
@@ -145,6 +145,27 @@ simulation of a "universal" quantum-classical computer, as long as
 we have all the gates we'll ever need. For example, our ``program``
 can make a measurement and take decisions about which further
 quantum steps to run based on the results of the measurement.
+
+Lessons
+-------
+
+1. Writing a program to model a domain is a good way to understand
+   it at a level of detail that might have otherwise escaped us.
+   If you want to understand what happens behind the scenes of a
+   "production" simulator, write the definitions in ``run-circuit``
+   yourself!
+
+2. The fact that a procedure definition can "wrap" (a.k.a. "close over")
+   information in its definition context and use it subsequently without
+   revealing it in the usage context is called "encapsulation" (one form of it)
+   and is a powerful technique to manage programs of all kinds.
+
+3. Separating domain representations from the usage is a great way to
+   explore possibilities. In this case of quantum computation, the 
+   implementation of state manipulation in ``run-circuit`` can be changed
+   to whatever we want without changing any of the "programs" we write
+   using these circuit operators, as long as the way the operators are
+   used (i.e. their "interface") is not changed.
 
 .. [#norm] These "alphas" (called "amplitudes") can be complex numbers,
    but they must obey :math:`|\alpha_1|^2 + |\alpha_2|^2 + |\alpha_3|^2 + |\alpha_4|^2 = 1`. 

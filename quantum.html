@@ -56,7 +56,7 @@ give a gist of how one might go about it.</p>
 <p>When writing programs for a quantum computer, we’ll need our
 programs to be realistic in the sense that it shouldn’t be possible
 to violate some core principles of quantum systems.</p>
-<ul class="simple">
+<ol class="arabic simple">
 <li><p>A quantum state, usually written <span class="math notranslate nohighlight">\(|\psi&gt;\)</span> is not directly
 observable.</p></li>
 <li><p>Given a quantum state, we can apply “operators” on it, which stand
@@ -77,7 +77,7 @@ result in one of the four <span class="math notranslate nohighlight">\(|k&gt;\)<
 information is always preserved. Even the act of measurement is about
 letting a quantum system interact with its environment and have the
 information in it leak away into the environment.</p></li>
-</ul>
+</ol>
 <p>The “circuit” formulation of a quantum computer consists of a “register”
 of N “qubits” that can be manipulated together using some provided “operators”.
 These are also called <a class="reference external" href="https://en.wikipedia.org/wiki/Quantum_logic_gate">Quantum logic gates</a>.</p>
@@ -161,6 +161,26 @@ simulation of a “universal” quantum-classical computer, as long as
 we have all the gates we’ll ever need. For example, our <code class="docutils literal notranslate"><span class="pre">program</span></code>
 can make a measurement and take decisions about which further
 quantum steps to run based on the results of the measurement.</p>
+</section>
+<section id="lessons">
+<h2>Lessons<a class="headerlink" href="#lessons" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Writing a program to model a domain is a good way to understand
+it at a level of detail that might have otherwise escaped us.
+If you want to understand what happens behind the scenes of a
+“production” simulator, write the definitions in <code class="docutils literal notranslate"><span class="pre">run-circuit</span></code>
+yourself!</p></li>
+<li><p>The fact that a procedure definition can “wrap” (a.k.a. “close over”)
+information in its definition context and use it subsequently without
+revealing it in the usage context is called “encapsulation” (one form of it)
+and is a powerful technique to manage programs of all kinds.</p></li>
+<li><p>Separating domain representations from the usage is a great way to
+explore possibilities. In this case of quantum computation, the
+implementation of state manipulation in <code class="docutils literal notranslate"><span class="pre">run-circuit</span></code> can be changed
+to whatever we want without changing any of the “programs” we write
+using these circuit operators, as long as the way the operators are
+used (i.e. their “interface”) is not changed.</p></li>
+</ol>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="norm" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
@@ -218,6 +238,7 @@ but they must obey <span class="math notranslate nohighlight">\(|\alpha_1|^2 + |
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Optional: Modelling quantum computations</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#properties-of-quantum-systems">Properties of quantum systems</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#one-approach">One approach</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lessons">Lessons</a></li>
 </ul>
 </li>
 </ul>
