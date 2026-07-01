@@ -23,4 +23,5 @@ CompLIT: Programming Literacy (WORK-IN-PROGRESS)
    representations
    svg
    generalizations
+   quantum
 

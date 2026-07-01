@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Optional: Modelling quantum computations &#8212; CompLIT: Programming Literacy v1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d8a2add5" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=17171a54" />
+    <script src="_static/documentation_options.js?v=5cb08e4e"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Generalizations" href="generalizations.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="optional-modelling-quantum-computations">
+<h1>Optional: Modelling quantum computations<a class="headerlink" href="#optional-modelling-quantum-computations" title="Link to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This section is only for those who might be interested
+in quantum computation. Others feel free to ignore, though it
+is simple enough to follow if you are somewhat conversant with
+basic mathematics.</p>
+</div>
+<p>One of the ways in which fluent literacy with programming helps
+is to help you understand a domain through constructing programs
+for it. Here we’ll briefly touch on understanding quantum-classical
+computation by building a simulator for it. We won’t go all the way
+to explaining how the mathematics works, but the purpose is to just
+give a gist of how one might go about it.</p>
+<section id="properties-of-quantum-systems">
+<h2>Properties of quantum systems<a class="headerlink" href="#properties-of-quantum-systems" title="Link to this heading">¶</a></h2>
+<p>When writing programs for a quantum computer, we’ll need our
+programs to be realistic in the sense that it shouldn’t be possible
+to violate some core principles of quantum systems.</p>
+<ul class="simple">
+<li><p>A quantum state, usually written <span class="math notranslate nohighlight">\(|\psi&gt;\)</span> is not directly
+observable.</p></li>
+<li><p>Given a quantum state, we can apply “operators” on it, which stand
+for physical processes that manipulate the state. This results in the
+system changing its state. We write this as <span class="math notranslate nohighlight">\(|\psi'&gt; = \hat{H}|\psi&gt;\)</span>
+where <span class="math notranslate nohighlight">\(\hat{H}\)</span> is a “unitary” operator.</p></li>
+<li><p>When we “measure” a quantum state in some “basis”, it collapses to
+one of the “eigenstates” – i.e. measuring will project the state
+such that measuring the state again will yield the same state.
+So in this condition, we can know which of the basis states manifested.
+For example, if a quantum system is described by 4 mixed states numbered
+<span class="math notranslate nohighlight">\(\alpha_1|1&gt; + \alpha_2|2&gt; + \alpha_3|3&gt; + \alpha_4|4&gt;\)</span>, measuring it will
+result in one of the four <span class="math notranslate nohighlight">\(|k&gt;\)</span> states with a probability of
+<span class="math notranslate nohighlight">\(|\alpha_k|^2\)</span>. <a class="footnote-reference brackets" href="#norm" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p></li>
+<li><p>We cannot “copy” a quantum state to another quantum system (called the
+<a class="reference external" href="https://en.wikipedia.org/wiki/No-cloning_theorem">No-Cloning theorem</a>).</p></li>
+<li><p>We cannot “erase” a quantum state (the <a class="reference external" href="https://en.wikipedia.org/wiki/No-hiding_theorem">No hiding theorem</a>). Quantum
+information is always preserved. Even the act of measurement is about
+letting a quantum system interact with its environment and have the
+information in it leak away into the environment.</p></li>
+</ul>
+<p>The “circuit” formulation of a quantum computer consists of a “register”
+of N “qubits” that can be manipulated together using some provided “operators”.
+These are also called <a class="reference external" href="https://en.wikipedia.org/wiki/Quantum_logic_gate">Quantum logic gates</a>.</p>
+<p>So the question for us is, given we can compute anything we can compute,
+how can we construct a “quantum program” in which the forbidden things
+are not possible?</p>
+</section>
+<section id="one-approach">
+<h2>One approach<a class="headerlink" href="#one-approach" title="Link to this heading">¶</a></h2>
+<p>Since applying an operator to a quantum system changes its state, we can
+think of this step as a “mutation” on a state that is not visible to the
+“classical” part of our program. When we do need information out of the
+quantum register, we need to “measure” it, at which point we get a single
+integer identifying which of the various states it “collapsed” into.
+Subsequent measurements should give us the same number, and this number
+must be random based on the probabilities of the various states possible.</p>
+<p>We know that a procedure constructed in a particular context can refer to
+values in that context even when those values are no longer visible by
+other means anywhere else. For example –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">wrap</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">password</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">given-password</span><span class="p">)</span>
+<span class="w">       </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">equal?</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="n">given-password</span><span class="p">)</span>
+<span class="w">           </span><span class="n">secret</span>
+<span class="w">           </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;Wrong password&quot;</span><span class="p">))))</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">packet</span><span class="w"> </span><span class="p">(</span><span class="n">wrap</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span><span class="w"> </span><span class="s2">&quot;2874r2&quot;</span><span class="p">))</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">packet</span><span class="w"> </span><span class="s2">&quot;afjn&quot;</span><span class="p">)</span>
+<span class="n">error:</span><span class="w"> </span><span class="n">Wrong</span><span class="w"> </span><span class="n">password</span>
+<span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">packet</span><span class="w"> </span><span class="s2">&quot;2874r2&quot;</span><span class="p">)</span>
+<span class="s2">&quot;hello&quot;</span>
+</pre></div>
+</div>
+<p>We see that the “secret” has been remembered by the procedure because it can
+“see” it though we can no longer see the secret after constructing the <code class="docutils literal notranslate"><span class="pre">packet</span></code>.</p>
+<p>We can use this perhaps to hide the full quantum state from our quantum-classical
+“program”. First off, we can model our program itself as an ordinary procedure,
+which has access to quantum operators and measurement that obey the principles
+laid out above.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="c1">; A quantum program might look like this</span>
+<span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">H</span><span class="w"> </span><span class="n">cnot</span><span class="w"> </span><span class="n">swap</span><span class="w"> </span><span class="n">cswap</span><span class="w"> </span><span class="n">toffoli</span><span class="w"> </span><span class="n">X</span><span class="w"> </span><span class="n">Y</span><span class="w"> </span><span class="n">Z</span><span class="w"> </span><span class="n">measure</span><span class="p">)</span>
+<span class="w">    </span><span class="k">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The “operators” can be simply modelled as procedures themselves, but ones which
+don’t produce any value and only manipulate the invisible quantum state. The only
+procedure that produces a “read out” of the quantum register is <code class="docutils literal notranslate"><span class="pre">measure</span></code> which
+gives us an integer state identifier.</p>
+<p>We know how the operators <code class="docutils literal notranslate"><span class="pre">H</span></code>, <code class="docutils literal notranslate"><span class="pre">cnot</span></code>, etc. work and how to implement them
+on a classical computer, so a  quantum circuit simulator can be written as –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">run-circuit</span><span class="w"> </span><span class="n">num-qubits</span><span class="w"> </span><span class="n">initial-state</span><span class="w"> </span><span class="n">program</span><span class="p">)</span>
+<span class="w">   </span><span class="k">...</span><span class="w"> </span><span class="n">initialize</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">quantum</span><span class="w"> </span><span class="n">register</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">a</span>
+<span class="w">       </span><span class="nb">vector</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">complex</span><span class="w"> </span><span class="nb">values</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">given</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="k">...</span>
+<span class="w">   </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">H</span><span class="w"> </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="w">               </span><span class="n">..</span><span class="w"> </span><span class="n">manipulate</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">applying</span><span class="w"> </span><span class="n">H</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">i-th</span><span class="w"> </span><span class="n">qubit</span><span class="w"> </span><span class="n">..</span><span class="p">)]</span>
+<span class="w">         </span><span class="p">[</span><span class="n">cnot</span><span class="w"> </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="n">i</span><span class="p">)</span>
+<span class="w">             </span><span class="n">..manipulate</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">controlling</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">i-th</span><span class="w"> </span><span class="n">qubit</span>
+<span class="w">               </span><span class="n">using</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">c-th</span><span class="w"> </span><span class="n">qubit</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">control</span><span class="w"> </span><span class="n">..</span><span class="p">)]</span>
+<span class="w">         </span><span class="p">[</span><span class="n">Rx</span><span class="w"> </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="nb">angle</span><span class="p">)</span>
+<span class="w">             </span><span class="n">..quantum</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="s2">&quot;rotation&quot;</span><span class="w"> </span><span class="n">..</span><span class="p">)]</span>
+<span class="w">         </span><span class="k">...</span>
+<span class="w">         </span><span class="p">[</span><span class="n">measure</span><span class="w"> </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">which-qubits</span><span class="p">)</span>
+<span class="w">                    </span><span class="n">..</span><span class="w"> </span><span class="n">collapse</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">states</span>
+<span class="w">                       </span><span class="n">randomly</span><span class="w"> </span><span class="n">according</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">probabilities</span>
+<span class="w">                       </span><span class="n">given</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">current</span><span class="w"> </span><span class="n">amplitudes</span><span class="w"> </span><span class="n">..</span><span class="p">)])</span>
+<span class="w">     </span><span class="p">(</span><span class="n">program</span><span class="w"> </span><span class="n">H</span><span class="w"> </span><span class="n">cnot</span><span class="w"> </span><span class="n">Rx</span><span class="w"> </span><span class="k">...</span><span class="w"> </span><span class="n">measure</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>Note that while <code class="docutils literal notranslate"><span class="pre">run-circuit</span></code> has full visibility to the quantum state,
+the supplied <code class="docutils literal notranslate"><span class="pre">program</span></code> procedure will not. It can only manipulate the
+state using the given operators (which produce no result values),
+or make a measurement to get a value, but which will collapse the state.
+It is therefore impossible (by construction) to provide a program that
+uses these gates in a manner that is inconsistent with the rules of
+quantum mechanics. Now you’re free to explore the world of quantum
+computing given such a simulator. What’s more, if you imagine a new
+kind of gate, you can always implement it (correctly obeying the
+rules, of course) in your simulator and write your programs with it.</p>
+<p>An interesting consequence of modelling the computation like this is
+that we can also now be sure that <strong>any</strong> classical computation can be
+mixed in with quantum computation and therefore we have access to a
+simulation of a “universal” quantum-classical computer, as long as
+we have all the gates we’ll ever need. For example, our <code class="docutils literal notranslate"><span class="pre">program</span></code>
+can make a measurement and take decisions about which further
+quantum steps to run based on the results of the measurement.</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="norm" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>These “alphas” (called “amplitudes”) can be complex numbers,
+but they must obey <span class="math notranslate nohighlight">\(|\alpha_1|^2 + |\alpha_2|^2 + |\alpha_3|^2 + |\alpha_4|^2 = 1\)</span>.</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">CompLIT: Programming Literacy</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="words.html">Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interrogation.html">Interrogating programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strings.html">Strings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample-programs.html">Sample programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structures.html">Structures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assumptions.html">Assumptions and implications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing2.html">More parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="alternative-syntax.html">Optional: Alternative language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recap.html">Recap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="technical-terms.html">Optional: Technical terms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelling-images.html">Modelling a domain - Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="representations.html">Representations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="svg.html">Interlude: SVG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generalizations.html">Generalizations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Optional: Modelling quantum computations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#properties-of-quantum-systems">Properties of quantum systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#one-approach">One approach</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="generalizations.html" title="previous chapter">Generalizations</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Srikumar K. S..
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/quantum.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
