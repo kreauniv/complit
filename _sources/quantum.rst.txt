@@ -106,8 +106,9 @@ don't produce any value and only manipulate the invisible quantum state. The onl
 procedure that produces a "read out" of the quantum register is ``measure`` which
 gives us an integer state identifier.
 
-We know how the operators ``H``, ``cnot``, etc. work and how to implement them
-on a classical computer, so a  quantum circuit simulator can be written as --
+We know how the operators ``H``, ``cnot``, ``measure``, etc. work and how to
+implement them on a classical computer, so a  quantum circuit simulator can be
+written as shown below. [#measure]_
 
 .. code:: racket
 
@@ -176,3 +177,8 @@ Lessons
 
 .. [#norm] These "alphas" (called "amplitudes") can be complex numbers,
    but they must obey :math:`|\alpha_1|^2 + |\alpha_2|^2 + |\alpha_3|^2 + |\alpha_4|^2 = 1`. 
+
+.. [#measure] In general, measurement will be done using an "observable" whose
+   operator will collapse the state to one of its "eigenstates". Here we're
+   measuring all the qubits directly to avoid further complications in the
+   discussion that are not relevant to the point being made here.

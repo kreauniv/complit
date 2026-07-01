@@ -125,8 +125,9 @@ laid out above.</p>
 don’t produce any value and only manipulate the invisible quantum state. The only
 procedure that produces a “read out” of the quantum register is <code class="docutils literal notranslate"><span class="pre">measure</span></code> which
 gives us an integer state identifier.</p>
-<p>We know how the operators <code class="docutils literal notranslate"><span class="pre">H</span></code>, <code class="docutils literal notranslate"><span class="pre">cnot</span></code>, etc. work and how to implement them
-on a classical computer, so a  quantum circuit simulator can be written as –</p>
+<p>We know how the operators <code class="docutils literal notranslate"><span class="pre">H</span></code>, <code class="docutils literal notranslate"><span class="pre">cnot</span></code>, <code class="docutils literal notranslate"><span class="pre">measure</span></code>, etc. work and how to
+implement them on a classical computer, so a  quantum circuit simulator can be
+written as shown below. <a class="footnote-reference brackets" href="#measure" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">run-circuit</span><span class="w"> </span><span class="n">num-qubits</span><span class="w"> </span><span class="n">initial-state</span><span class="w"> </span><span class="n">program</span><span class="p">)</span>
 <span class="w">   </span><span class="k">...</span><span class="w"> </span><span class="n">initialize</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">quantum</span><span class="w"> </span><span class="n">register</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">a</span>
 <span class="w">       </span><span class="nb">vector</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">complex</span><span class="w"> </span><span class="nb">values</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">given</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="k">...</span>
@@ -193,6 +194,13 @@ used (i.e. their “interface”) is not changed.</p></li>
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>These “alphas” (called “amplitudes”) can be complex numbers,
 but they must obey <span class="math notranslate nohighlight">\(|\alpha_1|^2 + |\alpha_2|^2 + |\alpha_3|^2 + |\alpha_4|^2 = 1\)</span>.</p>
+</aside>
+<aside class="footnote brackets" id="measure" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>In general, measurement will be done using an “observable” whose
+operator will collapse the state to one of its “eigenstates”. Here we’re
+measuring all the qubits directly to avoid further complications in the
+discussion that are not relevant to the point being made here.</p>
 </aside>
 </aside>
 </section>
