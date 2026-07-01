@@ -20,13 +20,14 @@ When writing programs for a quantum computer, we'll need our
 programs to be realistic in the sense that it shouldn't be possible
 to violate some core principles of quantum systems.
 
-1. A quantum state, usually written :math:`|\psi>` is not directly
+1. A quantum state, usually written :math:`\ket{\psi}` is not directly
    observable.
 
-2. Given a quantum state, we can apply "operators" on it, which stand
-   for physical processes that manipulate the state. This results in the
-   system changing its state. We write this as :math:`|\psi'> = \hat{H}|\psi>`
-   where :math:`\hat{H}` is a "unitary" operator. 
+2. Given a quantum state, we can apply **unitary operators** on it, which stand
+   for physical processes that manipulate the state. This results in the system
+   changing its state. We write this as :math:`\ket{\psi'} = \hat{H}\ket{\psi}`
+   where :math:`\hat{H}` is some unitary operator. Such operators can mix
+   the various states into superpositions without destroying information.
 
 3. When we "measure" a quantum state in some "basis", it collapses to 
    one of the "eigenstates" -- i.e. measuring will project the state
