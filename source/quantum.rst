@@ -34,8 +34,8 @@ to violate some core principles of quantum systems.
    such that measuring the state again will yield the same state.
    So in this condition, we can know which of the basis states manifested.
    For example, if a quantum system is described by 4 mixed states numbered
-   :math:`\alpha_1|1> + \alpha_2|2> + \alpha_3|3> + \alpha_4|4>`, measuring it will
-   result in one of the four :math:`|k>` states with a probability of
+   :math:`\alpha_1\ket{1} + \alpha_2\ket{2} + \alpha_3\ket{3} + \alpha_4\ket{4}`, measuring it will
+   result in one of the four :math:`\ket{k}` states with a probability of
    :math:`|\alpha_k|^2`. [#norm]_
 
 4. We cannot "copy" a quantum state to another quantum system (called the
