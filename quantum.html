@@ -152,6 +152,17 @@ written as shown below. <a class="footnote-reference brackets" href="#measure" i
 <span class="w">   </span><span class="p">(</span><span class="n">program</span><span class="w"> </span><span class="n">H</span><span class="w"> </span><span class="n">cnot</span><span class="w"> </span><span class="n">Rx</span><span class="w"> </span><span class="k">...</span><span class="w"> </span><span class="n">measure</span><span class="p">))</span>
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In case you’ve been learning a little about quantum
+computing and wish to see an actual implementation you can play with,
+see <a class="reference external" href="https://github.com/kreauniv/complit/blob/main/source/src/quantum.rkt">quantum.rkt</a> . You’ll need to get this file, place it alongside
+your own .rkt file containing your definitions, and do
+<code class="docutils literal notranslate"><span class="pre">(require</span> <span class="pre">&quot;./quantum.rkt&quot;)</span></code> to bring the <code class="docutils literal notranslate"><span class="pre">run-circuit</span></code>
+definition into scope for your use. You may also wish to try
+your hand at implementing the other operators described
+in <a class="reference external" href="https://en.wikipedia.org/wiki/Quantum_logic_gate">Quantum logic gate</a> to test your own understanding.</p>
+</div>
 <p>Note that while <code class="docutils literal notranslate"><span class="pre">run-circuit</span></code> has full visibility to the quantum state,
 the supplied <code class="docutils literal notranslate"><span class="pre">program</span></code> procedure will not. It can only manipulate the
 state using the given operators (which produce no result values),
