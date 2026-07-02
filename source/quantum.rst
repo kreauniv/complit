@@ -135,6 +135,18 @@ written as shown below. [#measure]_
       ; operators and not be visible to `program`.
       (program H cnot Rx ... measure))
 
+.. note:: In case you've been learning a little about quantum
+   computing and wish to see an actual implementation you can play with,
+   see `quantum.rkt`_ . You'll need to get this file, place it alongside
+   your own .rkt file containing your definitions, and do
+   ``(require "./quantum.rkt")`` to bring the ``run-circuit``
+   definition into scope for your use. You may also wish to try
+   your hand at implementing the other operators described
+   in `Quantum logic gate`_ to test your own understanding.
+
+.. _Quantum logic gate: https://en.wikipedia.org/wiki/Quantum_logic_gate
+.. _quantum.rkt: https://github.com/kreauniv/complit/blob/main/source/src/quantum.rkt
+
 Note that while ``run-circuit`` has full visibility to the quantum state,
 the supplied ``program`` procedure will not. It can only manipulate the
 state using the given operators (which produce no result values),
