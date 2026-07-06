@@ -312,7 +312,8 @@ that clear.
 
 .. _rewritten-program:
 
-.. code:: racket
+.. code-block:: racket
+   :caption: Rewritten program that's more comprehensible than the original.
 
    (define roof (triangle 40 'solid 'red))
    (define front (rectangle 40 40 'solid 'brown))

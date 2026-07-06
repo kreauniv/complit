@@ -310,7 +310,9 @@ program thus without changing its meaning –</p>
 the second house which stands out a bit. We can now see that only its
 “front” is different. So we can “pull” that out of the expression to make
 that clear.</p>
-<div class="highlight-racket notranslate" id="rewritten-program"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">roof</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">))</span>
+<div class="literal-block-wrapper docutils container" id="id8">
+<span id="rewritten-program"></span><div class="code-block-caption"><span class="caption-number">Listing 1 </span><span class="caption-text">Rewritten program that’s more comprehensible than the original.</span><a class="headerlink" href="#id8" title="Link to this code">¶</a></div>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">roof</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">))</span>
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">front</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">))</span>
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">house</span><span class="w"> </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="n">roof</span><span class="w"> </span><span class="n">front</span><span class="p">))</span>
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">unique-front</span><span class="w"> </span><span class="p">(</span><span class="n">overlay</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">outline</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">black</span><span class="p">)</span>
@@ -318,6 +320,7 @@ that clear.</p>
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">unique-house</span><span class="w"> </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="n">roof</span><span class="w"> </span><span class="n">unique-front</span><span class="p">))</span>
 <span class="p">(</span><span class="n">beside</span><span class="w"> </span><span class="n">house</span><span class="w"> </span><span class="n">unique-house</span><span class="w"> </span><span class="n">house</span><span class="p">)</span>
 </pre></div>
+</div>
 </div>
 <div class="admonition-important-lesson admonition">
 <p class="admonition-title"><strong>Important lesson</strong></p>

@@ -49,7 +49,7 @@ small part of it relatable to what we’ve discussed regarding modelling images.
 <p>Copy the following code, paste it into a new file named <code class="docutils literal notranslate"><span class="pre">example.svg</span></code> and
 open it in your browser.</p>
 <div class="literal-block-wrapper docutils container" id="id2">
-<span id="ex-svg"></span><div class="code-block-caption"><span class="caption-number">Listing 11 </span><span class="caption-text">An example svg image.</span><a class="headerlink" href="#id2" title="Link to this code">¶</a></div>
+<span id="ex-svg"></span><div class="code-block-caption"><span class="caption-number">Listing 12 </span><span class="caption-text">An example svg image.</span><a class="headerlink" href="#id2" title="Link to this code">¶</a></div>
 <div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="p">&lt;</span><span class="nt">svg</span> <span class="na">width</span><span class="o">=</span><span class="s">&quot;400&quot;</span> <span class="na">height</span><span class="o">=</span><span class="s">&quot;300&quot;</span> <span class="na">xmlns</span><span class="o">=</span><span class="s">&quot;http://www.w3.org/2000/svg&quot;</span><span class="p">&gt;</span>
 <span class="linenos">2</span>    <span class="p">&lt;</span><span class="nt">rect</span> <span class="na">x</span><span class="o">=</span><span class="s">&quot;180&quot;</span> <span class="na">y</span><span class="o">=</span><span class="s">&quot;50&quot;</span> <span class="na">width</span><span class="o">=</span><span class="s">&quot;10&quot;</span> <span class="na">height</span><span class="o">=</span><span class="s">&quot;100&quot;</span> <span class="na">fill</span><span class="o">=</span><span class="s">&quot;sandybrown&quot;</span><span class="p">/&gt;</span>
 <span class="linenos">3</span>    <span class="p">&lt;</span><span class="nt">rect</span> <span class="na">x</span><span class="o">=</span><span class="s">&quot;200&quot;</span> <span class="na">y</span><span class="o">=</span><span class="s">&quot;50&quot;</span> <span class="na">width</span><span class="o">=</span><span class="s">&quot;10&quot;</span> <span class="na">height</span><span class="o">=</span><span class="s">&quot;100&quot;</span> <span class="na">fill</span><span class="o">=</span><span class="s">&quot;sandybrown&quot;</span><span class="p">/&gt;</span>
@@ -64,7 +64,7 @@ open it in your browser.</p>
 <figure class="align-default" id="id3">
 <img alt="_images/example-svg.png" src="_images/example-svg.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 17 </span><span class="caption-text">The rendered image of the SVG shown in <a class="reference internal" href="#ex-svg"><span class="std std-numref">Listing 11</span></a>.</span><a class="headerlink" href="#id3" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 17 </span><span class="caption-text">The rendered image of the SVG shown in <a class="reference internal" href="#ex-svg"><span class="std std-numref">Listing 12</span></a>.</span><a class="headerlink" href="#id3" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>What we’ve drawn is a bunch of rectangles, but when you see the image, you
@@ -96,7 +96,7 @@ conveys, though with some additional information which we might’ve given
 our <code class="docutils literal notranslate"><span class="pre">render-image</span></code> word.</p>
 <p>We call such <code class="docutils literal notranslate"><span class="pre">&lt;svg&gt;..&lt;/svg&gt;</span></code> <strong>tags</strong> which might have <strong>child tags</strong> within.
 We call the <code class="docutils literal notranslate"><span class="pre">width=&quot;200&quot;</span></code> and such values <strong>attributes</strong>. The entire “XML”
-syntax <a class="footnote-reference brackets" href="#syntax" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> is (almost) just that. Tags like line 4 of <a class="reference internal" href="#ex-svg"><span class="std std-numref">Listing 11</span></a>
+syntax <a class="footnote-reference brackets" href="#syntax" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> is (almost) just that. Tags like line 4 of <a class="reference internal" href="#ex-svg"><span class="std std-numref">Listing 12</span></a>
 are shorthand for <code class="docutils literal notranslate"><span class="pre">&lt;rect</span> <span class="pre">x=&quot;220&quot;</span> <span class="pre">y</span> <span class="pre">=</span> <span class="pre">&quot;50&quot;</span> <span class="pre">width=&quot;10&quot;</span> <span class="pre">height=&quot;100&quot;</span>
 <span class="pre">fill=&quot;sandybrown&quot;&gt;&lt;/rect&gt;</span></code> – i.e. a tag which has no children.</p>
 <div class="admonition note">

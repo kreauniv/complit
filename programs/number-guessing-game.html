@@ -47,7 +47,7 @@ program will give clues about how the player is doing.</p>
 <section id="a-first-version">
 <h2>A first version<a class="headerlink" href="#a-first-version" title="Link to this heading">¶</a></h2>
 <div class="literal-block-wrapper docutils container" id="nggv1">
-<div class="code-block-caption"><span class="caption-number">Listing 1 </span><span class="caption-text">The first version.</span><a class="headerlink" href="#nggv1" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 2 </span><span class="caption-text">The first version.</span><a class="headerlink" href="#nggv1" title="Link to this code">¶</a></div>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">run</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos"> 2</span><span class="w">   </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;Let&#39;s play a number guessing game.&quot;</span><span class="p">)</span>
 <span class="linenos"> 3</span><span class="w">   </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;I&#39;ll pick a number from 1 to &quot;</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
@@ -225,7 +225,7 @@ here and reuse the <code class="docutils literal notranslate"><span class="pre">
 </div>
 <p>It’s good to examine our whole rewritten program so far –</p>
 <div class="literal-block-wrapper docutils container" id="nggv2">
-<div class="code-block-caption"><span class="caption-number">Listing 2 </span><span class="caption-text">The second version</span><a class="headerlink" href="#nggv2" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 3 </span><span class="caption-text">The second version</span><a class="headerlink" href="#nggv2" title="Link to this code">¶</a></div>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-number-guessing-game</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos"> 2</span><span class="w">   </span><span class="p">(</span><span class="n">greet-player</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos"> 3</span><span class="w">   </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="p">(</span><span class="nb">random</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
@@ -292,7 +292,7 @@ arguments that meet some basic type constraints (like <code class="docutils lite
 </div>
 <p>Putting all of that together, we get our “version 3” below –</p>
 <div class="literal-block-wrapper docutils container" id="nggv3">
-<div class="code-block-caption"><span class="caption-number">Listing 3 </span><span class="caption-text">The third version.</span><a class="headerlink" href="#nggv3" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 4 </span><span class="caption-text">The third version.</span><a class="headerlink" href="#nggv3" title="Link to this code">¶</a></div>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-number-guessing-game</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos"> 2</span><span class="w">   </span><span class="p">(</span><span class="n">greet-player</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos"> 3</span><span class="w">   </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="p">(</span><span class="nb">random</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
@@ -351,7 +351,7 @@ attention to the form of the code.</p>
 </div>
 <p>With that, the top level procedure now becomes –</p>
 <div class="literal-block-wrapper docutils container" id="nggv4">
-<div class="code-block-caption"><span class="caption-number">Listing 4 </span><span class="caption-text">The fourth version.</span><a class="headerlink" href="#nggv4" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 5 </span><span class="caption-text">The fourth version.</span><a class="headerlink" href="#nggv4" title="Link to this code">¶</a></div>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-number-guessing-game</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos"> 2</span><span class="w">     </span><span class="p">(</span><span class="n">greet-player</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos"> 3</span><span class="w">     </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="p">(</span><span class="nb">random</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
@@ -370,7 +370,7 @@ we’re expressing it using <code class="docutils literal notranslate"><span cla
 make the program accessible by eliminating this construct too and by turning
 <code class="docutils literal notranslate"><span class="pre">play-till-win</span></code> into a stand alone abstraction.</p>
 <div class="literal-block-wrapper docutils container" id="nggv5">
-<div class="code-block-caption"><span class="caption-number">Listing 5 </span><span class="caption-text">The fifth version.</span><a class="headerlink" href="#nggv5" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 6 </span><span class="caption-text">The fifth version.</span><a class="headerlink" href="#nggv5" title="Link to this code">¶</a></div>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-number-guessing-game</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos"> 2</span><span class="w">     </span><span class="p">(</span><span class="n">greet-player</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos"> 3</span><span class="w">     </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="p">(</span><span class="nb">random</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
@@ -396,7 +396,7 @@ try it on your own you might end up with a slightly different form. That’s ok,
 as long as the form makes sense to you and you think it clearly communicates
 your intent. For example, we might’ve done it slightly differently like this –</p>
 <div class="literal-block-wrapper docutils container" id="nggv5b">
-<div class="code-block-caption"><span class="caption-number">Listing 6 </span><span class="caption-text">Another fifth version.</span><a class="headerlink" href="#nggv5b" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 7 </span><span class="caption-text">Another fifth version.</span><a class="headerlink" href="#nggv5b" title="Link to this code">¶</a></div>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-number-guessing-game</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos"> 2</span><span class="w">     </span><span class="p">(</span><span class="n">greet-player</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos"> 3</span><span class="w">     </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="p">(</span><span class="nb">random</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
