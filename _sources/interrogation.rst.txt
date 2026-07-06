@@ -384,6 +384,8 @@ using a definition like shown below --
 
    (define (front colour) (rectangle 40 40 'solid colour))
 
+We read this like "given a ``colour``, the ``front`` of a house is a 40x40
+rectangle painted solid with that colour."
 
 A few things to notice here.
 
