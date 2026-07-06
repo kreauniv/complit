@@ -82,6 +82,98 @@
 <li><p>Produce a sine tone.</p></li>
 </ol>
 </section>
+<section id="solutions">
+<h2>Solutions<a class="headerlink" href="#solutions" title="Link to this heading">¶</a></h2>
+<section id="split-a-string-into-lines">
+<h3>Split a string into lines<a class="headerlink" href="#split-a-string-into-lines" title="Link to this heading">¶</a></h3>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">list-of-lines-in-string</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">empty-string?</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
+<span class="w">        </span><span class="nb">empty</span>
+<span class="w">        </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="p">(</span><span class="n">first-line</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">rest-of-the-lines</span><span class="w"> </span><span class="n">str</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">empty-string?</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">str</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">first-line</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">(</span><span class="n">first-newline-character-position</span><span class="w"> </span><span class="n">str</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">rest-of-the-lines</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
+<span class="w">  </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;=</span><span class="w"> </span><span class="p">(</span><span class="n">first-newline-character-position</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">str</span><span class="p">))</span>
+<span class="w">      </span><span class="nb">empty</span>
+<span class="w">      </span><span class="p">(</span><span class="n">list-of-lines-in-string</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="n">first-newline-character-position</span><span class="w"> </span><span class="n">str</span><span class="p">))))))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">first-newline-character-position</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="n">next-newline-character-position-starting-from</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">next-newline-character-position-starting-from</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">i</span><span class="p">)</span>
+<span class="w">  </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">position-beyond-end-of-string</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">i</span><span class="p">)</span>
+<span class="w">      </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
+<span class="w">      </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">equal?</span><span class="w"> </span><span class="p">(</span><span class="nb">string-ref</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="sc">#\newline</span><span class="p">)</span>
+<span class="w">          </span><span class="n">i</span>
+<span class="w">          </span><span class="p">(</span><span class="n">next-newline-character-position-starting-from</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="mi">1</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">position-beyond-end-of-string</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">i</span><span class="p">)</span>
+<span class="w">  </span><span class="p">(</span><span class="nb">&gt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">str</span><span class="p">)))</span>
+</pre></div>
+</div>
+</section>
+<section id="find-where-a-given-substring-occurs-in-a-string">
+<h3>Find where a given substring occurs in a string<a class="headerlink" href="#find-where-a-given-substring-occurs-in-a-string" title="Link to this heading">¶</a></h3>
+<p>Naive start -</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">substring-position</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">substr</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">substring-at-start?</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">substr</span><span class="p">)</span>
+<span class="w">        </span><span class="mi">0</span>
+<span class="w">        </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="n">substring-position</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">substr</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">substring-at-start?</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">substr</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="nb">equal?</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">substr</span><span class="p">))</span><span class="w"> </span><span class="n">substr</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">substring-position</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">substr</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">substring-can-be-found?</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">substr</span><span class="p">)</span>
+<span class="w">        </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">substring-at-start?</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">substr</span><span class="p">)</span>
+<span class="w">            </span><span class="mi">0</span>
+<span class="w">            </span><span class="p">(</span><span class="n">next-pos-if-valid</span><span class="w"> </span><span class="p">(</span><span class="n">substring-position</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">substr</span><span class="p">)))</span>
+<span class="w">        </span><span class="no">#f</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">substring-at-start?</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">substr</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="nb">equal?</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">substr</span><span class="p">))</span><span class="w"> </span><span class="n">substr</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">substring-can-be-found?</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">substr</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="nb">&lt;=</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">substr</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">str</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">next-pos-if-valid</span><span class="w"> </span><span class="n">p</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="no">#f</span><span class="p">))</span><span class="w"> </span><span class="c1">; Also expressible as (and p (+ p 1))</span>
+</pre></div>
+</div>
+</section>
+<section id="all-occurrences-of-a-substring">
+<h3>All occurrences of a substring<a class="headerlink" href="#all-occurrences-of-a-substring" title="Link to this heading">¶</a></h3>
+<p>Naive version</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">substring-positions</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">substr</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">let*</span><span class="w"> </span><span class="p">([</span><span class="n">p</span><span class="w"> </span><span class="p">(</span><span class="n">substring-position</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">substr</span><span class="p">)]</span>
+<span class="w">          </span><span class="p">[</span><span class="n">pend</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">substr</span><span class="p">))])</span>
+<span class="w">       </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="n">p</span>
+<span class="w">             </span><span class="p">(</span><span class="n">offset-by</span><span class="w"> </span><span class="n">pend</span><span class="w"> </span><span class="p">(</span><span class="n">substring-positions</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pend</span><span class="p">)</span><span class="w"> </span><span class="n">substr</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">offset-by</span><span class="w"> </span><span class="n">dpos</span><span class="w"> </span><span class="n">list-of-positions</span><span class="p">)</span>
+<span class="w">     </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">dpos</span><span class="p">))</span><span class="w"> </span><span class="n">list-of-positions</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">substring-positions</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">substr</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">p</span><span class="w"> </span><span class="p">(</span><span class="n">substring-position</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">substr</span><span class="p">)])</span>
+<span class="w">      </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">p</span>
+<span class="w">          </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">pend</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">substr</span><span class="p">))])</span>
+<span class="w">             </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="n">p</span>
+<span class="w">                   </span><span class="p">(</span><span class="n">offset-by</span><span class="w"> </span><span class="n">pend</span><span class="w"> </span><span class="p">(</span><span class="n">substring-positions</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pend</span><span class="p">)</span><span class="w"> </span><span class="n">substr</span><span class="p">))))</span>
+<span class="w">          </span><span class="nb">empty</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">offset-by</span><span class="w"> </span><span class="n">dpos</span><span class="w"> </span><span class="n">list-of-positions</span><span class="p">)</span>
+<span class="w">     </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">dpos</span><span class="p">))</span><span class="w"> </span><span class="n">list-of-positions</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+</section>
 </section>
 
 

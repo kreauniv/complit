@@ -86,22 +86,22 @@ DrRacket’s “interaction window” lets you inspect the values associated wit
 various words it knows about already, by displaying a representation of the
 value that the word refers to. <a class="footnote-reference brackets" href="#analogy" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p>
 <p>We call such words in a programming language “identifiers” as they serve to
-“identify” something in computer memory which we’ll call the “value” of the
-identifier. <a class="footnote-reference brackets" href="#mem" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> We say the “identifier is bound to the value”.</p>
+identify something in computer memory which we’ll call the “value of the
+identifier”. <a class="footnote-reference brackets" href="#mem" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> We say the “identifier is bound to the value”.</p>
 <figure class="align-center" id="id6">
 <span id="figdenotation"></span><img alt="_images/pi-denotation.png" src="_images/pi-denotation.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 2 </span><span class="caption-text">The denotation chain for the identifier <code class="docutils literal notranslate"><span class="pre">pi</span></code>.</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>The thing to keep in mind is the “value” is not actually in the computer but
-lies in your mind in the interpretation it gives to whatever it is the
-identifier refers to. Without our mind interpreting the number as the ratio of
-the circumference to diameter (or some other interpretation depending on
-context), there is no real “meaning” for the value denoted by the identifier
+<p>The thing to keep in mind is the so called “value” is not actually in the
+computer but lies in your mind in the interpretation it gives to whatever it is
+the identifier refers to. Without our mind interpreting the number as the ratio
+of the circumference to diameter (or some other interpretation depending on
+context), there is no real <strong>meaning</strong> for the value denoted by the identifier
 <code class="docutils literal notranslate"><span class="pre">pi</span></code>. It is our minds that give meaning to the value and therefore the
-computer is said to “mediate” between the identifier and the meaning we
-give to it.</p>
+computer is said to <strong>mediate</strong> between the identifier and the meaning we give
+to it.</p>
 <p>Given a rich enough language that we can directly derive the meaning of a given
 identifier, we might simplify the above figure <a class="reference internal" href="#figdenotation"><span class="std std-numref">Fig. 2</span></a> down to
 <a class="reference internal" href="#fighorse"><span class="std std-numref">Fig. 1</span></a> in most circumstances. It is here that the difference
@@ -120,8 +120,8 @@ This has come to be called <a class="reference external" href="https://www.psych
 words of your own and the interaction window <a class="footnote-reference brackets" href="#repl" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> lets you interactively
 figure out and understand what the identifiers denote. Furthermore, the Racket
 engine keeps information about what kind of a value is denoted by an identifier
-along with the information pertaining to the value itself. This “type
-information” is what is used by the interaction window to display a value
+along with the information pertaining to the value itself. This <strong>type
+information</strong> is what is used by the interaction window to display a value
 appropriately for our understanding. The two main windows are shown in <a class="reference internal" href="#drracket-windows"><span class="std std-numref">Fig. 3</span></a>.</p>
 <figure class="align-center" id="id7">
 <span id="drracket-windows"></span><img alt="_images/drracket-windows.png" src="_images/drracket-windows.png" />
@@ -135,7 +135,7 @@ appropriately for our understanding. The two main windows are shown in <a class=
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">scene</span><span class="w"> </span><span class="s2">&quot;A horse in a box-car drawn by a steam engine.&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Now click the “Run” button at the top right, type <code class="docutils literal notranslate"><span class="pre">scene</span></code> into the
+<p>Now click the <strong>Run</strong> button at the top right, type <code class="docutils literal notranslate"><span class="pre">scene</span></code> into the
 “interaction window” and press the “Enter” key. You should see the sentence
 printed out.</p>
 <p>What we’ve done here is to define the identifier <code class="docutils literal notranslate"><span class="pre">scene</span></code> to refer to

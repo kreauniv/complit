@@ -104,16 +104,17 @@ because in our minds as we think of overlaying an apple image on another, we
 might think of an apple “near” another apple and not exactly on top of it,
 which would hide it. But “how close?” then becomes another question we need
 to answer through our expression. Since a relative position shift can be
-given by a pair of numbers <span class="math notranslate nohighlight">\((\d x,\d y)\)</span>, maybe we can write our
-expression as <code class="docutils literal notranslate"><span class="pre">(overlay</span> <span class="pre">dx</span> <span class="pre">dy</span> <span class="pre">apple</span> <span class="pre">apple)</span></code>. This still isn’t very clear as
-we don’t quite know which of the two apples the <span class="math notranslate nohighlight">\((\d x,\d y)\)</span> applies
-to. We can pick a convention, which would be one solution. However we can
-also take this opportunity to note that “an image shifted by dx,dy is also an
-image” to simplify the <code class="docutils literal notranslate"><span class="pre">overlay</span></code> concept. Now, maybe we can write our
-intention as <code class="docutils literal notranslate"><span class="pre">(overlay</span> <span class="pre">apple</span> <span class="pre">(shift</span> <span class="pre">dx</span> <span class="pre">dy</span> <span class="pre">apple))</span></code>. This pattern is now
-accessible to us for other purposes too – ex: <code class="docutils literal notranslate"><span class="pre">(overlay</span> <span class="pre">apple</span> <span class="pre">(shift</span> <span class="pre">dx</span> <span class="pre">dy</span>
-<span class="pre">orange))</span></code>, <code class="docutils literal notranslate"><span class="pre">(overlay</span> <span class="pre">apple</span> <span class="pre">(overlay</span> <span class="pre">(shift</span> <span class="pre">dx1</span> <span class="pre">dy1</span> <span class="pre">orange)</span> <span class="pre">(shift</span> <span class="pre">dx2</span> <span class="pre">dy2</span>
-<span class="pre">pear)))</span></code>, and so on.</p>
+given by a pair of numbers <span class="math notranslate nohighlight">\((\mathrm{d}x,\mathrm{d}y)\)</span>, maybe we can
+write our expression as <code class="docutils literal notranslate"><span class="pre">(overlay</span> <span class="pre">dx</span> <span class="pre">dy</span> <span class="pre">apple</span> <span class="pre">apple)</span></code>. This still isn’t
+very clear as we don’t quite know which of the two apples the
+<span class="math notranslate nohighlight">\((\mathrm{d}x,\mathrm{d}y)\)</span> applies to. We can pick a convention, which
+would be one solution. However we can also take this opportunity to note that
+“an image shifted by <span class="math notranslate nohighlight">\((\mathrm{d}x,\mathrm{d}y)\)</span> is also an image” to
+simplify the <code class="docutils literal notranslate"><span class="pre">overlay</span></code> concept. Now, maybe we can write our intention as
+<code class="docutils literal notranslate"><span class="pre">(overlay</span> <span class="pre">apple</span> <span class="pre">(shift</span> <span class="pre">dx</span> <span class="pre">dy</span> <span class="pre">apple))</span></code>. This pattern is now accessible to us
+for other purposes too – ex: <code class="docutils literal notranslate"><span class="pre">(overlay</span> <span class="pre">apple</span> <span class="pre">(shift</span> <span class="pre">dx</span> <span class="pre">dy</span> <span class="pre">orange))</span></code>,
+<code class="docutils literal notranslate"><span class="pre">(overlay</span> <span class="pre">apple</span> <span class="pre">(overlay</span> <span class="pre">(shift</span> <span class="pre">dx1</span> <span class="pre">dy1</span> <span class="pre">orange)</span> <span class="pre">(shift</span> <span class="pre">dx2</span> <span class="pre">dy2</span> <span class="pre">pear)))</span></code>,
+and so on.</p>
 <div class="admonition-insight admonition">
 <p class="admonition-title"><strong>Insight</strong></p>
 <p>When we define a word whose argument types and result types are the same
@@ -157,8 +158,8 @@ would shift it twice as much upwards as <code class="docutils literal notranslat
 </figure>
 <p>But what does “shifting” or “scaling” mean? With reference to the picture above,
 we might say “whatever is happening at a given coordinate <span class="math notranslate nohighlight">\((x,y)\)</span> is now
-happening at a different coordinate <span class="math notranslate nohighlight">\((x+\d x,y+\d y)\)</span> for an image shifted
-by <span class="math notranslate nohighlight">\((\d dx, \d y)\)</span> and similarly for a scaled image, whatever was “happening”
+happening at a different coordinate <span class="math notranslate nohighlight">\((x+\mathrm{d}x,y+\mathrm{d}y)\)</span> for an image shifted
+by <span class="math notranslate nohighlight">\((\mathrm{d}x, \mathrm{d}y)\)</span> and similarly for a scaled image, whatever was “happening”
 at <span class="math notranslate nohighlight">\((x,y)\)</span> is now “happening” at <span class="math notranslate nohighlight">\((x \times s_x, y \times s_y)\)</span>.</p>
 <p>The key idea here is that something is “happening” at a given coordinate <span class="math notranslate nohighlight">\((x,y)\)</span>.
 For visual image, the only thing we can tell that’s special about a given point
@@ -228,7 +229,7 @@ this same representation.</p>
 <section id="expressing-shift">
 <h2>Expressing <code class="docutils literal notranslate"><span class="pre">shift</span></code><a class="headerlink" href="#expressing-shift" title="Link to this heading">¶</a></h2>
 <p>With <code class="docutils literal notranslate"><span class="pre">(shift</span> <span class="pre">dx</span> <span class="pre">dy</span> <span class="pre">img)</span></code>, we described it as “whatever used to happen
-at <span class="math notranslate nohighlight">\((x,y)`\)</span> in the <code class="docutils literal notranslate"><span class="pre">img</span></code> now happens at <span class="math notranslate nohighlight">\((x+\d x, y+\d y)\)</span>.
+at <span class="math notranslate nohighlight">\((x,y)`\)</span> in the <code class="docutils literal notranslate"><span class="pre">img</span></code> now happens at <span class="math notranslate nohighlight">\((x+\mathrm{d}x, y+\mathrm{d}y)\)</span>.
 We can capture this relationship in a definition like given below. You
 should try to define it yourself first before revealing the solution.</p>
 <details class="summary-defining-shift">

@@ -44,4 +44,104 @@ Sound and music
 1. Produce a sine tone.
 
 
+Solutions
+---------
+
+Split a string into lines
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: racket
+
+    (define (list-of-lines-in-string str)
+        (if (empty-string? str)
+            empty
+            (cons (first-line str) (rest-of-the-lines str))))
+
+    (define (empty-string? str)
+        (= 0 (string-length str)))
+
+    (define (first-line str)
+        (substring str 0 (first-newline-character-position str)))
+
+    (define (rest-of-the-lines str)
+      (if (>= (first-newline-character-position str) (string-length str))
+          empty
+          (list-of-lines-in-string (substring str (+ 1 (first-newline-character-position str))))))
+
+    (define (first-newline-character-position str)
+        (next-newline-character-position-starting-from str 0))
+
+    (define (next-newline-character-position-starting-from str i)
+      (if (position-beyond-end-of-string str i)
+          (string-length str)
+          (if (equal? (string-ref str i) #\newline)
+              i
+              (next-newline-character-position-starting-from str (+ i 1)))))
+
+    (define (position-beyond-end-of-string str i)
+      (>= i (string-length str)))
+
+Find where a given substring occurs in a string
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Naive start - 
+
+.. code-block:: racket
+
+    (define (substring-position str substr)
+        (if (substring-at-start? str substr)
+            0
+            (+ 1 (substring-position (substring str 1) substr))))
+
+    (define (substring-at-start? str substr)
+        (equal? (substring str 0 (string-length substr)) substr))
+
+
+.. code-block:: racket
+
+   (define (substring-position str substr)
+       (if (substring-can-be-found? str substr)
+           (if (substring-at-start? str substr)
+               0
+               (next-pos-if-valid (substring-position (substring str 1) substr)))
+           #f))
+
+   (define (substring-at-start? str substr)
+       (equal? (substring str 0 (string-length substr)) substr))
+
+   (define (substring-can-be-found? str substr)
+       (<= (string-length substr) (string-length str)))
+
+   (define (next-pos-if-valid p)
+       (if p (+ p 1) #f)) ; Also expressible as (and p (+ p 1))
+            
+All occurrences of a substring
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Naive version
+
+.. code-block:: racket
+
+   (define (substring-positions str substr)
+      (let* ([p (substring-position str substr)]
+             [pend (+ p (string-length substr))])
+          (cons p
+                (offset-by pend (substring-positions (substring str pend) substr)))))
+
+   (define (offset-by dpos list-of-positions)
+        (map (lambda (x) (+ x dpos)) list-of-positions))
+
+.. code-block:: racket
+
+   (define (substring-positions str substr)
+      (let ([p (substring-position str substr)])
+         (if p
+             (let ([pend (+ p (string-length substr))])
+                (cons p
+                      (offset-by pend (substring-positions (substring str pend) substr))))
+             empty)))
+
+   (define (offset-by dpos list-of-positions)
+        (map (lambda (x) (+ x dpos)) list-of-positions))
+
 
