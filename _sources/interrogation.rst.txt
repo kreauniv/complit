@@ -211,13 +211,12 @@ of side length 40 units".
 Sub-expressions
 ---------------
 
-Even before we jump into the documentation for ``triangle``, we can
-find out what the expression means using the interaction window.
-Since all the supplied arguments to the triangle are concrete values
-and not identifiers that further need to be determined, we can simply
-copy-paste the ``(triangle 40 'solid 'red)`` expression and paste
-it into the interaction window (and press <enter>, which we'll stop
-saying from now on). 
+Even before we jump into the documentation for ``triangle``, we can find out
+what the expression means using the interaction window. Since all the supplied
+arguments to the triangle are concrete values and not identifiers that further
+need to be determined, we can simply copy the ``(triangle 40 'solid 'red)``
+expression and paste it into the interaction window (and press <enter>, which
+we'll stop saying from now on). 
 
 .. hint:: Copy-pasting expressions in DrRacket
 
