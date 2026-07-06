@@ -138,8 +138,8 @@ The full documentation for ``triangle`` is shown below. It consists of two
 parts -- first comes a syntactic presentation of how the word is to be used.
 This should give you an idea of the pattern to expect in the code wherever
 you're seeing the ``triangle`` word (in the ``2htdp/image`` package context).
-The second is a textual description of what it means. This usually also includes
-a description of the "arguments" a.k.a. "parameters" of the expression that
+The second is a textual description of what it means. This usually also
+includes a description of the "arguments" [#argparams]_ of the expression that
 the operator word is part of, whose meaning you're really interested in.
 
 
@@ -583,3 +583,17 @@ We've seen a case of understanding a simple program by "interrogating" it.
 
 .. [#addpkg] You may have to "require" a package that "provides" the
    identifier's definition.
+
+.. [#argparams] In some documentation, you may find the word "parameters" being
+   used to describe what we're calling "arguments" here. We'll use "arguments"
+   to refer to the identifiers for which values are needed for a defined word
+   to make full sense in a context. We'll use "parameters" to describe the actual
+   values presented for these "arguments" in a specific context.
+
+   For example, in ``(triangle side-length mode color)``, ``side-length``,
+   ``mode`` and ``color`` will be called the "arguments" to ``triangle``.
+   Whereas, in ``(triangle 40 'solid 'red)``, ``40``, ``'solid`` and ``'red``
+   will be called the "parameters" to ``triangle`` in the expression which
+   stands for a specific triangle drawn as part of a picture. So we'll say "the
+   ``triangle`` word has three **arguments**, so you have to provide three
+   **parameters** when you use the word to denote a specific triangle".
