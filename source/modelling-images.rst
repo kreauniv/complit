@@ -80,16 +80,17 @@ You're given an image bound to the identifier ``apple``. What can you do with it
   might think of an apple "near" another apple and not exactly on top of it,
   which would hide it. But "how close?" then becomes another question we need
   to answer through our expression. Since a relative position shift can be
-  given by a pair of numbers :math:`(\d x,\d y)`, maybe we can write our
-  expression as ``(overlay dx dy apple apple)``. This still isn't very clear as
-  we don't quite know which of the two apples the :math:`(\d x,\d y)` applies
-  to. We can pick a convention, which would be one solution. However we can
-  also take this opportunity to note that "an image shifted by dx,dy is also an
-  image" to simplify the ``overlay`` concept. Now, maybe we can write our
-  intention as ``(overlay apple (shift dx dy apple))``. This pattern is now
-  accessible to us for other purposes too -- ex: ``(overlay apple (shift dx dy
-  orange))``, ``(overlay apple (overlay (shift dx1 dy1 orange) (shift dx2 dy2
-  pear)))``, and so on. 
+  given by a pair of numbers :math:`(\mathrm{d}x,\mathrm{d}y)`, maybe we can
+  write our expression as ``(overlay dx dy apple apple)``. This still isn't
+  very clear as we don't quite know which of the two apples the
+  :math:`(\mathrm{d}x,\mathrm{d}y)` applies to. We can pick a convention, which
+  would be one solution. However we can also take this opportunity to note that
+  "an image shifted by :math:`(\mathrm{d}x,\mathrm{d}y)` is also an image" to
+  simplify the ``overlay`` concept. Now, maybe we can write our intention as
+  ``(overlay apple (shift dx dy apple))``. This pattern is now accessible to us
+  for other purposes too -- ex: ``(overlay apple (shift dx dy orange))``,
+  ``(overlay apple (overlay (shift dx1 dy1 orange) (shift dx2 dy2 pear)))``,
+  and so on. 
 
   .. admonition:: **Insight**
 
@@ -133,8 +134,8 @@ would shift it twice as much upwards as ``(shift 1 1 apple)``.
 
 But what does "shifting" or "scaling" mean? With reference to the picture above,
 we might say "whatever is happening at a given coordinate :math:`(x,y)` is now
-happening at a different coordinate :math:`(x+\d x,y+\d y)` for an image shifted
-by :math:`(\d dx, \d y)` and similarly for a scaled image, whatever was "happening"
+happening at a different coordinate :math:`(x+\mathrm{d}x,y+\mathrm{d}y)` for an image shifted
+by :math:`(\mathrm{d}x, \mathrm{d}y)` and similarly for a scaled image, whatever was "happening"
 at :math:`(x,y)` is now "happening" at :math:`(x \times s_x, y \times s_y)`. 
 
 The key idea here is that something is "happening" at a given coordinate :math:`(x,y)`.
@@ -217,7 +218,7 @@ Expressing ``shift``
 --------------------
 
 With ``(shift dx dy img)``, we described it as "whatever used to happen
-at :math:`(x,y)`` in the ``img`` now happens at :math:`(x+\d x, y+\d y)`.
+at :math:`(x,y)`` in the ``img`` now happens at :math:`(x+\mathrm{d}x, y+\mathrm{d}y)`.
 We can capture this relationship in a definition like given below. You
 should try to define it yourself first before revealing the solution.
 
