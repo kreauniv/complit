@@ -620,4 +620,4 @@ We've seen a case of understanding a simple program by "interrogating" it.
    ``triangle`` word has three **arguments**, so you have to provide three
    **parameters** when you use the word to denote a specific triangle".
 
-.. [#naur] We'll encounter Naur again in another context later on in this course.
+.. [#naur2] We'll encounter Naur again in another context later on in this course.
