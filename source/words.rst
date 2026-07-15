@@ -58,8 +58,8 @@ various words it knows about already, by displaying a representation of the
 value that the word refers to. [#analogy]_
 
 We call such words in a programming language "identifiers" as they serve to
-"identify" something in computer memory which we'll call the "value" of the
-identifier. [#mem]_ We say the "identifier is bound to the value".
+identify something in computer memory which we'll call the "value of the
+identifier". [#mem]_ We say the "identifier is bound to the value".
 
 .. _figdenotation:
 
@@ -68,14 +68,14 @@ identifier. [#mem]_ We say the "identifier is bound to the value".
 
    The denotation chain for the identifier ``pi``. 
 
-The thing to keep in mind is the "value" is not actually in the computer but
-lies in your mind in the interpretation it gives to whatever it is the
-identifier refers to. Without our mind interpreting the number as the ratio of
-the circumference to diameter (or some other interpretation depending on
-context), there is no real "meaning" for the value denoted by the identifier
+The thing to keep in mind is the so called "value" is not actually in the
+computer but lies in your mind in the interpretation it gives to whatever it is
+the identifier refers to. Without our mind interpreting the number as the ratio
+of the circumference to diameter (or some other interpretation depending on
+context), there is no real **meaning** for the value denoted by the identifier
 ``pi``. It is our minds that give meaning to the value and therefore the
-computer is said to "mediate" between the identifier and the meaning we
-give to it.
+computer is said to **mediate** between the identifier and the meaning we give
+to it.
 
 Given a rich enough language that we can directly derive the meaning of a given
 identifier, we might simplify the above figure :numref:`figdenotation` down to
@@ -96,8 +96,8 @@ In Racket, you can use the ``define`` word to give meaning to (i.e. "bind") new
 words of your own and the interaction window [#repl]_ lets you interactively
 figure out and understand what the identifiers denote. Furthermore, the Racket
 engine keeps information about what kind of a value is denoted by an identifier
-along with the information pertaining to the value itself. This "type
-information" is what is used by the interaction window to display a value
+along with the information pertaining to the value itself. This **type
+information** is what is used by the interaction window to display a value
 appropriately for our understanding. The two main windows are shown in :numref:`drracket-windows`.
 
 .. _drracket-windows:
@@ -116,7 +116,7 @@ appropriately for our understanding. The two main windows are shown in :numref:`
 
       (define scene "A horse in a box-car drawn by a steam engine.")
 
-   Now click the "Run" button at the top right, type ``scene`` into the
+   Now click the **Run** button at the top right, type ``scene`` into the
    "interaction window" and press the "Enter" key. You should see the sentence
    printed out.
 
