@@ -19,9 +19,29 @@ Consider the following program that builds an image --
 
 
 How do we go about understanding what this program does if we know only the
-basic notation of Racket to help us read it? Below is a possible approach for
-this particular program. The principles used to interrogate this program are
-general though and you'll gradually build fluency with them.
+basic notation of Racket to help us read it? And what does "understanding a
+program" actually mean?
+
+A good notion of what it means to program is articulated in the article
+**Programming as theory building** (`PDF link <ptb_>`_) by computer scientist
+**Peter Naur**. [#naur2]_ You can dive into that article if interested, as Naur raises
+the question of "what is programming?" at a time when it was "programming" and
+not "software engineering". The central thesis of the essay is that through the
+act of programming, the programmer builds a "theory" of the domain or aspect
+that their program is about. The sense in which he uses "theory" is the mental
+model that allows a programmer to be interrogated about the aspects and
+functioning of their program. 
+
+In that spirit, by "understanding a program", we mean the construction of an
+adequate mental structure using which we can explain aspects of the program's
+structure and behaviour. Here, we look at how we might construct such a "theory"
+through active reading of a program.
+
+.. _ptb: https://gwern.net/doc/cs/algorithm/1985-naur.pdf
+
+Below is a possible approach for this particular program. The principles used
+to interrogate this program are general though and you'll gradually build
+fluency with them.
 
 Run the program
 ---------------
@@ -599,3 +619,5 @@ We've seen a case of understanding a simple program by "interrogating" it.
    stands for a specific triangle drawn as part of a picture. So we'll say "the
    ``triangle`` word has three **arguments**, so you have to provide three
    **parameters** when you use the word to denote a specific triangle".
+
+.. [#naur2] We'll encounter Naur again in another context later on in this course.

@@ -19,9 +19,9 @@ capture our (evolving) thinking.
 So when we do find out that a term doesn't mean what we thought it meant, how
 do we go about figuring out the gap in our understanding and plug the hole?
 
-A common rookie mistake [#rookiemistake]_ is try various changes at random until
-some particular change "seems to work". This is not a desirable approach for the
-following reasons -
+A common rookie mistake [#rookiemistake]_ is to try various changes at random
+until some particular change "seems to work". This is not a desirable approach
+for the following reasons -
 
 1. You might not actually solve the problem but might come to be in the
    illusion that you've solved it.
