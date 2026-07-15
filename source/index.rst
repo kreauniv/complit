@@ -10,6 +10,7 @@ CompLIT: Programming Literacy (WORK-IN-PROGRESS)
    intro
    words
    interrogation
+   editor
    strings
    sample-programs
    structures
