@@ -133,11 +133,11 @@ valid conditions.</p>
 <section id="contracts">
 <h2>Contracts<a class="headerlink" href="#contracts" title="Link to this heading">¶</a></h2>
 <p>We saw in an earlier section when working with the “image” package from HtDP,
-the documentation for <code class="docutils literal notranslate"><span class="pre">triangle</span></code> shown in <a class="reference internal" href="#fig-triangle-docs"><span class="std std-numref">Fig. 11</span></a>.</p>
+the documentation for <code class="docutils literal notranslate"><span class="pre">triangle</span></code> shown in <a class="reference internal" href="#fig-triangle-docs"><span class="std std-numref">Fig. 19</span></a>.</p>
 <figure class="align-center" id="id3">
 <span id="fig-triangle-docs"></span><img alt="_images/triangle-docs2.png" src="_images/triangle-docs2.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 11 </span><span class="caption-text">The Racket documentation for <code class="docutils literal notranslate"><span class="pre">triangle</span></code> from the <code class="docutils literal notranslate"><span class="pre">2htdp/image</span></code> package.</span><a class="headerlink" href="#id3" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 19 </span><span class="caption-text">The Racket documentation for <code class="docutils literal notranslate"><span class="pre">triangle</span></code> from the <code class="docutils literal notranslate"><span class="pre">2htdp/image</span></code> package.</span><a class="headerlink" href="#id3" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>We’re now going to dive a little into some of what this documentation tells us.
@@ -152,12 +152,12 @@ So the entire expression seems to be saying something like “a real number
 that is not negative”. This tells us that when using the <code class="docutils literal notranslate"><span class="pre">triangle</span></code> definition,
 the <code class="docutils literal notranslate"><span class="pre">side-length</span></code> argument can be either 0 or any real number greater than 0.</p>
 <p>Indeed, if you <code class="docutils literal notranslate"><span class="pre">(require</span> <span class="pre">2htdp/image)</span></code> and type the expression shown in
-<a class="reference internal" href="#fig-triangle-nn"><span class="std std-numref">Fig. 12</span></a> into the interaction window, you’ll see an error
+<a class="reference internal" href="#fig-triangle-nn"><span class="std std-numref">Fig. 20</span></a> into the interaction window, you’ll see an error
 message as shown.</p>
 <figure class="align-center" id="id4">
 <span id="fig-triangle-nn"></span><img alt="_images/triangle-nn.png" src="_images/triangle-nn.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 12 </span><span class="caption-text">What happens when passing a negative number for the <code class="docutils literal notranslate"><span class="pre">side-length</span></code>
+<p><span class="caption-number">Fig. 20 </span><span class="caption-text">What happens when passing a negative number for the <code class="docutils literal notranslate"><span class="pre">side-length</span></code>
 argument of <code class="docutils literal notranslate"><span class="pre">triangle</span></code>.</span><a class="headerlink" href="#id4" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
@@ -166,31 +166,31 @@ expression?</p>
 <figure class="align-center" id="id5">
 <span id="fig-negative"></span><img alt="_images/negative.png" src="_images/negative.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 13 </span><span class="caption-text">What <code class="docutils literal notranslate"><span class="pre">negative?</span></code> means – it is just a “predicate” that tells you whether
+<p><span class="caption-number">Fig. 21 </span><span class="caption-text">What <code class="docutils literal notranslate"><span class="pre">negative?</span></code> means – it is just a “predicate” that tells you whether
 its argument is a negative number or not.</span><a class="headerlink" href="#id5" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>From <a class="reference internal" href="#fig-negative"><span class="std std-numref">Fig. 13</span></a>, we see that in the usage context where you’re
+<p>From <a class="reference internal" href="#fig-negative"><span class="std std-numref">Fig. 21</span></a>, we see that in the usage context where you’re
 giving a number as an argument, it tells you whether the number is a negative
-number or not. You can also see from the last interaction in <a class="reference internal" href="#fig-negative"><span class="std std-numref">Fig. 13</span></a>
+number or not. You can also see from the last interaction in <a class="reference internal" href="#fig-negative"><span class="std std-numref">Fig. 21</span></a>
 that it has a contract too – that its argument <strong>must</strong> be a real number
 and not something else.</p>
 <figure class="align-center" id="id6">
 <span id="fig-real"></span><img alt="_images/real.png" src="_images/real.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 14 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">real?</span></code> is a predicate that checks whether the argument is a real number.</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 22 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">real?</span></code> is a predicate that checks whether the argument is a real number.</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>So in order to establish that a given value is a “non-negative real number”,
 we must combine the idea of a real number as captured by the predicate <code class="docutils literal notranslate"><span class="pre">real?</span></code>,
-as shown in <a class="reference internal" href="#fig-real"><span class="std std-numref">Fig. 14</span></a> with the constraint that it is <code class="docutils literal notranslate"><span class="pre">(not/c</span> <span class="pre">negative?)</span></code>.
+as shown in <a class="reference internal" href="#fig-real"><span class="std std-numref">Fig. 22</span></a> with the constraint that it is <code class="docutils literal notranslate"><span class="pre">(not/c</span> <span class="pre">negative?)</span></code>.
 That is the job of the entire <code class="docutils literal notranslate"><span class="pre">(and/c</span> <span class="pre">real?</span> <span class="pre">(not/c</span> <span class="pre">negative?))</span></code> construct,
 which you can see can itself be used as a predicate to check a value,
-as shown in <a class="reference internal" href="#fig-andc"><span class="std std-numref">Fig. 15</span></a>.</p>
+as shown in <a class="reference internal" href="#fig-andc"><span class="std std-numref">Fig. 23</span></a>.</p>
 <figure class="align-center" id="id7">
 <span id="fig-andc"></span><img alt="_images/andc.png" src="_images/andc.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 15 </span><span class="caption-text">The <code class="docutils literal notranslate"><span class="pre">(and/c</span> <span class="pre">...)</span></code> expression is a “contract” and contracts can be used as
+<p><span class="caption-number">Fig. 23 </span><span class="caption-text">The <code class="docutils literal notranslate"><span class="pre">(and/c</span> <span class="pre">...)</span></code> expression is a “contract” and contracts can be used as
 predicates to check whether a value meets some criterion.</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
@@ -313,6 +313,7 @@ course.</p>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="words.html">Words</a></li>
 <li class="toctree-l1"><a class="reference internal" href="interrogation.html">Interrogating programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="editor.html">The editor</a></li>
 <li class="toctree-l1"><a class="reference internal" href="strings.html">Strings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sample-programs.html">Sample programs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="structures.html">Structures</a></li>

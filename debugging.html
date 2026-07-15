@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>When things go wrong &#8212; CompLIT: Programming Literacy v1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d8a2add5" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=17171a54" />
+    <script src="_static/documentation_options.js?v=5cb08e4e"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="when-things-go-wrong">
+<h1>When things go wrong<a class="headerlink" href="#when-things-go-wrong" title="Link to this heading">¶</a></h1>
+<p>The process of expressing our ideas as concrete programs we can manipulate
+helps us gain a deeper, more nuanced understanding of these ideas. This means
+that during the intermediate stages we may not have truly well formed ideas
+and the programs/definitions we’ve written may not correctly or completely
+capture our (evolving) thinking.</p>
+<div class="admonition-article-reference admonition">
+<p class="admonition-title"><strong>Article reference</strong></p>
+<p>Peter Naur’s <a class="reference external" href="https://gwern.net/doc/cs/algorithm/1985-naur.pdf">Programming as theory building</a> article argues for a view of
+programming itself, in general, as an activity whose purpose and effect is
+to build operational theories of the domains being modelled in the programs.
+The article is worth a read although it might seem too dated to be relevant.</p>
+</div>
+<p>So when we do find out that a term doesn’t mean what we thought it meant, how
+do we go about figuring out the gap in our understanding and plug the hole?</p>
+<p>A common rookie mistake <a class="footnote-reference brackets" href="#rookiemistake" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> is try various changes at random until
+some particular change “seems to work”. This is not a desirable approach for the
+following reasons -</p>
+<ol class="arabic simple">
+<li><p>You might not actually solve the problem but might come to be in the
+illusion that you’ve solved it.</p></li>
+<li><p>There is no guarantee that you’ll actually find out the main cause of the
+discrepancy … unless perhaps you have so much experience that due to sheer
+familiarity you gravitate towards the core issue at hand.</p></li>
+<li><p>Even after addressing the gap, you’re unlikely to gain an improved
+understanding of what you set out to program originally. This is, by far,
+the most significant reason to not take this approach. <a class="footnote-reference brackets" href="#fuzzing" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></li>
+</ol>
+<p>Fortunately, we have a strong set of cognitive tools in <strong>the scientific
+method</strong> that can help us with this. Here is the general process of how such
+a situation must be acted on –</p>
+<ol class="arabic simple">
+<li><p>You evaluated some expression which produced a value you didn’t expect. This
+is your <strong>observation</strong>. You might bolster this observation by coming up
+with more nearby expressions of the same nature that also exhibit the
+discrepancy. But you should have at least one such observation at hand
+that you think needs to be addressed.</p></li>
+<li><p>Knowing what you know about your existing definitions, formulate a <strong>hypothesis</strong>
+about the issue.</p></li>
+<li><p>Identify a <strong>consequence</strong> of the hypothesis that can be tested. i.e. If
+your hypothesis were true, then you expect something else (ideally a
+non trivial consequence) to also be true. There are often many consequences
+you can come up with, but pick one for which you can make an easy <strong>test</strong>.</p></li>
+<li><p>If the test fails, then the expected consequent is absent and therefore
+your hypothesis is wrong and needs to be <strong>revised</strong>. The revisions process
+might also entail making modifications to your program to tell you more about
+what your definitions are doing, so that you can make better hypotheses about
+the problem.</p></li>
+</ol>
+<p>Lather, rinse and repeat the above in a cycle until you arrive at the
+resolution of the issue you started with.</p>
+<div class="admonition-toyota-s-five-whys admonition">
+<p class="admonition-title"><strong>Toyota’s five whys</strong></p>
+<p>There is a principle by Toyota’s founder that’s often shared in business
+circles that is useful to remember in this context as well. When you
+identify a problem, ask <em>why</em>. Once you find an answer, ask <em>why</em> again,
+and keep doing this five times. Fix the reason that you arrive at at the end.</p>
+<p>There is nothing magic about “five” here, but the import is that the reason
+you initially land on might not be the true reason and you might need to dig
+deeper to find the <strong>real reason</strong>. This takes experience to do well, but you
+can get there with consistent and easy practice.</p>
+</div>
+<section id="three-houses">
+<h2>Three houses<a class="headerlink" href="#three-houses" title="Link to this heading">¶</a></h2>
+<p>Consider a variation of the same program we saw in <a class="reference internal" href="interrogation.html"><span class="doc">Interrogating programs</span></a>.</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">An erroneous variation of the “three houses” program.</span><a class="headerlink" href="#id3" title="Link to this code">¶</a></div>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">#lang </span><span class="nn">racket</span>
+<span class="linenos"> 2</span><span class="p">(</span><span class="k">require</span><span class="w"> </span><span class="n">2htdp/image</span><span class="p">)</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="p">(</span><span class="n">beside</span>
+<span class="linenos"> 5</span><span class="w">   </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">)</span>
+<span class="linenos"> 6</span><span class="w">          </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">))</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">)</span>
+<span class="linenos"> 8</span><span class="w">          </span><span class="p">(</span><span class="n">overlay</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">outline</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">black</span><span class="p">)</span>
+<span class="linenos"> 9</span><span class="w">                   </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">gren</span><span class="p">)))</span>
+<span class="linenos">10</span><span class="w">   </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">)</span>
+<span class="linenos">11</span><span class="w">          </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<p>Run this program and see what you get. You should see the following error message –</p>
+<figure class="align-default" id="id4">
+<img alt="_images/gren-error.png" src="_images/gren-error.png" />
+<figcaption>
+<p><span class="caption-text">The error message shown.</span><a class="headerlink" href="#id4" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id5">
+<img alt="_images/gren-code.png" src="_images/gren-code.png" />
+<figcaption>
+<p><span class="caption-text">The code trace of the error.</span><a class="headerlink" href="#id5" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The red arrows in the figure about start at the innermost expression that
+contains the error and works it way up to the outermost expression that
+contains it.</p>
+<p>In this case, the error was a typo which becomes clear to us from the error
+message itself. We can immediately see that we typed <code class="docutils literal notranslate"><span class="pre">'gren</span></code> instead of
+<code class="docutils literal notranslate"><span class="pre">'green</span></code>. Remember that not all typos are easy to spot and it is helpful that
+the <code class="docutils literal notranslate"><span class="pre">rectangle</span></code> primitive will report these unknown values to you so you can
+fix it. (We’ll see later how to do this ourselves.)</p>
+<p>Our <strong>hypothesis</strong> now is that we mistyped <code class="docutils literal notranslate"><span class="pre">'green</span></code> as <code class="docutils literal notranslate"><span class="pre">'gren</span></code>. If this
+hypothesis is correct, changing it to <code class="docutils literal notranslate"><span class="pre">'green</span></code> should result in the error
+vanishing. We can easily check that by making that change.</p>
+<p>The <strong>validation</strong> here is not simply that the error disappears, but we should
+check that indeed we’re getting the desired house drawn. Not realizing this is
+again a characteristic rookie error.</p>
+</section>
+<section id="confirm-your-hypotheses-beforehand">
+<h2>Confirm your hypotheses beforehand<a class="headerlink" href="#confirm-your-hypotheses-beforehand" title="Link to this heading">¶</a></h2>
+<p>Well, the above error was easy to find and fix. Not all errors are like that
+though. Here is the same program again, but it has an error. See if you can
+spot it.</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Another erroneous variation of the “three houses” program.</span><a class="headerlink" href="#id6" title="Link to this code">¶</a></div>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">#lang </span><span class="nn">racket</span>
+<span class="linenos"> 2</span><span class="p">(</span><span class="k">require</span><span class="w"> </span><span class="n">2htdp/image</span><span class="p">)</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="p">(</span><span class="n">beside</span>
+<span class="linenos"> 5</span><span class="w">   </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">)</span>
+<span class="linenos"> 6</span><span class="w">          </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">))</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">)</span>
+<span class="linenos"> 8</span><span class="w">          </span><span class="p">(</span><span class="n">overlay</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">outline</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">black</span><span class="p">)</span>
+<span class="linenos"> 9</span><span class="w">                   </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">green</span><span class="p">)))</span>
+<span class="linenos">10</span><span class="w">   </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">)</span>
+<span class="linenos">11</span><span class="w">          </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<p>When you run this program, you get no error messages. That doesn’t however mean
+that the program is correct. In fact, this is the same program as in the
+original page and it contains an error that arises from an assumption made
+w.r.t. the behaviour of <code class="docutils literal notranslate"><span class="pre">'outline</span></code> that was not tested before using in the
+program.</p>
+<p>You might think this looks perfectly fine to you (well, as far as Monopoly level
+housing goes, at least). But the assumption was that the <code class="docutils literal notranslate"><span class="pre">(overlay</span> <span class="pre">...)</span></code> term
+places the outline <strong>within</strong> the solid green rectangle.</p>
+<p>The best way to see this assumption at play is to <strong>exaggerate</strong> the discrepancy
+and check that the assumption holds. We need the outline to be thick to see
+clearly whether it is within the bounds of the green rectangle or outside it.
+One way is to use <code class="docutils literal notranslate"><span class="pre">pen</span></code> to make a nice thick and blue stroke so it is visible.
+Check this –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="kn">#lang </span><span class="nn">racket</span>
+<span class="p">(</span><span class="k">require</span><span class="w"> </span><span class="n">2htdp/image</span><span class="p">)</span>
+
+<span class="p">(</span><span class="n">beside</span>
+<span class="w">   </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">)</span>
+<span class="w">          </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">))</span>
+<span class="w">   </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">)</span>
+<span class="w">          </span><span class="p">(</span><span class="n">overlay</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">outline</span><span class="w"> </span><span class="p">(</span><span class="n">pen</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">blue</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">butt</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">miter</span><span class="p">))</span>
+<span class="w">                   </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">green</span><span class="p">)))</span>
+<span class="w">   </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">)</span>
+<span class="w">          </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>When you run this, you can clearly see that the “outline” is bleeding outside
+the solid green rectangle despite it having the same dimensions.</p>
+<p>Here, we see the importance of recognizing an assumption (really a hypothesis
+about the meaning of a word) as and when we’re making it, and checking it
+with a test in which we can <strong>clearly</strong> see the assumption holding or failing
+before proceeding.</p>
+<div class="admonition-exercise admonition">
+<p class="admonition-title"><strong>Exercise</strong></p>
+<p>Now that you know the problem and you also know what to expect, how would
+you fix the program?</p>
+<p>Note that for this kind of an example where our senses are involved in
+gauging the result, there may be more than one valid solution.</p>
+</div>
+</section>
+<section id="misunderstanding-words">
+<h2>Misunderstanding words<a class="headerlink" href="#misunderstanding-words" title="Link to this heading">¶</a></h2>
+<p>Consider the following category of error where there is a clear misunderstanding
+of what the words <code class="docutils literal notranslate"><span class="pre">overlay</span></code> and <code class="docutils literal notranslate"><span class="pre">above</span></code> mean.</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">A case of misunderstood words</span><a class="headerlink" href="#id7" title="Link to this code">¶</a></div>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">#lang </span><span class="nn">racket</span>
+<span class="linenos"> 2</span><span class="p">(</span><span class="k">require</span><span class="w"> </span><span class="n">2htdp/image</span><span class="p">)</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="p">(</span><span class="n">beside</span>
+<span class="linenos"> 5</span><span class="w">   </span><span class="p">(</span><span class="n">overlay</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">)</span>
+<span class="linenos"> 6</span><span class="w">            </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">))</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="p">(</span><span class="n">overlay</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">)</span>
+<span class="linenos"> 8</span><span class="w">            </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">outline</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">black</span><span class="p">)</span>
+<span class="linenos"> 9</span><span class="w">                   </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">green</span><span class="p">)))</span>
+<span class="linenos">10</span><span class="w">   </span><span class="p">(</span><span class="n">overlay</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">)</span>
+<span class="linenos">11</span><span class="w">            </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<p>In this case, the programmer has misconstrued that <code class="docutils literal notranslate"><span class="pre">above</span></code> means something
+like “stacked one on top of another” and <code class="docutils literal notranslate"><span class="pre">overlay</span></code> means “one laid over and
+above another”. Unfortunately the actual meanings are reversed and this is
+easily found had the programmer read the manual to confirm their thinking
+(i.e. “assumption”) instead of going ahead with it. While in this particular
+case it is easy to spot by running the program and visually checking the result,
+this kind of an assumption can be hard to spot when it occurs deep down in
+some voluminous code.</p>
+<p>The right approach here is to be mindful of our assumptions and check them,
+preferably by tests, before building on those assumptions.</p>
+<p>The technique that comes to our rescue here is the process of narrowing down
+to the smallest term that produces an instance of the misunderstanding. In
+this case, this can be one of the <code class="docutils literal notranslate"><span class="pre">overlay</span></code> terms or better the <code class="docutils literal notranslate"><span class="pre">above</span></code>
+term nested within an <code class="docutils literal notranslate"><span class="pre">overlay</span></code>. Checking what these terms individually mean
+in the interaction window can clarify for us what is going on and help address
+the misunderstanding.</p>
+</section>
+<section id="other-kinds">
+<h2>Other kinds<a class="headerlink" href="#other-kinds" title="Link to this heading">¶</a></h2>
+<p>We’ll get instances of other kinds of errors as we go along and grow our
+programming muscles. For now, be aware of assumptions you’re making and test
+them using the interaction window before using the terms in your program.</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="rookiemistake" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>… which unfortunately even some experienced programmers commit!</p>
+</aside>
+<aside class="footnote brackets" id="fuzzing" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>There <em>are</em> some techniques of testing that look like they’re
+taking random pot shots at finding issues (called “fuzzing”), but they’re of
+a different quality and are intended to <strong>discover</strong> missed cases and not to
+fix them.</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">CompLIT: Programming Literacy</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="words.html">Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interrogation.html">Interrogating programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="editor.html">The editor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strings.html">Strings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample-programs.html">Sample programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structures.html">Structures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assumptions.html">Assumptions and implications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing2.html">More parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="alternative-syntax.html">Optional: Alternative language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recap.html">Recap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="technical-terms.html">Optional: Technical terms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelling-images.html">Modelling a domain - Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="representations.html">Representations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="svg.html">Interlude: SVG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generalizations.html">Generalizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantum.html">Optional: Modelling quantum computations</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Srikumar K. S..
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/debugging.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
