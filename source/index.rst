@@ -13,7 +13,6 @@ CompLIT: Programming Literacy (WORK-IN-PROGRESS)
    editor
    strings
    sample-programs
-   ipd
    structures
    parsing
    assumptions
