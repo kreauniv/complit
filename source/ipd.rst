@@ -15,8 +15,8 @@ step, translate it into a full program. The facilities provided by languages
 like Racket [#likeracket]_ are expressive in ways you might not yet appreciate,
 but will become clearer as you write programs in this style.
 
-Principles
-----------
+Principle and process
+---------------------
 
 When developing a program using IPD, your focus is on **narrating** how the
 task is to be accomplished. The goal is that the **what** must be as apparent
