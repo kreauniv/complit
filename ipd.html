@@ -340,7 +340,7 @@ another way to express it. Try it as many times as you want.</p>
 </section>
 <section id="notes">
 <h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h2>
-<ol class="arabic simple">
+<ol class="arabic">
 <li><p>What if we had written <code class="docutils literal notranslate"><span class="pre">(play-rounds-until-player-guesses-secret</span> <span class="pre">secret</span>
 <span class="pre">max-number)</span></code> initially instead of <code class="docutils literal notranslate"><span class="pre">(play-rounds-until</span>
 <span class="pre">player-guesses-secret</span> <span class="pre">secret</span> <span class="pre">max-number)</span></code>? Yes we can. However we’ll soon
@@ -364,6 +364,18 @@ using the abstraction is always guaranteed to stand for a valid guess. This
 is a desirable trait of abstractions. However it is not possible to do this
 in all cases and some abstractions must be limited in the contexts in which
 they can be applied.</p></li>
+<li><p>When we incrementally develop abstractions like this, it is important to
+test them as we go along. For this, as noted, you can define “dummy
+definitions” a.k.a. “stubs” for these abstractions that do something that
+just about meets their usage contract. For example,</p>
+<div class="highlight-Racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">ask-players-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">random</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>can be a useful substitute until you actually work out the user input steps.</p>
+</li>
+</ol>
+<ol class="arabic simple" start="4">
 <li><p>An important language feature we’re relying on here is that when defining
 abstractions, the ordering does not matter for abstractions in a common
 shared context. This lets us first write our top level abstraction and then
