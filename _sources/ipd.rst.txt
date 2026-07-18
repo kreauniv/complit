@@ -146,7 +146,18 @@ a truth value.
         (define guess (ask-players-guess-within max-number))
         (if (win-condition? secret guess)
             (player-won guess)
-            (play-rounds-until win-condition? secret)))
+            (begin (give-hint-to-player secret guess)
+                   (play-rounds-until win-condition? secret))))
+
+Giving a hint to the player is easy - 
+
+.. code:: Racket
+
+   ; Assumes secret is not equal to guess.
+   (define (give-hint-to-player secret guess)
+      (if (< secret guess)
+         (displayln "Guess lower")
+         (displayln "Guess higher")))
 
 We know that ``(win-condition? secret guess)`` is either ``#true`` or
 ``#false``, so we must take a call based on this. This leads us to using ``(if ...)``.
@@ -178,7 +189,16 @@ So we have this so far --
         (define guess (ask-players-guess-within max-number))
         (if (win-condition? secret guess)
             (player-won guess)
-            (play-rounds-until win-condition? secret)))
+            (begin (give-hint-to-player secret guess)
+                   (play-rounds-until win-condition? secret max-number))))
+
+   ; Assumes secret is not equal to guess.
+   (define (give-hint-to-player secret guess)
+      (if (< secret guess)
+         (displayln "Guess lower")
+         (displayln "Guess higher")))
+
+
 
 Now we can proceed to define the missing words --
 
@@ -189,7 +209,8 @@ Now we can proceed to define the missing words --
         (define guess (read))
         (if (guess-valid? guess max-number)
             guess
-            (ask-players-guess-within max-number)))
+            (begin (tell-player-to-type-valid-value max-number)
+                   (ask-players-guess-within max-number))))
 
     (define (tell-player-to-guess-within max-number)
         (display "What's your guess? (max ")
@@ -201,6 +222,11 @@ Now we can proceed to define the missing words --
              (integer? guess)
              (>= guess 1)
              (<= guess max-number)))
+
+    (define (tell-player-to-type-valid-value max-number)
+        (display "Hey! Type a number between 1 and ")
+        (display max-number)
+        (displayln "."))
 
 Here I've skipped a few steps to define the new words. Work these
 out for yourself and convince yourself of their validity.
@@ -245,18 +271,26 @@ So putting all that together gives us the following program --
     (define (player-guesses-secret secret guess)
         (= secret guess))
 
-   (define (play-rounds-until win-condition? secret max-number)
+    (define (play-rounds-until win-condition? secret max-number)
         (define guess (ask-players-guess-within max-number))
         (if (win-condition? secret guess)
             (player-won guess)
-            (play-rounds-until win-condition? secret)))
+            (begin (give-hint-to-player secret guess)
+                   (play-rounds-until win-condition? secret max-number))))
+
+    ; Assumes secret is not equal to guess.
+    (define (give-hint-to-player secret guess)
+        (if (< secret guess)
+            (displayln "Guess lower")
+            (displayln "Guess higher")))
 
     (define (ask-players-guess-within max-number)
         (tell-player-to-guess-within max-number)
         (define guess (read))
         (if (guess-valid? guess max-number)
             guess
-            (ask-players-guess-within max-number)))
+            (begin (tell-player-to-type-valid-value max-number)
+                   (ask-players-guess-within max-number))))
 
     (define (tell-player-to-guess-within max-number)
         (display "What's your guess? (max ")
@@ -268,6 +302,11 @@ So putting all that together gives us the following program --
              (integer? guess)
              (>= guess 1)
              (<= guess max-number)))
+
+    (define (tell-player-to-type-valid-value max-number)
+        (display "Hey! Type a number between 1 and ")
+        (display max-number)
+        (displayln "."))
 
     (define (player-won guess)
         (display "Your guess ")
@@ -329,6 +368,22 @@ Notes
    is a desirable trait of abstractions. However it is not possible to do this
    in all cases and some abstractions must be limited in the contexts in which
    they can be applied.
+
+4. An important language feature we're relying on here is that when defining
+   abstractions, the ordering does not matter for abstractions in a common
+   shared context. This lets us first write our top level abstraction and then
+   gradually "drill down" into the details and define new words. In Racket,
+   this is alright because the definition of an abstraction is only needed at
+   the **time** at which it is used. As long as an abstraction remains unused
+   [#unused]_, you can postpone its definition for later. Not all languages
+   provide for this. C/C++ doesn't, for instance. There, you'll have to provide
+   a "declaration" for how an abstraction is to be interpreted (without
+   defining it) beforehand and then you can delay the full definition.
+   Obviously, languages like Racket, Python, Pyret, Ruby, Haskell etc. are
+   better suited for IPD for this reason than C/C++, though it can still be
+   useful with a bit more work.
+
+.. [#unused] You shouldn't have unused abstractions at the end of it all, btw
 
 .. [#likeracket] (and all the languages that have borrowed these ideas from
    languages like Racket, such as JavaScript and Python)

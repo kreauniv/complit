@@ -48,7 +48,7 @@ reading it?</p>
 <p>What we’re calling “incremental program development” here is an approach you
 can use to take your understanding of the <strong>what</strong> and the <strong>how</strong> and, step by
 step, translate it into a full program. The facilities provided by languages
-like Racket <a class="footnote-reference brackets" href="#likeracket" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> are expressive in ways you might not yet appreciate,
+like Racket <a class="footnote-reference brackets" href="#likeracket" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> are expressive in ways you might not yet appreciate,
 but will become clearer as you write programs in this style.</p>
 <section id="principle-and-process">
 <h2>Principle and process<a class="headerlink" href="#principle-and-process" title="Link to this heading">¶</a></h2>
@@ -84,7 +84,7 @@ produce <code class="docutils literal notranslate"><span class="pre">1</span></c
 out which of Racket’s provided words you can use to capture that concept.</p></li>
 </ol>
 <p>At the end of this process, you should have a working program that ought to be
-relatively easy <a class="footnote-reference brackets" href="#easy" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> for someone reading it to understand without doing much.</p>
+relatively easy <a class="footnote-reference brackets" href="#easy" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a> for someone reading it to understand without doing much.</p>
 </section>
 <section id="number-guessing-game-again">
 <h2>Number guessing game (again)<a class="headerlink" href="#number-guessing-game-again" title="Link to this heading">¶</a></h2>
@@ -155,7 +155,16 @@ a truth value.</p>
 <span class="w">     </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="p">(</span><span class="n">ask-players-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">))</span>
 <span class="w">     </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">win-condition?</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
 <span class="w">         </span><span class="p">(</span><span class="n">player-won</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
-<span class="w">         </span><span class="p">(</span><span class="n">play-rounds-until</span><span class="w"> </span><span class="n">win-condition?</span><span class="w"> </span><span class="n">secret</span><span class="p">)))</span>
+<span class="w">         </span><span class="p">(</span><span class="k">begin</span><span class="w"> </span><span class="p">(</span><span class="n">give-hint-to-player</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="w">                </span><span class="p">(</span><span class="n">play-rounds-until</span><span class="w"> </span><span class="n">win-condition?</span><span class="w"> </span><span class="n">secret</span><span class="p">))))</span>
+</pre></div>
+</div>
+<p>Giving a hint to the player is easy -</p>
+<div class="highlight-Racket notranslate"><div class="highlight"><pre><span></span><span class="c1">; Assumes secret is not equal to guess.</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">give-hint-to-player</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="w">      </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;Guess lower&quot;</span><span class="p">)</span>
+<span class="w">      </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;Guess higher&quot;</span><span class="p">)))</span>
 </pre></div>
 </div>
 <p>We know that <code class="docutils literal notranslate"><span class="pre">(win-condition?</span> <span class="pre">secret</span> <span class="pre">guess)</span></code> is either <code class="docutils literal notranslate"><span class="pre">#true</span></code> or
@@ -185,7 +194,14 @@ So we have this so far –</p>
 <span class="w">     </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="p">(</span><span class="n">ask-players-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">))</span>
 <span class="w">     </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">win-condition?</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
 <span class="w">         </span><span class="p">(</span><span class="n">player-won</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
-<span class="w">         </span><span class="p">(</span><span class="n">play-rounds-until</span><span class="w"> </span><span class="n">win-condition?</span><span class="w"> </span><span class="n">secret</span><span class="p">)))</span>
+<span class="w">         </span><span class="p">(</span><span class="k">begin</span><span class="w"> </span><span class="p">(</span><span class="n">give-hint-to-player</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="w">                </span><span class="p">(</span><span class="n">play-rounds-until</span><span class="w"> </span><span class="n">win-condition?</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">max-number</span><span class="p">))))</span>
+
+<span class="c1">; Assumes secret is not equal to guess.</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">give-hint-to-player</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="w">      </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;Guess lower&quot;</span><span class="p">)</span>
+<span class="w">      </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;Guess higher&quot;</span><span class="p">)))</span>
 </pre></div>
 </div>
 <p>Now we can proceed to define the missing words –</p>
@@ -194,7 +210,8 @@ So we have this so far –</p>
 <span class="w">    </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="p">(</span><span class="nb">read</span><span class="p">))</span>
 <span class="w">    </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">guess-valid?</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="w">        </span><span class="n">guess</span>
-<span class="w">        </span><span class="p">(</span><span class="n">ask-players-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
+<span class="w">        </span><span class="p">(</span><span class="k">begin</span><span class="w"> </span><span class="p">(</span><span class="n">tell-player-to-type-valid-value</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">               </span><span class="p">(</span><span class="n">ask-players-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">))))</span>
 
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">tell-player-to-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;What&#39;s your guess? (max &quot;</span><span class="p">)</span>
@@ -206,6 +223,11 @@ So we have this so far –</p>
 <span class="w">         </span><span class="p">(</span><span class="nb">integer?</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
 <span class="w">         </span><span class="p">(</span><span class="nb">&gt;=</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
 <span class="w">         </span><span class="p">(</span><span class="nb">&lt;=</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">tell-player-to-type-valid-value</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;Hey! Type a number between 1 and &quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;.&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Here I’ve skipped a few steps to define the new words. Work these
@@ -225,8 +247,8 @@ asking the player until they provide a valid one.</p>
 <section id="the-final-program">
 <h2>The final program<a class="headerlink" href="#the-final-program" title="Link to this heading">¶</a></h2>
 <p>So putting all that together gives us the following program –</p>
-<div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-number">Listing 9 </span><span class="caption-text">The final complete program</span><a class="headerlink" href="#id4" title="Link to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-number">Listing 9 </span><span class="caption-text">The final complete program</span><a class="headerlink" href="#id5" title="Link to this code">¶</a></div>
 <div class="highlight-Racket notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-number-guessing-game</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos"> 2</span><span class="w">   </span><span class="p">(</span><span class="n">introduce-game</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos"> 3</span><span class="w">   </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="p">(</span><span class="n">choose-secret-number</span><span class="w"> </span><span class="n">max-number</span><span class="p">))</span>
@@ -244,34 +266,47 @@ asking the player until they provide a valid one.</p>
 <span class="linenos">15</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">player-guesses-secret</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
 <span class="linenos">16</span><span class="w">     </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">))</span>
 <span class="linenos">17</span>
-<span class="linenos">18</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-rounds-until</span><span class="w"> </span><span class="n">win-condition?</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="linenos">18</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-rounds-until</span><span class="w"> </span><span class="n">win-condition?</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos">19</span><span class="w">     </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="p">(</span><span class="n">ask-players-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">))</span>
 <span class="linenos">20</span><span class="w">     </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">win-condition?</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
 <span class="linenos">21</span><span class="w">         </span><span class="p">(</span><span class="n">player-won</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
-<span class="linenos">22</span><span class="w">         </span><span class="p">(</span><span class="n">play-rounds-until</span><span class="w"> </span><span class="n">win-condition?</span><span class="w"> </span><span class="n">secret</span><span class="p">)))</span>
-<span class="linenos">23</span>
-<span class="linenos">24</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">ask-players-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
-<span class="linenos">25</span><span class="w">     </span><span class="p">(</span><span class="n">tell-player-to-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
-<span class="linenos">26</span><span class="w">     </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="p">(</span><span class="nb">read</span><span class="p">))</span>
-<span class="linenos">27</span><span class="w">     </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">guess-valid?</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
-<span class="linenos">28</span><span class="w">         </span><span class="n">guess</span>
-<span class="linenos">29</span><span class="w">         </span><span class="p">(</span><span class="n">ask-players-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
+<span class="linenos">22</span><span class="w">         </span><span class="p">(</span><span class="k">begin</span><span class="w"> </span><span class="p">(</span><span class="n">give-hint-to-player</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="linenos">23</span><span class="w">                </span><span class="p">(</span><span class="n">play-rounds-until</span><span class="w"> </span><span class="n">win-condition?</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">max-number</span><span class="p">))))</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span><span class="w"> </span><span class="c1">; Assumes secret is not equal to guess.</span>
+<span class="linenos">26</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">give-hint-to-player</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="linenos">27</span><span class="w">     </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="linenos">28</span><span class="w">         </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;Guess lower&quot;</span><span class="p">)</span>
+<span class="linenos">29</span><span class="w">         </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;Guess higher&quot;</span><span class="p">)))</span>
 <span class="linenos">30</span>
-<span class="linenos">31</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">tell-player-to-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
-<span class="linenos">32</span><span class="w">     </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;What&#39;s your guess? (max &quot;</span><span class="p">)</span>
-<span class="linenos">33</span><span class="w">     </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
-<span class="linenos">34</span><span class="w">     </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;): &quot;</span><span class="p">))</span>
-<span class="linenos">35</span>
-<span class="linenos">36</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">guess-valid?</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
-<span class="linenos">37</span><span class="w">     </span><span class="p">(</span><span class="k">and</span><span class="w"> </span><span class="p">(</span><span class="nb">number?</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
-<span class="linenos">38</span><span class="w">          </span><span class="p">(</span><span class="nb">integer?</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
-<span class="linenos">39</span><span class="w">          </span><span class="p">(</span><span class="nb">&gt;=</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
-<span class="linenos">40</span><span class="w">          </span><span class="p">(</span><span class="nb">&lt;=</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
-<span class="linenos">41</span>
-<span class="linenos">42</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">player-won</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
-<span class="linenos">43</span><span class="w">     </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;Your guess &quot;</span><span class="p">)</span>
-<span class="linenos">44</span><span class="w">     </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
-<span class="linenos">45</span><span class="w">     </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot; is correct! You won!&quot;</span><span class="p">))</span>
+<span class="linenos">31</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">ask-players-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="linenos">32</span><span class="w">     </span><span class="p">(</span><span class="n">tell-player-to-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="linenos">33</span><span class="w">     </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="p">(</span><span class="nb">read</span><span class="p">))</span>
+<span class="linenos">34</span><span class="w">     </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">guess-valid?</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="linenos">35</span><span class="w">         </span><span class="n">guess</span>
+<span class="linenos">36</span><span class="w">         </span><span class="p">(</span><span class="k">begin</span><span class="w"> </span><span class="p">(</span><span class="n">tell-player-to-type-valid-value</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="linenos">37</span><span class="w">                </span><span class="p">(</span><span class="n">ask-players-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">))))</span>
+<span class="linenos">38</span>
+<span class="linenos">39</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">tell-player-to-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="linenos">40</span><span class="w">     </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;What&#39;s your guess? (max &quot;</span><span class="p">)</span>
+<span class="linenos">41</span><span class="w">     </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="linenos">42</span><span class="w">     </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;): &quot;</span><span class="p">))</span>
+<span class="linenos">43</span>
+<span class="linenos">44</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">guess-valid?</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="linenos">45</span><span class="w">     </span><span class="p">(</span><span class="k">and</span><span class="w"> </span><span class="p">(</span><span class="nb">number?</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="linenos">46</span><span class="w">          </span><span class="p">(</span><span class="nb">integer?</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="linenos">47</span><span class="w">          </span><span class="p">(</span><span class="nb">&gt;=</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos">48</span><span class="w">          </span><span class="p">(</span><span class="nb">&lt;=</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
+<span class="linenos">49</span>
+<span class="linenos">50</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">tell-player-to-type-valid-value</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="linenos">51</span><span class="w">     </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;Hey! Type a number between 1 and &quot;</span><span class="p">)</span>
+<span class="linenos">52</span><span class="w">     </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="linenos">53</span><span class="w">     </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;.&quot;</span><span class="p">))</span>
+<span class="linenos">54</span>
+<span class="linenos">55</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">player-won</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="linenos">56</span><span class="w">     </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;Your guess &quot;</span><span class="p">)</span>
+<span class="linenos">57</span><span class="w">     </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="linenos">58</span><span class="w">     </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot; is correct! You won!&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -321,7 +356,7 @@ occurs with <code class="docutils literal notranslate"><span class="pre">ask-pla
 pattern and understand how it can work. In particular, there must be
 something within the definition that will take a “different path to the
 finish line” in some cases while in other cases it “tries again”. These are
-respectively referred to as the “termination condition” <a class="footnote-reference brackets" href="#basecase" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a> and the
+respectively referred to as the “termination condition” <a class="footnote-reference brackets" href="#basecase" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a> and the
 “recursion step”, formally. (You don’t need to know these terms for now.)</p></li>
 <li><p>When we defined <code class="docutils literal notranslate"><span class="pre">ask-players-guess-within</span></code>, we defined the abstraction to be
 complete – in the sense that in any specific usage context, the expression
@@ -329,21 +364,38 @@ using the abstraction is always guaranteed to stand for a valid guess. This
 is a desirable trait of abstractions. However it is not possible to do this
 in all cases and some abstractions must be limited in the contexts in which
 they can be applied.</p></li>
+<li><p>An important language feature we’re relying on here is that when defining
+abstractions, the ordering does not matter for abstractions in a common
+shared context. This lets us first write our top level abstraction and then
+gradually “drill down” into the details and define new words. In Racket,
+this is alright because the definition of an abstraction is only needed at
+the <strong>time</strong> at which it is used. As long as an abstraction remains unused
+<a class="footnote-reference brackets" href="#unused" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, you can postpone its definition for later. Not all languages
+provide for this. C/C++ doesn’t, for instance. There, you’ll have to provide
+a “declaration” for how an abstraction is to be interpreted (without
+defining it) beforehand and then you can delay the full definition.
+Obviously, languages like Racket, Python, Pyret, Ruby, Haskell etc. are
+better suited for IPD for this reason than C/C++, though it can still be
+useful with a bit more work.</p></li>
 </ol>
 <aside class="footnote-list brackets">
+<aside class="footnote brackets" id="unused" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">1</a><span class="fn-bracket">]</span></span>
+<p>You shouldn’t have unused abstractions at the end of it all, btw</p>
+</aside>
 <aside class="footnote brackets" id="likeracket" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">2</a><span class="fn-bracket">]</span></span>
 <p>(and all the languages that have borrowed these ideas from
 languages like Racket, such as JavaScript and Python)</p>
 </aside>
 <aside class="footnote brackets" id="easy" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">3</a><span class="fn-bracket">]</span></span>
 <p>Doesn’t mean “takes no work”. Just that it would take a <em>lot</em> more
 work had your program not been written legibly, like with some of the
 example picture drawing programs we initially made legible through rewrites.</p>
 </aside>
 <aside class="footnote brackets" id="basecase" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">4</a><span class="fn-bracket">]</span></span>
 <p>sometimes also called “the base case”</p>
 </aside>
 </aside>
