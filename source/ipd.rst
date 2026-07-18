@@ -130,23 +130,25 @@ Now let's tackle ``play-rounds-until``.
 
 .. code:: Racket
 
-    (define (play-rounds-until stop-condition secret)
+    (define (play-rounds-until win-condition? secret)
         ...)
 
 Note how we're giving a somewhat abstract term for the specific
-``player-guesses-secret``. The constraint on ``stop-condition`` is that it must
+``player-guesses-secret``. The constraint on ``win-condition?`` is that it must
 now be an abstraction that takes two arguments -- the secret and the
-player's guess.
+player's guess. Here, we're using the "end with ``?``" naming convention
+to suggest to the reader that ``win-condition?`` when used in a context means
+a truth value.
 
 .. code:: Racket
 
-   (define (play-rounds-until stop-condition secret)
+   (define (play-rounds-until win-condition? secret)
         (define guess (ask-players-guess-within max-number))
-        (if (stop-condition secret guess)
+        (if (win-condition? secret guess)
             (player-won guess)
-            (play-rounds-until stop-condition secret)))
+            (play-rounds-until win-condition? secret)))
 
-We know that ``(stop-condition secret guess)`` is either ``#true`` or
+We know that ``(win-condition? secret guess)`` is either ``#true`` or
 ``#false``, so we must take a call based on this. This leads us to using ``(if ...)``.
 But if you noticed, we've missed something -- ``ask-players-guess-within``
 needs ``max-number`` and we don't have it available in this context.
@@ -172,11 +174,11 @@ So we have this so far --
     (define (player-guesses-secret secret guess)
         (= secret guess))
 
-   (define (play-rounds-until stop-condition secret max-number)
+   (define (play-rounds-until win-condition? secret max-number)
         (define guess (ask-players-guess-within max-number))
-        (if (stop-condition secret guess)
+        (if (win-condition? secret guess)
             (player-won guess)
-            (play-rounds-until stop-condition secret)))
+            (play-rounds-until win-condition? secret)))
 
 Now we can proceed to define the missing words --
 
@@ -243,11 +245,11 @@ So putting all that together gives us the following program --
     (define (player-guesses-secret secret guess)
         (= secret guess))
 
-   (define (play-rounds-until stop-condition secret max-number)
+   (define (play-rounds-until win-condition? secret max-number)
         (define guess (ask-players-guess-within max-number))
-        (if (stop-condition secret guess)
+        (if (win-condition? secret guess)
             (player-won guess)
-            (play-rounds-until stop-condition secret)))
+            (play-rounds-until win-condition? secret)))
 
     (define (ask-players-guess-within max-number)
         (tell-player-to-guess-within max-number)
