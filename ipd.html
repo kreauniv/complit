@@ -102,7 +102,7 @@ sense to express this program as an abstraction over the <code class="docutils l
 <div class="highlight-Racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-number-guessing-game</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="w">   </span><span class="p">(</span><span class="n">introduce-game</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="w">   </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="p">(</span><span class="n">choose-secret-number</span><span class="w"> </span><span class="n">max-number</span><span class="p">))</span>
-<span class="w">   </span><span class="p">(</span><span class="n">play-round-with-user-until</span><span class="w"> </span><span class="n">user-guesses-secret</span><span class="w"> </span><span class="n">secret</span><span class="p">))</span>
+<span class="w">   </span><span class="p">(</span><span class="n">play-rounds-until</span><span class="w"> </span><span class="n">player-guesses-secret</span><span class="w"> </span><span class="n">secret</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>We can now get some of the easier definitions out of our way. Note that
@@ -123,49 +123,49 @@ proceed by temporarily defining <code class="docutils literal notranslate"><span
 <div class="highlight-Racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">choose-secret-number</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">max-number</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>Now we’re left with two intriguing words <code class="docutils literal notranslate"><span class="pre">play-round-with-user-until</span></code> and
-<code class="docutils literal notranslate"><span class="pre">user-guesses-secret</span></code>.</p>
+<p>Now we’re left with two intriguing words <code class="docutils literal notranslate"><span class="pre">play-rounds-until</span></code> and
+<code class="docutils literal notranslate"><span class="pre">player-guesses-secret</span></code>.</p>
 <p>It is good to first clarify what the “parameters” (the values that map to arguments
 of an abstraction) are before proceeding with abstractions which use them. In this case,
-that’s <code class="docutils literal notranslate"><span class="pre">user-guesses-secret</span></code>. That looks like an abstraction because you need
-to know two things to determine whether the user has correctly guessed the secret –
-the <code class="docutils literal notranslate"><span class="pre">secret</span></code> and a <code class="docutils literal notranslate"><span class="pre">guess</span></code> given by the user.</p>
-<div class="highlight-Racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">user-guesses-secret</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+that’s <code class="docutils literal notranslate"><span class="pre">player-guesses-secret</span></code>. That looks like an abstraction because you need
+to know two things to determine whether the player has correctly guessed the secret –
+the <code class="docutils literal notranslate"><span class="pre">secret</span></code> and a <code class="docutils literal notranslate"><span class="pre">guess</span></code> given by the player.</p>
+<div class="highlight-Racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">player-guesses-secret</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
 <span class="w">     </span><span class="k">...</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>We know that the user guessed right if the secret equals the guess. This abstraction
+<p>We know that the player guessed right if the secret equals the guess. This abstraction
 therefore simple seems to be a boolean comparison.</p>
-<div class="highlight-Racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">user-guesses-secret</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<div class="highlight-Racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">player-guesses-secret</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>Now let’s tackle <code class="docutils literal notranslate"><span class="pre">play-round-with-user-until</span></code>.</p>
-<div class="highlight-Racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-round-with-user-until</span><span class="w"> </span><span class="n">stop-condition</span><span class="w"> </span><span class="n">secret</span><span class="p">)</span>
+<p>Now let’s tackle <code class="docutils literal notranslate"><span class="pre">play-rounds-until</span></code>.</p>
+<div class="highlight-Racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-rounds-until</span><span class="w"> </span><span class="n">stop-condition</span><span class="w"> </span><span class="n">secret</span><span class="p">)</span>
 <span class="w">    </span><span class="k">...</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Note how we’re giving a somewhat abstract term for the specific
-<code class="docutils literal notranslate"><span class="pre">user-guesses-secret</span></code>. The constraint on <code class="docutils literal notranslate"><span class="pre">stop-condition</span></code> is that it must
+<code class="docutils literal notranslate"><span class="pre">player-guesses-secret</span></code>. The constraint on <code class="docutils literal notranslate"><span class="pre">stop-condition</span></code> is that it must
 now be an abstraction that takes two arguments – the secret and the
-user’s guess.</p>
-<div class="highlight-Racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-round-with-user-until</span><span class="w"> </span><span class="n">stop-condition</span><span class="w"> </span><span class="n">secret</span><span class="p">)</span>
-<span class="w">     </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="p">(</span><span class="n">ask-users-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">))</span>
+player’s guess.</p>
+<div class="highlight-Racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-rounds-until</span><span class="w"> </span><span class="n">stop-condition</span><span class="w"> </span><span class="n">secret</span><span class="p">)</span>
+<span class="w">     </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="p">(</span><span class="n">ask-players-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">))</span>
 <span class="w">     </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">stop-condition</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
-<span class="w">         </span><span class="p">(</span><span class="n">user-won</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
-<span class="w">         </span><span class="p">(</span><span class="n">play-round-with-user-until</span><span class="w"> </span><span class="n">stop-condition</span><span class="w"> </span><span class="n">secret</span><span class="p">)))</span>
+<span class="w">         </span><span class="p">(</span><span class="n">player-won</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="w">         </span><span class="p">(</span><span class="n">play-rounds-until</span><span class="w"> </span><span class="n">stop-condition</span><span class="w"> </span><span class="n">secret</span><span class="p">)))</span>
 </pre></div>
 </div>
 <p>We know that <code class="docutils literal notranslate"><span class="pre">(stop-condition</span> <span class="pre">secret</span> <span class="pre">guess)</span></code> is either <code class="docutils literal notranslate"><span class="pre">#true</span></code> or
 <code class="docutils literal notranslate"><span class="pre">#false</span></code>, so we must take a call based on this. This leads us to using <code class="docutils literal notranslate"><span class="pre">(if</span> <span class="pre">...)</span></code>.
-But if you noticed, we’ve missed something – <code class="docutils literal notranslate"><span class="pre">ask-users-guess-within</span></code>
+But if you noticed, we’ve missed something – <code class="docutils literal notranslate"><span class="pre">ask-players-guess-within</span></code>
 needs <code class="docutils literal notranslate"><span class="pre">max-number</span></code> and we don’t have it available in this context.
 We should add it to the argument list and that changes our program a bit.
 So we have this so far –</p>
 <div class="highlight-Racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-number-guessing-game</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="w">   </span><span class="p">(</span><span class="n">introduce-game</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="w">   </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="p">(</span><span class="n">choose-secret-number</span><span class="w"> </span><span class="n">max-number</span><span class="p">))</span>
-<span class="w">   </span><span class="p">(</span><span class="n">play-round-with-user-until</span><span class="w"> </span><span class="n">user-guesses-secret</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">max-number</span><span class="p">))</span>
+<span class="w">   </span><span class="p">(</span><span class="n">play-rounds-until</span><span class="w"> </span><span class="n">player-guesses-secret</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">max-number</span><span class="p">))</span>
 
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">introduce-game</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="w">     </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;Welcome to the number guessing game.&quot;</span><span class="p">)</span>
@@ -176,25 +176,25 @@ So we have this so far –</p>
 <span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">choose-secret-number</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="w">     </span><span class="p">(</span><span class="nb">random</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
 
-<span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">user-guesses-secret</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">player-guesses-secret</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
 <span class="w">     </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">))</span>
 
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-round-with-user-until</span><span class="w"> </span><span class="n">stop-condition</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
-<span class="w">     </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="p">(</span><span class="n">ask-users-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-rounds-until</span><span class="w"> </span><span class="n">stop-condition</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">     </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="p">(</span><span class="n">ask-players-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">))</span>
 <span class="w">     </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">stop-condition</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
-<span class="w">         </span><span class="p">(</span><span class="n">user-won</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
-<span class="w">         </span><span class="p">(</span><span class="n">play-round-with-user-until</span><span class="w"> </span><span class="n">stop-condition</span><span class="w"> </span><span class="n">secret</span><span class="p">)))</span>
+<span class="w">         </span><span class="p">(</span><span class="n">player-won</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="w">         </span><span class="p">(</span><span class="n">play-rounds-until</span><span class="w"> </span><span class="n">stop-condition</span><span class="w"> </span><span class="n">secret</span><span class="p">)))</span>
 </pre></div>
 </div>
 <p>Now we can proceed to define the missing words –</p>
-<div class="highlight-Racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">ask-users-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
-<span class="w">    </span><span class="p">(</span><span class="n">tell-user-to-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<div class="highlight-Racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">ask-players-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="n">tell-player-to-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="p">(</span><span class="nb">read</span><span class="p">))</span>
 <span class="w">    </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">guess-valid?</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="w">        </span><span class="n">guess</span>
-<span class="w">        </span><span class="p">(</span><span class="n">ask-users-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
+<span class="w">        </span><span class="p">(</span><span class="n">ask-players-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
 
-<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">tell-user-to-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">tell-player-to-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;What&#39;s your guess? (max &quot;</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;): &quot;</span><span class="p">))</span>
@@ -208,12 +208,12 @@ So we have this so far –</p>
 </div>
 <p>Here I’ve skipped a few steps to define the new words. Work these
 out for yourself and convince yourself of their validity.
-Note here that we’ve defined <code class="docutils literal notranslate"><span class="pre">ask-users-guess-within</span></code> to always
-result in a valid guess. If the user fails to provide a valid guess
+Note here that we’ve defined <code class="docutils literal notranslate"><span class="pre">ask-players-guess-within</span></code> to always
+result in a valid guess. If the player fails to provide a valid guess
 (by typing, say <code class="docutils literal notranslate"><span class="pre">woof</span></code> instead of a number) this will keep
-asking the user until they provide a valid one.</p>
-<p>The only remaining word is <code class="docutils literal notranslate"><span class="pre">user-won</span></code>.</p>
-<div class="highlight-Racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">user-won</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+asking the player until they provide a valid one.</p>
+<p>The only remaining word is <code class="docutils literal notranslate"><span class="pre">player-won</span></code>.</p>
+<div class="highlight-Racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">player-won</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;Your guess &quot;</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot; is correct! You won!&quot;</span><span class="p">))</span>
@@ -228,7 +228,7 @@ asking the user until they provide a valid one.</p>
 <div class="highlight-Racket notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-number-guessing-game</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos"> 2</span><span class="w">   </span><span class="p">(</span><span class="n">introduce-game</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos"> 3</span><span class="w">   </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="p">(</span><span class="n">choose-secret-number</span><span class="w"> </span><span class="n">max-number</span><span class="p">))</span>
-<span class="linenos"> 4</span><span class="w">   </span><span class="p">(</span><span class="n">play-round-with-user-until</span><span class="w"> </span><span class="n">user-guesses-secret</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">max-number</span><span class="p">))</span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="p">(</span><span class="n">play-rounds-until</span><span class="w"> </span><span class="n">player-guesses-secret</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">max-number</span><span class="p">))</span>
 <span class="linenos"> 5</span>
 <span class="linenos"> 6</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">introduce-game</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos"> 7</span><span class="w">     </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot;Welcome to the number guessing game.&quot;</span><span class="p">)</span>
@@ -239,23 +239,23 @@ asking the user until they provide a valid one.</p>
 <span class="linenos">12</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">choose-secret-number</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos">13</span><span class="w">     </span><span class="p">(</span><span class="nb">random</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
 <span class="linenos">14</span>
-<span class="linenos">15</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">user-guesses-secret</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="linenos">15</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">player-guesses-secret</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
 <span class="linenos">16</span><span class="w">     </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">))</span>
 <span class="linenos">17</span>
-<span class="linenos">18</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-round-with-user-until</span><span class="w"> </span><span class="n">stop-condition</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
-<span class="linenos">19</span><span class="w">     </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="p">(</span><span class="n">ask-users-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">))</span>
+<span class="linenos">18</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-rounds-until</span><span class="w"> </span><span class="n">stop-condition</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="linenos">19</span><span class="w">     </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="p">(</span><span class="n">ask-players-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">))</span>
 <span class="linenos">20</span><span class="w">     </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">stop-condition</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
-<span class="linenos">21</span><span class="w">         </span><span class="p">(</span><span class="n">user-won</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
-<span class="linenos">22</span><span class="w">         </span><span class="p">(</span><span class="n">play-round-with-user-until</span><span class="w"> </span><span class="n">stop-condition</span><span class="w"> </span><span class="n">secret</span><span class="p">)))</span>
+<span class="linenos">21</span><span class="w">         </span><span class="p">(</span><span class="n">player-won</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="linenos">22</span><span class="w">         </span><span class="p">(</span><span class="n">play-rounds-until</span><span class="w"> </span><span class="n">stop-condition</span><span class="w"> </span><span class="n">secret</span><span class="p">)))</span>
 <span class="linenos">23</span>
-<span class="linenos">24</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">ask-users-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
-<span class="linenos">25</span><span class="w">     </span><span class="p">(</span><span class="n">tell-user-to-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="linenos">24</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">ask-players-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="linenos">25</span><span class="w">     </span><span class="p">(</span><span class="n">tell-player-to-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos">26</span><span class="w">     </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="p">(</span><span class="nb">read</span><span class="p">))</span>
 <span class="linenos">27</span><span class="w">     </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">guess-valid?</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos">28</span><span class="w">         </span><span class="n">guess</span>
-<span class="linenos">29</span><span class="w">         </span><span class="p">(</span><span class="n">ask-users-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
+<span class="linenos">29</span><span class="w">         </span><span class="p">(</span><span class="n">ask-players-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
 <span class="linenos">30</span>
-<span class="linenos">31</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">tell-user-to-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
+<span class="linenos">31</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">tell-player-to-guess-within</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos">32</span><span class="w">     </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;What&#39;s your guess? (max &quot;</span><span class="p">)</span>
 <span class="linenos">33</span><span class="w">     </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="linenos">34</span><span class="w">     </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;): &quot;</span><span class="p">))</span>
@@ -266,7 +266,7 @@ asking the user until they provide a valid one.</p>
 <span class="linenos">39</span><span class="w">          </span><span class="p">(</span><span class="nb">&gt;=</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
 <span class="linenos">40</span><span class="w">          </span><span class="p">(</span><span class="nb">&lt;=</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="n">max-number</span><span class="p">)))</span>
 <span class="linenos">41</span>
-<span class="linenos">42</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">user-won</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
+<span class="linenos">42</span><span class="w"> </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">player-won</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
 <span class="linenos">43</span><span class="w">     </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="s2">&quot;Your guess &quot;</span><span class="p">)</span>
 <span class="linenos">44</span><span class="w">     </span><span class="p">(</span><span class="nb">display</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span>
 <span class="linenos">45</span><span class="w">     </span><span class="p">(</span><span class="nb">displayln</span><span class="w"> </span><span class="s2">&quot; is correct! You won!&quot;</span><span class="p">))</span>
@@ -283,7 +283,7 @@ is easy to follow.</p>
 </div>
 <div class="admonition-task-2 admonition">
 <p class="admonition-title"><strong>Task 2</strong></p>
-<p>We want to tell the user how many incorrect guesses they’ve made so far, and
+<p>We want to tell the player how many incorrect guesses they’ve made so far, and
 also once they’ve guessed right, tell them the total number of guesses they
 took. Modify the program (using IPD) to add this “feature” to the game.
 Before starting to implement, make sure you know all the details of this
@@ -293,7 +293,7 @@ that’s the precondition to start IPD.</p>
 <div class="admonition-task-3 admonition">
 <p class="admonition-title"><strong>Task 3</strong></p>
 <p>Modify the game to also take a <code class="docutils literal notranslate"><span class="pre">max-guesses</span></code> argument and have the game
-terminate with a “you lost!” if the user took more than these many guesses.</p>
+terminate with a “you lost!” if the player took more than these many guesses.</p>
 </div>
 <div class="admonition-task-4 admonition">
 <p class="admonition-title"><strong>Task 4</strong></p>
@@ -304,24 +304,24 @@ another way to express it. Try it as many times as you want.</p>
 <section id="notes">
 <h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
-<li><p>What if we had written <code class="docutils literal notranslate"><span class="pre">(play-round-with-user-until-user-guesses-secret</span>
-<span class="pre">secret)</span></code> initially instead of <code class="docutils literal notranslate"><span class="pre">(play-round-with-user-until</span>
-<span class="pre">user-guesses-secret</span> <span class="pre">secret)</span></code>? Yes we can. However we’ll soon be required to
-add more detail. Splitting it right here into the two required concepts
-loses no clarity of expression and therefore it is worth doing it right
-here. There is nothing wrong with using one more definition step though and
-you’ll know where to split a concept without compromising readability as you
-practice more.</p></li>
-<li><p>The concept <code class="docutils literal notranslate"><span class="pre">play-round-with-user-until</span></code> is defined in terms of itself.
-What we’re saying with that is that if the user has not won, it is as though
+<li><p>What if we had written <code class="docutils literal notranslate"><span class="pre">(play-rounds-until-player-guesses-secret</span> <span class="pre">secret</span>
+<span class="pre">max-number)</span></code> initially instead of <code class="docutils literal notranslate"><span class="pre">(play-rounds-until</span>
+<span class="pre">player-guesses-secret</span> <span class="pre">secret</span> <span class="pre">max-number)</span></code>? Yes we can. However we’ll soon
+be required to add more detail. Splitting it right here into the two
+required concepts loses no clarity of expression and therefore it is worth
+doing it right here. There is nothing wrong with using one more definition
+step though and you’ll know where to split a concept without compromising
+readability as you practice more.</p></li>
+<li><p>The concept <code class="docutils literal notranslate"><span class="pre">play-rounds-until</span></code> is defined in terms of itself.
+What we’re saying with that is that if the player has not won, it is as though
 we’re back to square one and must play another round. A similar pattern also
-occurs with <code class="docutils literal notranslate"><span class="pre">ask-users-guess-within</span></code>. Familiarize yourself with this
+occurs with <code class="docutils literal notranslate"><span class="pre">ask-players-guess-within</span></code>. Familiarize yourself with this
 pattern and understand how it can work. In particular, there must be
 something within the definition that will take a “different path to the
 finish line” in some cases while in other cases it “tries again”. These are
 respectively referred to as the “termination condition” <a class="footnote-reference brackets" href="#basecase" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a> and the
 “recursion step”, formally. (You don’t need to know these terms for now.)</p></li>
-<li><p>When we defined <code class="docutils literal notranslate"><span class="pre">ask-users-guess-within</span></code>, we defined the abstraction to be
+<li><p>When we defined <code class="docutils literal notranslate"><span class="pre">ask-players-guess-within</span></code>, we defined the abstraction to be
 complete – in the sense that in any specific usage context, the expression
 using the abstraction is always guaranteed to stand for a valid guess. This
 is a desirable trait of abstractions. However it is not possible to do this

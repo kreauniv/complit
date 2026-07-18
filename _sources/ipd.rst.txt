@@ -80,7 +80,7 @@ We might elaborate our thinking like this below to the next level of detail --
    (define (play-number-guessing-game max-number)
       (introduce-game max-number)
       (define secret (choose-secret-number max-number))
-      (play-round-with-user-until user-guesses-secret secret))
+      (play-rounds-until player-guesses-secret secret))
 
 We can now get some of the easier definitions out of our way. Note that 
 we know that playing a round requires knowledge of the secret and so we
@@ -104,51 +104,51 @@ proceed by temporarily defining ``choose-secret-number`` like below --
 
     (define (choose-secret-number max-number) (- max-number 1))
 
-Now we're left with two intriguing words ``play-round-with-user-until`` and
-``user-guesses-secret``.
+Now we're left with two intriguing words ``play-rounds-until`` and
+``player-guesses-secret``.
 
 It is good to first clarify what the "parameters" (the values that map to arguments
 of an abstraction) are before proceeding with abstractions which use them. In this case,
-that's ``user-guesses-secret``. That looks like an abstraction because you need
-to know two things to determine whether the user has correctly guessed the secret --
-the ``secret`` and a ``guess`` given by the user.
+that's ``player-guesses-secret``. That looks like an abstraction because you need
+to know two things to determine whether the player has correctly guessed the secret --
+the ``secret`` and a ``guess`` given by the player.
 
 .. code:: Racket
 
-   (define (user-guesses-secret secret guess)
+   (define (player-guesses-secret secret guess)
         ...)
 
-We know that the user guessed right if the secret equals the guess. This abstraction
+We know that the player guessed right if the secret equals the guess. This abstraction
 therefore simple seems to be a boolean comparison.
 
 .. code:: Racket
 
-    (define (user-guesses-secret secret guess)
+    (define (player-guesses-secret secret guess)
         (= secret guess))
 
-Now let's tackle ``play-round-with-user-until``.
+Now let's tackle ``play-rounds-until``.
 
 .. code:: Racket
 
-    (define (play-round-with-user-until stop-condition secret)
+    (define (play-rounds-until stop-condition secret)
         ...)
 
 Note how we're giving a somewhat abstract term for the specific
-``user-guesses-secret``. The constraint on ``stop-condition`` is that it must
+``player-guesses-secret``. The constraint on ``stop-condition`` is that it must
 now be an abstraction that takes two arguments -- the secret and the
-user's guess.
+player's guess.
 
 .. code:: Racket
 
-   (define (play-round-with-user-until stop-condition secret)
-        (define guess (ask-users-guess-within max-number))
+   (define (play-rounds-until stop-condition secret)
+        (define guess (ask-players-guess-within max-number))
         (if (stop-condition secret guess)
-            (user-won guess)
-            (play-round-with-user-until stop-condition secret)))
+            (player-won guess)
+            (play-rounds-until stop-condition secret)))
 
 We know that ``(stop-condition secret guess)`` is either ``#true`` or
 ``#false``, so we must take a call based on this. This leads us to using ``(if ...)``.
-But if you noticed, we've missed something -- ``ask-users-guess-within``
+But if you noticed, we've missed something -- ``ask-players-guess-within``
 needs ``max-number`` and we don't have it available in this context.
 We should add it to the argument list and that changes our program a bit.
 So we have this so far --
@@ -158,7 +158,7 @@ So we have this so far --
    (define (play-number-guessing-game max-number)
       (introduce-game max-number)
       (define secret (choose-secret-number max-number))
-      (play-round-with-user-until user-guesses-secret secret max-number))
+      (play-rounds-until player-guesses-secret secret max-number))
 
    (define (introduce-game max-number)
         (displayln "Welcome to the number guessing game.")
@@ -169,27 +169,27 @@ So we have this so far --
     (define (choose-secret-number max-number)
         (random 1 (+ 1 max-number)))
 
-    (define (user-guesses-secret secret guess)
+    (define (player-guesses-secret secret guess)
         (= secret guess))
 
-   (define (play-round-with-user-until stop-condition secret max-number)
-        (define guess (ask-users-guess-within max-number))
+   (define (play-rounds-until stop-condition secret max-number)
+        (define guess (ask-players-guess-within max-number))
         (if (stop-condition secret guess)
-            (user-won guess)
-            (play-round-with-user-until stop-condition secret)))
+            (player-won guess)
+            (play-rounds-until stop-condition secret)))
 
 Now we can proceed to define the missing words --
 
 .. code-block:: Racket
 
-    (define (ask-users-guess-within max-number)
-        (tell-user-to-guess-within max-number)
+    (define (ask-players-guess-within max-number)
+        (tell-player-to-guess-within max-number)
         (define guess (read))
         (if (guess-valid? guess max-number)
             guess
-            (ask-users-guess-within max-number)))
+            (ask-players-guess-within max-number)))
 
-    (define (tell-user-to-guess-within max-number)
+    (define (tell-player-to-guess-within max-number)
         (display "What's your guess? (max ")
         (display max-number)
         (display "): "))
@@ -202,17 +202,17 @@ Now we can proceed to define the missing words --
 
 Here I've skipped a few steps to define the new words. Work these
 out for yourself and convince yourself of their validity.
-Note here that we've defined ``ask-users-guess-within`` to always
-result in a valid guess. If the user fails to provide a valid guess
+Note here that we've defined ``ask-players-guess-within`` to always
+result in a valid guess. If the player fails to provide a valid guess
 (by typing, say ``woof`` instead of a number) this will keep
-asking the user until they provide a valid one.
+asking the player until they provide a valid one.
 
 
-The only remaining word is ``user-won``.
+The only remaining word is ``player-won``.
 
 .. code:: Racket
 
-    (define (user-won guess)
+    (define (player-won guess)
         (display "Your guess ")
         (display guess)
         (displayln " is correct! You won!"))
@@ -229,7 +229,7 @@ So putting all that together gives us the following program --
    (define (play-number-guessing-game max-number)
       (introduce-game max-number)
       (define secret (choose-secret-number max-number))
-      (play-round-with-user-until user-guesses-secret secret max-number))
+      (play-rounds-until player-guesses-secret secret max-number))
 
    (define (introduce-game max-number)
         (displayln "Welcome to the number guessing game.")
@@ -240,23 +240,23 @@ So putting all that together gives us the following program --
     (define (choose-secret-number max-number)
         (random 1 (+ 1 max-number)))
 
-    (define (user-guesses-secret secret guess)
+    (define (player-guesses-secret secret guess)
         (= secret guess))
 
-   (define (play-round-with-user-until stop-condition secret max-number)
-        (define guess (ask-users-guess-within max-number))
+   (define (play-rounds-until stop-condition secret max-number)
+        (define guess (ask-players-guess-within max-number))
         (if (stop-condition secret guess)
-            (user-won guess)
-            (play-round-with-user-until stop-condition secret)))
+            (player-won guess)
+            (play-rounds-until stop-condition secret)))
 
-    (define (ask-users-guess-within max-number)
-        (tell-user-to-guess-within max-number)
+    (define (ask-players-guess-within max-number)
+        (tell-player-to-guess-within max-number)
         (define guess (read))
         (if (guess-valid? guess max-number)
             guess
-            (ask-users-guess-within max-number)))
+            (ask-players-guess-within max-number)))
 
-    (define (tell-user-to-guess-within max-number)
+    (define (tell-player-to-guess-within max-number)
         (display "What's your guess? (max ")
         (display max-number)
         (display "): "))
@@ -267,7 +267,7 @@ So putting all that together gives us the following program --
              (>= guess 1)
              (<= guess max-number)))
 
-    (define (user-won guess)
+    (define (player-won guess)
         (display "Your guess ")
         (display guess)
         (displayln " is correct! You won!"))
@@ -282,7 +282,7 @@ Some tasks
 
 .. admonition:: **Task 2**
 
-   We want to tell the user how many incorrect guesses they've made so far, and
+   We want to tell the player how many incorrect guesses they've made so far, and
    also once they've guessed right, tell them the total number of guesses they
    took. Modify the program (using IPD) to add this "feature" to the game.
    Before starting to implement, make sure you know all the details of this
@@ -292,7 +292,7 @@ Some tasks
 .. admonition:: **Task 3**
 
    Modify the game to also take a ``max-guesses`` argument and have the game
-   terminate with a "you lost!" if the user took more than these many guesses.
+   terminate with a "you lost!" if the player took more than these many guesses.
 
 .. admonition:: **Task 4**
 
@@ -302,26 +302,26 @@ Some tasks
 Notes
 -----
 
-1. What if we had written ``(play-round-with-user-until-user-guesses-secret
-   secret)`` initially instead of ``(play-round-with-user-until
-   user-guesses-secret secret)``? Yes we can. However we'll soon be required to
-   add more detail. Splitting it right here into the two required concepts
-   loses no clarity of expression and therefore it is worth doing it right
-   here. There is nothing wrong with using one more definition step though and
-   you'll know where to split a concept without compromising readability as you
-   practice more.
+1. What if we had written ``(play-rounds-until-player-guesses-secret secret
+   max-number)`` initially instead of ``(play-rounds-until
+   player-guesses-secret secret max-number)``? Yes we can. However we'll soon
+   be required to add more detail. Splitting it right here into the two
+   required concepts loses no clarity of expression and therefore it is worth
+   doing it right here. There is nothing wrong with using one more definition
+   step though and you'll know where to split a concept without compromising
+   readability as you practice more.
 
-2. The concept ``play-round-with-user-until`` is defined in terms of itself.
-   What we're saying with that is that if the user has not won, it is as though
+2. The concept ``play-rounds-until`` is defined in terms of itself.
+   What we're saying with that is that if the player has not won, it is as though
    we're back to square one and must play another round. A similar pattern also
-   occurs with ``ask-users-guess-within``. Familiarize yourself with this
+   occurs with ``ask-players-guess-within``. Familiarize yourself with this
    pattern and understand how it can work. In particular, there must be
    something within the definition that will take a "different path to the
    finish line" in some cases while in other cases it "tries again". These are
    respectively referred to as the "termination condition" [#basecase]_ and the
    "recursion step", formally. (You don't need to know these terms for now.)
 
-3. When we defined ``ask-users-guess-within``, we defined the abstraction to be
+3. When we defined ``ask-players-guess-within``, we defined the abstraction to be
    complete -- in the sense that in any specific usage context, the expression
    using the abstraction is always guaranteed to stand for a valid guess. This
    is a desirable trait of abstractions. However it is not possible to do this
