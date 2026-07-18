@@ -138,7 +138,7 @@ we should expect some kind of indication of failure to find a character in the
 given range. This could be <code class="docutils literal notranslate"><span class="pre">#f</span></code> for example. So we can perhaps have a tentative
 definition for <code class="docutils literal notranslate"><span class="pre">character-in</span></code> like this -</p>
 <div class="literal-block-wrapper docutils container" id="parsev1">
-<div class="code-block-caption"><span class="caption-number">Listing 10 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">character-in</span></code> and <code class="docutils literal notranslate"><span class="pre">parse</span></code></span><a class="headerlink" href="#parsev1" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 11 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">character-in</span></code> and <code class="docutils literal notranslate"><span class="pre">parse</span></code></span><a class="headerlink" href="#parsev1" title="Link to this code">¶</a></div>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">character-in</span><span class="w"> </span><span class="n">allowed-chars</span><span class="p">)</span>
 <span class="linenos"> 2</span><span class="w">   </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
 <span class="linenos"> 3</span><span class="w">      </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
@@ -588,8 +588,10 @@ mathematics.</p>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="words.html">Words</a></li>
 <li class="toctree-l1"><a class="reference internal" href="interrogation.html">Interrogating programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="editor.html">The editor</a></li>
 <li class="toctree-l1"><a class="reference internal" href="strings.html">Strings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sample-programs.html">Sample programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipd.html">IPD: Incremental Program Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="structures.html">Structures</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="assumptions.html">Assumptions and implications</a></li>
