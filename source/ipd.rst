@@ -369,6 +369,18 @@ Notes
    in all cases and some abstractions must be limited in the contexts in which
    they can be applied.
 
+4. When we incrementally develop abstractions like this, it is important to
+   test them as we go along. For this, as noted, you can define "dummy
+   definitions" a.k.a. "stubs" for these abstractions that do something that
+   just about meets their usage contract. For example, 
+
+   .. code:: Racket
+
+      (define (ask-players-guess-within max-number)
+         (random 1 (+ 1 max-number)))
+
+   can be a useful substitute until you actually work out the user input steps.
+
 4. An important language feature we're relying on here is that when defining
    abstractions, the ordering does not matter for abstractions in a common
    shared context. This lets us first write our top level abstraction and then
