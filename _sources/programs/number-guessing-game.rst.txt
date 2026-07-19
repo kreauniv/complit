@@ -651,7 +651,7 @@ of abstraction" can help construct a program from scratch.
 
 The **key principle** is to add some level of detail to each successive stage
 of the expansion from a high level version to a functioning program.
-We call this approach "incremental program development" or IPD for short
+We call this approach "incremental program decomposition" or IPD for short
 and will see this approach as a separate topic.
 
 .. [#fn] A "function" is a procedure whose result value depends only on the

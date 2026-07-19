@@ -1,5 +1,5 @@
-IPD: Incremental Program Development
-====================================
+IPD: Incremental Program Decomposition
+======================================
 
 When beginning to write slightly larger programs than single purpose
 "functions", you might find yourself in a situation where you know **what** the
@@ -9,7 +9,7 @@ take you from there to a working program. But the real task in front of you is
 in how to express the program in such a way that it is legible to another one
 reading it?
 
-What we're calling "incremental program development" here is an approach you
+What we're calling "incremental program decomposition" here is an approach you
 can use to take your understanding of the **what** and the **how** and, step by
 step, translate it into a full program. The facilities provided by languages
 like Racket [#likeracket]_ are expressive in ways you might not yet appreciate,
