@@ -428,8 +428,8 @@ produce an empty string if no characters meeting some criteria are available.
 
 Remember this and we'll take it forward in the succeeding sections.
 
-Recap
------
+Recap: string words
+-------------------
 
 1. A "string" is a short word for "string of characters".
 
