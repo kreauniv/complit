@@ -433,8 +433,9 @@ Recap: string words
 
 1. A "string" is a short word for "string of characters".
 
-2. Strings are written within double quote characters. We call such syntactic
-   markers "delimiters" because they "delimit" the boundaries of the string.
+2. Literal strings are written within double quote characters. We call such
+   syntactic markers "delimiters" because they "delimit" the boundaries of the
+   string.
 
 3. The contents of the string may be referenced using "cursor position" indices
    that run from ``0`` to the number of characters in the string.
