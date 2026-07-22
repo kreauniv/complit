@@ -632,6 +632,9 @@ in the first position of a ``(...)`` expression as well.
    > ((λ (x y) (sqrt (+ (* x x) (* y y)))) 3 4)
    5
 
+.. note:: You can just read the λ symbol as "procedure" or "function" or
+   "abstraction" as you see fit. If you stick with λ though, eventually it will
+   become synonymous with those words in your mind and that's fine too.
 
 Recap
 -----
@@ -683,3 +686,12 @@ We've seen a case of understanding a simple program by "interrogating" it.
    **parameters** when you use the word to denote a specific triangle".
 
 .. [#naur2] We'll encounter Naur again in another context later on in this course.
+
+.. [#lambda-history] **λ's history**: The use of ``lambda`` (λ) comes from
+   Alonzo Church's "lambda calculus" where he probed the foundations of
+   computability using the theory. Church and Turing established (via the
+   "Church-Turing Thesis") that anything computable can be expressed in terms
+   of such "lambda expressions". The LiSP family of languages just borrowed
+   that terminology and stuck with it. Other languages have also followed suit
+   with Python being the latest to introduce a limited form of ``lambda x, y:
+   math.sqrt(x*x + y*y)`` kind of expressions into the language in v3. 
