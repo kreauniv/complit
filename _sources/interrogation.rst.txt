@@ -570,6 +570,68 @@ example.
    There are more ways for more complex programs and we'll introduce those in
    due course where necessary.
 
+Constructing a procedure
+------------------------
+
+We've so far used words like ``list`` and ``string-append`` that make various
+types of values. We know that we can use ``define`` like ``(define (abstraction
+arg1 arg2 ..) ...)`` to define an abstraction that is a Racket "procedure"
+value. However, we wrote a new list like this -- ``(define one-to-ten (list 1 2
+3 4 5 6 7 8 9 10))`` but we don't yet know how to ``(define abstraction
+...something...)`` where that something is to be interpreted as a procedure
+value.
+
+Let's take an example. 
+
+.. code:: racket
+
+   (define (distance-from-origin x y)
+      (sqrt (+ (* x x) (* y y))))
+
+If you type ``distance-from-origin`` in the interaction window after
+loading this definition in the definitions window, you'll see that Racket
+says ``#<procedure:distance-from-origin>``. To construct this procedure
+value without naming it using ``define``, we might imagine something like
+``(procedure (x y) (sqrt (+ (* x x) (* y y))))``, so we can write --
+
+.. code:: racket
+
+   (define distance-from-origin (procedure (x y) (sqrt (+ (* x x) (* y y)))))
+
+Racket does have something like this, but it isn't named ``procedure``.
+The name to use is ``lambda``, for historical reasons. [#lambda-history]_
+
+So the following is equivalent to our original definition of ``distance-from-origin``.
+
+.. code:: racket
+
+   (define distance-from-origin
+      (lambda (x y) (sqrt (+ (* x x) (* y y)))))
+
+You can also use the ``λ`` character (typed using C-<backslash>, where C is
+either Cmd or Ctrl depending on platform) instead of ``lambda``. So the
+following is valid too --
+
+.. code:: racket
+
+   (define distance-from-origin (λ (x y) (sqrt (+ (* x x) (* y y)))))
+
+So you can copy the "lambda expression" paste it into the interaction window
+and Racket will tell you that it is a procedure!
+
+.. code:: racket
+
+   > (λ (x y) (sqrt (+ (* x x) (* y y))))
+   #<procedure>
+
+Since it stands for a procedure -- a.k.a. abstraction -- it can be used
+in the first position of a ``(...)`` expression as well.
+
+.. code:: racket
+
+   > ((λ (x y) (sqrt (+ (* x x) (* y y)))) 3 4)
+   5
+
 
 Recap
 -----

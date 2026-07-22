@@ -38,10 +38,10 @@ Such strings can come from a variety of places --
 - ... and so on.
 
 Once a string has gained a place in computer memory as a value, we need a way
-to refer to it. In Racket, and in many programming languages, is played by
-an **identifier**. If "Magnificent flying machines" happened to be the title
-of an article, we might bind the ``title`` identifier to the string value
-by typing this into the "definitions window" and clicking on "Run" --
+to refer to it. In Racket, and in many programming languages, this role is
+played by an **identifier**. If "Magnificent flying machines" happened to be
+the title of an article, we might bind the ``title`` identifier to the string
+value by typing this into the "definitions window" and clicking on "Run" --
 
 .. code:: racket
 
@@ -428,8 +428,30 @@ produce an empty string if no characters meeting some criteria are available.
 
 Remember this and we'll take it forward in the succeeding sections.
 
+Recap: string words
+-------------------
 
+1. A "string" is a short word for "string of characters".
 
+2. Literal strings are written within double quote characters. We call such
+   syntactic markers "delimiters" because they "delimit" the boundaries of the
+   string.
+
+3. The contents of the string may be referenced using "cursor position" indices
+   that run from ``0`` to the number of characters in the string.
+
+4. ``(string-ref <str> <cursor-pos>)`` gets you the character to the right of
+   the given cursor position.
+
+5. ``(string-append <str1> <str2> ...)`` constructs a new string that is a
+   concatenation of the argument strings. The arguments must all refer to
+   strings or else the construct is considered invalid.
+
+6. ``(substring <str> <start-cursor-pos> <end-cursor-pos>)`` gives a string
+   that has the characters between the two given cursor positions. If you omit
+   the end position, it is taken to be the last valid cursor position --
+   right-most in left-to-right scripts, and left-most in right-to-left scripts.
+   
 
 .. [#strexcl] Excluding the surrounding double-quote characters.
 

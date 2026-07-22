@@ -162,12 +162,12 @@ that arrow, you’ll see it open up and provide some information about how to us
 that word. This is a brief that assumes you only need to be <strong>reminded</strong> of how
 to use it. If you truly don’t know, you can click the “Read more” link which
 will take you to the documentation of that identifier.</p>
-<figure class="align-center" id="id5">
+<figure class="align-center" id="id6">
 <img alt="_images/triangle-docs1.png" src="_images/triangle-docs1.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 4 </span><span class="caption-text">An example of using the quick reference to remind yourself of how the
 <code class="docutils literal notranslate"><span class="pre">triangle</span></code> word provided by the <code class="docutils literal notranslate"><span class="pre">2htdp/image</span></code> package is to be used.
-Notice the “read more…” link that will take you to the full documentation.</span><a class="headerlink" href="#id5" title="Link to this image">¶</a></p>
+Notice the “read more…” link that will take you to the full documentation.</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>The full documentation for <code class="docutils literal notranslate"><span class="pre">triangle</span></code> is shown below. It consists of two
@@ -177,18 +177,18 @@ you’re seeing the <code class="docutils literal notranslate"><span class="pre"
 The second is a textual description of what it means. This usually also
 includes a description of the “arguments” <a class="footnote-reference brackets" href="#argparams" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a> of the expression that
 the operator word is part of, whose meaning you’re really interested in.</p>
-<figure class="align-center" id="id6">
+<figure class="align-center" id="id7">
 <img alt="_images/triangle-docs2.png" src="_images/triangle-docs2.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 5 </span><span class="caption-text">The full documentation of the <code class="docutils literal notranslate"><span class="pre">triangle</span></code> word.</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">The full documentation of the <code class="docutils literal notranslate"><span class="pre">triangle</span></code> word.</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>In the first part of the documentation, for now, you’ll need to pay attention
 to just the expression form with the named arguments as shown in <a class="reference internal" href="#triangle-docline">triangle-docline</a>.</p>
-<figure class="align-center" id="id7">
+<figure class="align-center" id="id8">
 <span id="triangle-docline"></span><img alt="_images/triangle-docline.png" src="_images/triangle-docline.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 6 </span><span class="caption-text">First documentation cue about how to use <code class="docutils literal notranslate"><span class="pre">triangle</span></code>.</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">First documentation cue about how to use <code class="docutils literal notranslate"><span class="pre">triangle</span></code>.</span><a class="headerlink" href="#id8" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>This line says that the bold operator word (<strong>``triangle``</strong>) is a “procedure”.
@@ -227,11 +227,11 @@ don’t in general “go down the rabbit hole”, but <strong>read with intentio
 <p>A very useful part of the body of the documentation is the “examples” section.
 Just reading the code in the examples section often gives you an idea about how
 the word is to be used.</p>
-<figure class="align-center" id="id8">
+<figure class="align-center" id="id9">
 <img alt="_images/triangle-example.png" src="_images/triangle-example.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 7 </span><span class="caption-text">The example presented in the documentation for <code class="docutils literal notranslate"><span class="pre">triangle</span></code> in the
-<code class="docutils literal notranslate"><span class="pre">2htdp/image</span></code> package.</span><a class="headerlink" href="#id8" title="Link to this image">¶</a></p>
+<code class="docutils literal notranslate"><span class="pre">2htdp/image</span></code> package.</span><a class="headerlink" href="#id9" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>Putting all of this together, we can now understand the expression
@@ -325,8 +325,8 @@ program thus without changing its meaning –</p>
 the second house which stands out a bit. We can now see that only its
 “front” is different. So we can “pull” that out of the expression to make
 that clear.</p>
-<div class="literal-block-wrapper docutils container" id="id9">
-<span id="rewritten-program"></span><div class="code-block-caption"><span class="caption-number">Listing 1 </span><span class="caption-text">Rewritten program that’s more comprehensible than the original.</span><a class="headerlink" href="#id9" title="Link to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id10">
+<span id="rewritten-program"></span><div class="code-block-caption"><span class="caption-number">Listing 1 </span><span class="caption-text">Rewritten program that’s more comprehensible than the original.</span><a class="headerlink" href="#id10" title="Link to this code">¶</a></div>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">roof</span><span class="w"> </span><span class="p">(</span><span class="n">triangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">red</span><span class="p">))</span>
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">front</span><span class="w"> </span><span class="p">(</span><span class="n">rectangle</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">solid</span><span class="w"> </span><span class="o">&#39;</span><span class="ss">brown</span><span class="p">))</span>
 <span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">house</span><span class="w"> </span><span class="p">(</span><span class="n">above</span><span class="w"> </span><span class="n">roof</span><span class="w"> </span><span class="n">front</span><span class="p">))</span>
@@ -535,6 +535,54 @@ example.</p>
 due course where necessary.</p>
 </div>
 </section>
+<section id="constructing-a-procedure">
+<h2>Constructing a procedure<a class="headerlink" href="#constructing-a-procedure" title="Link to this heading">¶</a></h2>
+<p>We’ve so far used words like <code class="docutils literal notranslate"><span class="pre">list</span></code> and <code class="docutils literal notranslate"><span class="pre">string-append</span></code> that make various
+types of values. We know that we can use <code class="docutils literal notranslate"><span class="pre">define</span></code> like <code class="docutils literal notranslate"><span class="pre">(define</span> <span class="pre">(abstraction</span>
+<span class="pre">arg1</span> <span class="pre">arg2</span> <span class="pre">..)</span> <span class="pre">...)</span></code> to define an abstraction that is a Racket “procedure”
+value. However, we wrote a new list like this – <code class="docutils literal notranslate"><span class="pre">(define</span> <span class="pre">one-to-ten</span> <span class="pre">(list</span> <span class="pre">1</span> <span class="pre">2</span>
+<span class="pre">3</span> <span class="pre">4</span> <span class="pre">5</span> <span class="pre">6</span> <span class="pre">7</span> <span class="pre">8</span> <span class="pre">9</span> <span class="pre">10))</span></code> but we don’t yet know how to <code class="docutils literal notranslate"><span class="pre">(define</span> <span class="pre">abstraction</span>
+<span class="pre">...something...)</span></code> where that something is to be interpreted as a procedure
+value.</p>
+<p>Let’s take an example.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">distance-from-origin</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">sqrt</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="n">y</span><span class="p">))))</span>
+</pre></div>
+</div>
+<p>If you type <code class="docutils literal notranslate"><span class="pre">distance-from-origin</span></code> in the interaction window after
+loading this definition in the definitions window, you’ll see that Racket
+says <code class="docutils literal notranslate"><span class="pre">#&lt;procedure:distance-from-origin&gt;</span></code>. To construct this procedure
+value without naming it using <code class="docutils literal notranslate"><span class="pre">define</span></code>, we might imagine something like
+<code class="docutils literal notranslate"><span class="pre">(procedure</span> <span class="pre">(x</span> <span class="pre">y)</span> <span class="pre">(sqrt</span> <span class="pre">(+</span> <span class="pre">(*</span> <span class="pre">x</span> <span class="pre">x)</span> <span class="pre">(*</span> <span class="pre">y</span> <span class="pre">y))))</span></code>, so we can write –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">distance-from-origin</span><span class="w"> </span><span class="p">(</span><span class="n">procedure</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">sqrt</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="n">y</span><span class="p">)))))</span>
+</pre></div>
+</div>
+<p>Racket does have something like this, but it isn’t named <code class="docutils literal notranslate"><span class="pre">procedure</span></code>.
+The name to use is <code class="docutils literal notranslate"><span class="pre">lambda</span></code>, for historical reasons. <a href="#id12"><span class="problematic" id="id5">[#lambda-history]_</span></a></p>
+<p>So the following is equivalent to our original definition of <code class="docutils literal notranslate"><span class="pre">distance-from-origin</span></code>.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">distance-from-origin</span>
+<span class="w">   </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">sqrt</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="n">y</span><span class="p">)))))</span>
+</pre></div>
+</div>
+<p>You can also use the <code class="docutils literal notranslate"><span class="pre">λ</span></code> character (typed using C-&lt;backslash&gt;, where C is
+either Cmd or Ctrl depending on platform) instead of <code class="docutils literal notranslate"><span class="pre">lambda</span></code>. So the
+following is valid too –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">distance-from-origin</span><span class="w"> </span><span class="p">(</span><span class="k">λ</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">sqrt</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="n">y</span><span class="p">)))))</span>
+</pre></div>
+</div>
+<p>So you can copy the “lambda expression” paste it into the interaction window
+and Racket will tell you that it is a procedure!</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">λ</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">sqrt</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="n">y</span><span class="p">))))</span>
+<span class="n">#&lt;procedure&gt;</span>
+</pre></div>
+</div>
+<p>Since it stands for a procedure – a.k.a. abstraction – it can be used
+in the first position of a <code class="docutils literal notranslate"><span class="pre">(...)</span></code> expression as well.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="w"> </span><span class="p">((</span><span class="k">λ</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">sqrt</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="n">y</span><span class="p">))))</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span>
+<span class="mi">5</span>
+</pre></div>
+</div>
+</section>
 <section id="recap">
 <h2>Recap<a class="headerlink" href="#recap" title="Link to this heading">¶</a></h2>
 <p>We’ve seen a case of understanding a simple program by “interrogating” it.</p>
@@ -631,12 +679,14 @@ stands for a specific triangle drawn as part of a picture. So we’ll say “the
 <li class="toctree-l2"><a class="reference internal" href="#scopes">Scopes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#abstraction-and-generalization">Abstraction and generalization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#interrogating-abstractions">Interrogating abstractions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#constructing-a-procedure">Constructing a procedure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#recap">Recap</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="editor.html">The editor</a></li>
 <li class="toctree-l1"><a class="reference internal" href="strings.html">Strings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sample-programs.html">Sample programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipd.html">IPD: Incremental Program Decomposition</a></li>
 <li class="toctree-l1"><a class="reference internal" href="structures.html">Structures</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="assumptions.html">Assumptions and implications</a></li>
