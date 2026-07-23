@@ -636,6 +636,14 @@ in the first position of a ``(...)`` expression as well.
    "abstraction" as you see fit. If you stick with λ though, eventually it will
    become synonymous with those words in your mind and that's fine too.
 
+.. admonition:: **Recommendation**
+
+   For now, stick to named abstractions (using ``define``) instead of creating
+   unnamed abstractions using ``λ`` or ``lambda``. The reason is that unnamed
+   abstractions are harder to read on the average compared to named ones. 
+   There are **some** occasions where it is clearer to use ``λ`` abstractions,
+   and we'll point them out when they arise.
+
 Recap
 -----
 
