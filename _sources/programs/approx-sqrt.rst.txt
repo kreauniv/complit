@@ -97,7 +97,10 @@ We know its shape from how we used ``next-step`` above.
 Remarks
 -------
 
-That's basically it. Now try the following tasks.
+That's basically it. Put the fragments together and test it on some examples
+to convince yourself that it works as advertised.
+
+Now try the following tasks.
 
 .. admonition:: **Task 1**
 
