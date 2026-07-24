@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Approximate square-root &#8212; CompLIT: Programming Literacy v1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d8a2add5" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=17171a54" />
+    <script src="../_static/documentation_options.js?v=5cb08e4e"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="IPD: Incremental Program Decomposition" href="../ipd.html" />
+    <link rel="prev" title="TicTacToe" href="tictactoe.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="approximate-square-root">
+<h1>Approximate square-root<a class="headerlink" href="#approximate-square-root" title="Link to this heading">¶</a></h1>
+<p>Calculating the square-root of a number is easy in most programming languages,
+because most of them provide some word like <code class="docutils literal notranslate"><span class="pre">sqrt</span></code> that will give you the
+square root of a “floating point number”. Racket has this too. However, it is
+instructive to know how it is calculated.</p>
+<p>A common method is based on Newton-Raphson iteration, and goes like this.</p>
+<ol class="arabic">
+<li><p>Let <code class="docutils literal notranslate"><span class="pre">a</span></code> be the number for which  you want to calculate the square root.</p></li>
+<li><p>You start with an estimate. Any non-zero value will do. If you don’t know
+what to start with, you can just pick <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(x_n\)</span> is your current estimate, you can improve this estimate
+using the following calculation -</p>
+<div class="math notranslate nohighlight">
+\[\begin{array}{rcl}
+x_{n+1} &amp; = &amp; \frac{1}{2}\left(x_n + \frac{a}{x_n}\right)
+\end{array}\]</div>
+</li>
+<li><p>Keep doing this calculation until you have a close enough value.
+How do you decide if it is “close enough”? You can just check
+if <span class="math notranslate nohighlight">\(|x_n^2 - a| &lt; \epsilon\)</span> for some small enough <span class="math notranslate nohighlight">\(\epsilon\)</span>
+like, say, <span class="math notranslate nohighlight">\(10^-10\)</span>. If you don’t need such high precision,
+you can use a larger value like, say, <span class="math notranslate nohighlight">\(10^-5\)</span>.</p></li>
+</ol>
+<p>Now, given this procedural knowledge, how can we use the IPD method
+to write a program for this?</p>
+<section id="the-top-level">
+<h2>The top level<a class="headerlink" href="#the-top-level" title="Link to this heading">¶</a></h2>
+<p>We might start out by expressing in words what we want -</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">approximate-square-root</span><span class="w"> </span><span class="n">a</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">precision</span><span class="w"> </span><span class="mf">1e-10</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">estimate</span><span class="w"> </span><span class="mf">1.0</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="n">repeat-until</span><span class="w"> </span><span class="n">improved-estimate</span><span class="w"> </span><span class="n">sufficiently-precise</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">precision</span><span class="w"> </span><span class="n">estimate</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Note how we captured the two key ideas we need to deal with using words for
+them – <code class="docutils literal notranslate"><span class="pre">improved-estimate</span></code> which is a calculation to get a better estimate
+given an initial estimate, and <code class="docutils literal notranslate"><span class="pre">sufficiently-precise</span></code> which is a predicate
+that can tell us when to stop. We also note that <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">precision</span></code> and
+<code class="docutils literal notranslate"><span class="pre">estimate</span></code> need to be provided to these as information as otherwise the words
+won’t know what to calculate with.</p>
+</section>
+<section id="repeat-until">
+<h2><code class="docutils literal notranslate"><span class="pre">repeat-until</span></code><a class="headerlink" href="#repeat-until" title="Link to this heading">¶</a></h2>
+<p>We know the <em>shape</em> of <code class="docutils literal notranslate"><span class="pre">repeat-until</span></code>, though we haven’t yet decided
+what the shape of its arguments must be.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">repeat-until</span><span class="w"> </span><span class="n">improved-estimate</span><span class="w"> </span><span class="n">sufficiently-precise</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">precision</span><span class="w"> </span><span class="n">estimate</span><span class="p">)</span>
+<span class="w">   </span><span class="k">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If the end condition is met already, the given estimate becomes the result.
+Otherwise we need to repeat with a better estimate. We can capture this
+like -</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">repeat-until</span><span class="w"> </span><span class="n">improved-estimate</span><span class="w"> </span><span class="n">sufficiently-precise</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">precision</span><span class="w"> </span><span class="n">estimate</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sufficiently-precise</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">precision</span><span class="w"> </span><span class="n">estimate</span><span class="p">)</span>
+<span class="w">       </span><span class="n">estimate</span>
+<span class="w">       </span><span class="p">(</span><span class="n">repeat-until</span><span class="w"> </span><span class="n">improved-estimate</span><span class="w"> </span><span class="n">sufficiently-precise</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">precision</span><span class="w"> </span><span class="p">(</span><span class="n">improved-estimate</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">estimate</span><span class="p">))))</span>
+</pre></div>
+</div>
+</section>
+<section id="sufficiently-precise">
+<h2><code class="docutils literal notranslate"><span class="pre">sufficiently-precise</span></code><a class="headerlink" href="#sufficiently-precise" title="Link to this heading">¶</a></h2>
+<p>Now that we know how <code class="docutils literal notranslate"><span class="pre">sufficiently-precise</span></code> will be used, we can define
+it quit easily –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">sufficiently-precise</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">precision</span><span class="w"> </span><span class="n">estimate</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="p">(</span><span class="nb">abs</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">estimate</span><span class="w"> </span><span class="n">estimate</span><span class="p">)</span><span class="w"> </span><span class="n">a</span><span class="p">))</span><span class="w"> </span><span class="n">precision</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="improved-estimate">
+<h2><code class="docutils literal notranslate"><span class="pre">improved-estimate</span></code><a class="headerlink" href="#improved-estimate" title="Link to this heading">¶</a></h2>
+<p>This is now just the Newton-Raphson calculation step.
+We know its shape from how we used <code class="docutils literal notranslate"><span class="pre">next-step</span></code> above.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">improved-estimate</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">estimate</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mf">0.5</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">estimate</span><span class="w"> </span><span class="p">(</span><span class="nb">/</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">estimate</span><span class="p">))))</span>
+</pre></div>
+</div>
+</section>
+<section id="remarks">
+<h2>Remarks<a class="headerlink" href="#remarks" title="Link to this heading">¶</a></h2>
+<p>That’s basically it. Now try the following tasks.</p>
+<div class="admonition-task-1 admonition">
+<p class="admonition-title"><strong>Task 1</strong></p>
+<p>Generalize to k-th root of <code class="docutils literal notranslate"><span class="pre">a</span></code> where <code class="docutils literal notranslate"><span class="pre">k</span></code> is a positive integer.
+For this, the iteration is –</p>
+<div class="math notranslate nohighlight">
+\[\begin{array}{rcl}
+x_{n+1} &amp; = &amp; \frac{1}{k}\left((k-1)x_n + a/x_n^{k-1}\right)
+\end{array}\]</div>
+<p>You will also have to define a way to calculate <span class="math notranslate nohighlight">\(x^k\)</span>.</p>
+</div>
+<div class="admonition-task-2 admonition">
+<p class="admonition-title"><strong>Task 2</strong></p>
+<p>The general Newton-Raphson iteration to solve the equation
+<span class="math notranslate nohighlight">\(f(x) = 0\)</span> goes like this –</p>
+<div class="math notranslate nohighlight">
+\[\begin{array}{rcl}
+x_{n+1} &amp; = &amp; x_n - \frac{f(x_n)}{f'(x_n)}
+\end{array}\]</div>
+<p>Use the same approach to write a solver given <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(f'\)</span> as
+arguments. Use this more general solver to express the solution
+to calculating an approximate square root.</p>
+</div>
+<div class="admonition-task-3 admonition">
+<p class="admonition-title"><strong>Task 3</strong></p>
+<p>Given a function <span class="math notranslate nohighlight">\(f(x)\)</span>, its approximate derivative at <span class="math notranslate nohighlight">\(x\)</span>
+may be written as –</p>
+<div class="math notranslate nohighlight">
+\[\begin{array}{rcl}
+   f'(x) &amp; \approx &amp; \frac{f(x+\epsilon/2) - f(x-\epsilon/2)}{\epsilon}
+\end{array}\]</div>
+<p>Write ann abstraction which when given a function, gives you its
+approximate derivative as a function. You could use this as a utility
+to solve the previous task by taking  only one function argument instead
+of two function arguments.</p>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">CompLIT: Programming Literacy</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../words.html">Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interrogation.html">Interrogating programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../editor.html">The editor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../strings.html">Strings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../sample-programs.html">Sample programs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="number-guessing-game.html">The number guessing game</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tictactoe.html">TicTacToe</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Approximate square-root</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ipd.html">IPD: Incremental Program Decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../structures.html">Structures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parsing.html">Parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assumptions.html">Assumptions and implications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parsing2.html">More parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../alternative-syntax.html">Optional: Alternative language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../recap.html">Recap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-terms.html">Optional: Technical terms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modelling-images.html">Modelling a domain - Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../representations.html">Representations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../svg.html">Interlude: SVG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../generalizations.html">Generalizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quantum.html">Optional: Modelling quantum computations</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../sample-programs.html">Sample programs</a><ul>
+      <li>Previous: <a href="tictactoe.html" title="previous chapter">TicTacToe</a></li>
+      <li>Next: <a href="../ipd.html" title="next chapter">IPD: Incremental Program Decomposition</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Srikumar K. S..
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/programs/approx-sqrt.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
