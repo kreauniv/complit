@@ -5,3 +5,4 @@ Sample programs
 
    programs/number-guessing-game
    programs/tictactoe
+   programs/approx-sqrt
