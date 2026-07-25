@@ -232,6 +232,45 @@ without any wrapping "operator word", it just means that they will all be
 evaluated one by one until the last expression is reached. The value of the
 whole sequence is the same as the value of the final expression in the sequence.
 
+Remembering how the boolean operators ``and`` and ``or`` work, we can also express
+the above definition like this --
+
+.. code:: racket
+   
+   (define (make-cursor str pos)
+      (or (string? str) (error "First argument must be a string"))
+      (or (integer? pos) (error "Second argument must be an integer"))
+      (or (< pos 0) (error "Second argument must be a non-negative integer"))
+      (or (> pos (last-cursor-position str))
+         (error "Second argument must be at or before the last cursor position"))
+      (cursor str pos))
+
+The way to read this is "``str`` is a string, or it is an error for
+``make-cursor``", "``pos`` is an integer or it is an error for
+``make-cursor``", and so on. To make this more explicit, we can combine
+all the ``(or..)`` terms into a single ``(and..)`` because we want all
+of these conditions to hold.
+
+.. code:: racket
+   
+   (define (make-cursor str pos)
+      (and (or (string? str) (error "First argument must be a string"))
+           (or (integer? pos) (error "Second argument must be an integer"))
+           (or (< pos 0) (error "Second argument must be a non-negative integer"))
+           (or (> pos (last-cursor-position str))
+               (error "Second argument must be at or before the last cursor position")))
+      (cursor str pos))
+
+While there is no operational difference between this version and the previous
+ones, here the entire "contract" that the arguments must obey is made clear as
+a single expression within the ``(and ...)``. This set of conditions that the
+arguments must meet for an abstraction to be applicable is called
+**pre-conditions**, because they need to be checked **before** proceeding with
+using the abstractions definition body. In the same spirit, the conditions that
+the value referred to by an application of the abstraction must satisfy are
+called **post-conditions**, since they can only be checked **after** the
+body expression's value is found.
+
 The ``begin`` word can be used to make this sequencing explicit like this --
 
 .. code:: racket
@@ -443,18 +482,18 @@ is given to give you a flavour of how having a type system is useful.
    become harder to understand if you mix categories like in the example ``(if
    ...)``.
 
-.. [#short-circuit] This property of the boolean operators ``and`` and ``or``
-   in Racket is called "short circuiting". So these are more syntax than
-   abstractions. It is easy to see this if you type the expression ``(and (> 2
-   3) (error "faulty universe"))`` into the interactions window. In a normal
-   reading of ``and`` as a abstraction, we'll have to find what the
-   ``(error..)`` expression stands for before getting to evaluating ``and``.
-   However you find that this expression just gives ``#f``. Since the first
-   condition is ``#f``, ``and`` will not even evaluate the second error
-   expression. Thus the evaluation of the complete term as been "short
-   circuited", drawing an analogy with electrical circuits where a component
-   like a capacitor is bypassed by connecting its terminals with a conducting
-   wire, thus making the circuit "shorter". While in electrical engineering
-   this is in general not a good idea unless you know what you're doing,
-   short circuited operators in Racket (and other languages too) help save
-   computations and also simplify code.
+.. [#short-circuit] **SHort circuiting**: This property of the boolean
+   operators ``and`` and ``or`` in Racket is called "short circuiting". So
+   these are more syntax than abstractions. It is easy to see this if you type
+   the expression ``(and (> 2 3) (error "faulty universe"))`` into the
+   interactions window. In a normal reading of ``and`` as a abstraction, we'll
+   have to find what the ``(error..)`` expression stands for before getting to
+   evaluating ``and``. However you find that this expression just gives ``#f``.
+   Since the first condition is ``#f``, ``and`` will not even evaluate the
+   second error expression. Thus the evaluation of the complete term as been
+   "short circuited", drawing an analogy with electrical circuits where a
+   component like a capacitor is bypassed by connecting its terminals with a
+   conducting wire, thus making the circuit "shorter". While in electrical
+   engineering this is in general not a good idea unless you know what you're
+   doing, short circuited operators in Racket (and other languages too) help
+   save computations and also simplify code.
