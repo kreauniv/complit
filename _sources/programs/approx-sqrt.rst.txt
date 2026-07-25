@@ -25,8 +25,8 @@ A common method is based on Newton-Raphson iteration, and goes like this.
 4. Keep doing this calculation until you have a close enough value.
    How do you decide if it is "close enough"? You can just check
    if :math:`|x_n^2 - a| < \epsilon` for some small enough :math:`\epsilon`
-   like, say, :math:`10^-10`. If you don't need such high precision,
-   you can use a larger value like, say, :math:`10^-5`.
+   like, say, :math:`10^{-10}`. If you don't need such high precision,
+   you can use a larger value like, say, :math:`10^{-5}`.
 
 Now, given this procedural knowledge, how can we use the IPD method
 to write a program for this?
