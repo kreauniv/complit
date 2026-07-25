@@ -109,7 +109,7 @@ it quite easily –</p>
 <section id="improved-estimate">
 <h2><code class="docutils literal notranslate"><span class="pre">improved-estimate</span></code><a class="headerlink" href="#improved-estimate" title="Link to this heading">¶</a></h2>
 <p>This is now just the Newton-Raphson calculation step.
-We know its shape from how we used <code class="docutils literal notranslate"><span class="pre">next-step</span></code> above.</p>
+We know its shape from how we used <code class="docutils literal notranslate"><span class="pre">improved-estimate</span></code> above.</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">improved-estimate</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">estimate</span><span class="p">)</span>
 <span class="w">   </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mf">0.5</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">estimate</span><span class="w"> </span><span class="p">(</span><span class="nb">/</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">estimate</span><span class="p">))))</span>
 </pre></div>
