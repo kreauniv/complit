@@ -242,8 +242,11 @@ an operator (if you’re defining an abstraction, that is).</p>
 <p><a class="reference external" href="https://docs.racket-lang.org/reference/function-contracts.html">Function contracts</a> describes how to define words along with contracts
 for their arguments and implied values.</p>
 <p>To make definitions with contracts, you use <code class="docutils literal notranslate"><span class="pre">define/contract</span></code> instead of
-<code class="docutils literal notranslate"><span class="pre">define</span></code>. For example, in <a class="reference internal" href="programs/number-guessing-game.html#the-number-guessing-game"><span class="std std-ref">The number guessing game</span></a>, we checked an
-argument of our procedure like this –</p>
+<code class="docutils literal notranslate"><span class="pre">define</span></code>. In Racket, words with the “/” character are often intended to be
+read as though “/” stood for “with”. So <code class="docutils literal notranslate"><span class="pre">define/contract</span></code> is intended to be
+read as “define with contract”.</p>
+<p>For example, in <a class="reference internal" href="programs/number-guessing-game.html#the-number-guessing-game"><span class="std std-ref">The number guessing game</span></a>, we checked an argument of our
+procedure like this –</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">play-number-guessing-game</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span>
 <span class="w">   </span><span class="p">(</span><span class="k">when</span><span class="w"> </span><span class="p">(</span><span class="nb">not</span><span class="w"> </span><span class="p">(</span><span class="k">and</span><span class="w"> </span><span class="p">(</span><span class="nb">integer?</span><span class="w"> </span><span class="n">max-number</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;</span><span class="w"> </span><span class="n">max-number</span><span class="w"> </span><span class="mi">1</span><span class="p">)))</span>
 <span class="w">     </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;Expecting a positive integer &gt; 1&quot;</span><span class="p">))</span>
@@ -316,6 +319,7 @@ course.</p>
 <li class="toctree-l1"><a class="reference internal" href="editor.html">The editor</a></li>
 <li class="toctree-l1"><a class="reference internal" href="strings.html">Strings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sample-programs.html">Sample programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipd.html">IPD: Incremental Program Decomposition</a></li>
 <li class="toctree-l1"><a class="reference internal" href="structures.html">Structures</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Assumptions and implications</a><ul>
