@@ -240,6 +240,40 @@ When we see a sequence of such expressions in the body of a definition
 without any wrapping “operator word”, it just means that they will all be
 evaluated one by one until the last expression is reached. The value of the
 whole sequence is the same as the value of the final expression in the sequence.</p>
+<p>Remembering how the boolean operators <code class="docutils literal notranslate"><span class="pre">and</span></code> and <code class="docutils literal notranslate"><span class="pre">or</span></code> work, we can also express
+the above definition like this –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">make-cursor</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">or</span><span class="w"> </span><span class="p">(</span><span class="nb">string?</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;First argument must be a string&quot;</span><span class="p">))</span>
+<span class="w">   </span><span class="p">(</span><span class="k">or</span><span class="w"> </span><span class="p">(</span><span class="nb">integer?</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;Second argument must be an integer&quot;</span><span class="p">))</span>
+<span class="w">   </span><span class="p">(</span><span class="k">or</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;Second argument must be a non-negative integer&quot;</span><span class="p">))</span>
+<span class="w">   </span><span class="p">(</span><span class="k">or</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="p">(</span><span class="n">last-cursor-position</span><span class="w"> </span><span class="n">str</span><span class="p">))</span>
+<span class="w">      </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;Second argument must be at or before the last cursor position&quot;</span><span class="p">))</span>
+<span class="w">   </span><span class="p">(</span><span class="n">cursor</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The way to read this is “<code class="docutils literal notranslate"><span class="pre">str</span></code> is a string, or it is an error for
+<code class="docutils literal notranslate"><span class="pre">make-cursor</span></code>”, “<code class="docutils literal notranslate"><span class="pre">pos</span></code> is an integer or it is an error for
+<code class="docutils literal notranslate"><span class="pre">make-cursor</span></code>”, and so on. To make this more explicit, we can combine
+all the <code class="docutils literal notranslate"><span class="pre">(or..)</span></code> terms into a single <code class="docutils literal notranslate"><span class="pre">(and..)</span></code> because we want all
+of these conditions to hold.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">make-cursor</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">and</span><span class="w"> </span><span class="p">(</span><span class="k">or</span><span class="w"> </span><span class="p">(</span><span class="nb">string?</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;First argument must be a string&quot;</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="k">or</span><span class="w"> </span><span class="p">(</span><span class="nb">integer?</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;Second argument must be an integer&quot;</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="k">or</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;Second argument must be a non-negative integer&quot;</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="k">or</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="p">(</span><span class="n">last-cursor-position</span><span class="w"> </span><span class="n">str</span><span class="p">))</span>
+<span class="w">            </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;Second argument must be at or before the last cursor position&quot;</span><span class="p">)))</span>
+<span class="w">   </span><span class="p">(</span><span class="n">cursor</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>While there is no operational difference between this version and the previous
+ones, here the entire “contract” that the arguments must obey is made clear as
+a single expression within the <code class="docutils literal notranslate"><span class="pre">(and</span> <span class="pre">...)</span></code>. This set of conditions that the
+arguments must meet for an abstraction to be applicable is called
+<strong>pre-conditions</strong>, because they need to be checked <strong>before</strong> proceeding with
+using the abstractions definition body. In the same spirit, the conditions that
+the value referred to by an application of the abstraction must satisfy are
+called <strong>post-conditions</strong>, since they can only be checked <strong>after</strong> the
+body expression’s value is found.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">begin</span></code> word can be used to make this sequencing explicit like this –</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">make-cursor</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span>
 <span class="w">   </span><span class="p">(</span><span class="k">begin</span>
@@ -435,21 +469,21 @@ become harder to understand if you mix categories like in the example <code clas
 </aside>
 <aside class="footnote brackets" id="short-circuit" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
-<p>This property of the boolean operators <code class="docutils literal notranslate"><span class="pre">and</span></code> and <code class="docutils literal notranslate"><span class="pre">or</span></code>
-in Racket is called “short circuiting”. So these are more syntax than
-abstractions. It is easy to see this if you type the expression <code class="docutils literal notranslate"><span class="pre">(and</span> <span class="pre">(&gt;</span> <span class="pre">2</span>
-<span class="pre">3)</span> <span class="pre">(error</span> <span class="pre">&quot;faulty</span> <span class="pre">universe&quot;))</span></code> into the interactions window. In a normal
-reading of <code class="docutils literal notranslate"><span class="pre">and</span></code> as a abstraction, we’ll have to find what the
-<code class="docutils literal notranslate"><span class="pre">(error..)</span></code> expression stands for before getting to evaluating <code class="docutils literal notranslate"><span class="pre">and</span></code>.
-However you find that this expression just gives <code class="docutils literal notranslate"><span class="pre">#f</span></code>. Since the first
-condition is <code class="docutils literal notranslate"><span class="pre">#f</span></code>, <code class="docutils literal notranslate"><span class="pre">and</span></code> will not even evaluate the second error
-expression. Thus the evaluation of the complete term as been “short
-circuited”, drawing an analogy with electrical circuits where a component
-like a capacitor is bypassed by connecting its terminals with a conducting
-wire, thus making the circuit “shorter”. While in electrical engineering
-this is in general not a good idea unless you know what you’re doing,
-short circuited operators in Racket (and other languages too) help save
-computations and also simplify code.</p>
+<p><strong>SHort circuiting</strong>: This property of the boolean
+operators <code class="docutils literal notranslate"><span class="pre">and</span></code> and <code class="docutils literal notranslate"><span class="pre">or</span></code> in Racket is called “short circuiting”. So
+these are more syntax than abstractions. It is easy to see this if you type
+the expression <code class="docutils literal notranslate"><span class="pre">(and</span> <span class="pre">(&gt;</span> <span class="pre">2</span> <span class="pre">3)</span> <span class="pre">(error</span> <span class="pre">&quot;faulty</span> <span class="pre">universe&quot;))</span></code> into the
+interactions window. In a normal reading of <code class="docutils literal notranslate"><span class="pre">and</span></code> as a abstraction, we’ll
+have to find what the <code class="docutils literal notranslate"><span class="pre">(error..)</span></code> expression stands for before getting to
+evaluating <code class="docutils literal notranslate"><span class="pre">and</span></code>. However you find that this expression just gives <code class="docutils literal notranslate"><span class="pre">#f</span></code>.
+Since the first condition is <code class="docutils literal notranslate"><span class="pre">#f</span></code>, <code class="docutils literal notranslate"><span class="pre">and</span></code> will not even evaluate the
+second error expression. Thus the evaluation of the complete term as been
+“short circuited”, drawing an analogy with electrical circuits where a
+component like a capacitor is bypassed by connecting its terminals with a
+conducting wire, thus making the circuit “shorter”. While in electrical
+engineering this is in general not a good idea unless you know what you’re
+doing, short circuited operators in Racket (and other languages too) help
+save computations and also simplify code.</p>
 </aside>
 </aside>
 </section>
