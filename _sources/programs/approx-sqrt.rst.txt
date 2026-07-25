@@ -141,7 +141,7 @@ Now try the following tasks.
           f'(x) & \approx & \frac{f(x+\epsilon/2) - f(x-\epsilon/2)}{\epsilon}
        \end{array}
 
-   Write ann abstraction which when given a function, gives you its 
+   Write an abstraction which when given a function, gives you its 
    approximate derivative as a function. You could use this as a utility
    to solve the previous task by taking  only one function argument instead
    of two function arguments.
