@@ -18,7 +18,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Parsing" href="parsing.html" />
-    <link rel="prev" title="TicTacToe" href="programs/tictactoe.html" />
+    <link rel="prev" title="IPD: Incremental Program Decomposition" href="ipd.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -116,6 +116,19 @@ can do it step by step, starting with the innermost expressions, like this -</p>
 <p>So the whole <code class="docutils literal notranslate"><span class="pre">(if...)</span></code> expression means (in our context) the same as <code class="docutils literal notranslate"><span class="pre">(if</span> <span class="pre">#f</span>
 <span class="pre">&quot;wrong</span> <span class="pre">triangle&quot;</span> <span class="pre">&quot;right</span> <span class="pre">triangle&quot;)</span></code>, which we can see according to our rules
 that it must be the same as <code class="docutils literal notranslate"><span class="pre">&quot;right</span> <span class="pre">triangle&quot;</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>While Racket permits you to write expressions like <code class="docutils literal notranslate"><span class="pre">(if</span> <span class="pre">&lt;condition&gt;</span>
+<span class="pre">&quot;hello&quot;</span> <span class="pre">42)</span></code>, this is in general not a good idea as it makes it harder to
+read and understand the purpose of a program. In such an expression, if
+<code class="docutils literal notranslate"><span class="pre">&lt;condition&gt;</span></code> happens to be <code class="docutils literal notranslate"><span class="pre">#false</span></code>, the expression stands for a number
+and otherwise it stands for a string. There are perhaps only a handful of
+situations in which a string and a number both make sense for a value
+<a class="footnote-reference brackets" href="#write" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> . For most of programs, it is beneficial for program comprehension
+to have the “then” part and “else” part values be of the same type.
+Programming languages with static typing and type inference such as Haskell
+will enforce this constraint on conditions.</p>
+</div>
 </section>
 <section id="validity">
 <h2>Validity<a class="headerlink" href="#validity" title="Link to this heading">¶</a></h2>
@@ -412,6 +425,15 @@ some basic correctness.</p>
 <p>Typed Racket is a much larger language than Racket that we won’t be getting
 into for the purpose of this course, though the above illustrative example
 is given to give you a flavour of how having a type system is useful.</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="write" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>For example <code class="docutils literal notranslate"><span class="pre">(display</span> <span class="pre">&lt;thing&gt;)</span></code> will work whether <code class="docutils literal notranslate"><span class="pre">&lt;thing&gt;</span></code> is
+a string or a number. Apart from some such generic facilities, programs
+become harder to understand if you mix categories like in the example <code class="docutils literal notranslate"><span class="pre">(if</span>
+<span class="pre">...)</span></code>.</p>
+</aside>
+</aside>
 </section>
 </section>
 
@@ -446,8 +468,10 @@ is given to give you a flavour of how having a type system is useful.</p>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="words.html">Words</a></li>
 <li class="toctree-l1"><a class="reference internal" href="interrogation.html">Interrogating programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="editor.html">The editor</a></li>
 <li class="toctree-l1"><a class="reference internal" href="strings.html">Strings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sample-programs.html">Sample programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipd.html">IPD: Incremental Program Decomposition</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Structures</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#new-word-if">New word: <code class="docutils literal notranslate"><span class="pre">if</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#validity">Validity</a></li>
@@ -473,7 +497,7 @@ is given to give you a flavour of how having a type system is useful.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="programs/tictactoe.html" title="previous chapter">TicTacToe</a></li>
+      <li>Previous: <a href="ipd.html" title="previous chapter">IPD: Incremental Program Decomposition</a></li>
       <li>Next: <a href="parsing.html" title="next chapter">Parsing</a></li>
   </ul></li>
 </ul>

@@ -99,6 +99,17 @@ So the whole ``(if...)`` expression means (in our context) the same as ``(if #f
 "wrong triangle" "right triangle")``, which we can see according to our rules
 that it must be the same as ``"right triangle"``.
 
+.. note:: While Racket permits you to write expressions like ``(if <condition>
+   "hello" 42)``, this is in general not a good idea as it makes it harder to
+   read and understand the purpose of a program. In such an expression, if
+   ``<condition>`` happens to be ``#false``, the expression stands for a number
+   and otherwise it stands for a string. There are perhaps only a handful of
+   situations in which a string and a number both make sense for a value
+   [#write]_ . For most of programs, it is beneficial for program comprehension
+   to have the "then" part and "else" part values be of the same type.
+   Programming languages with static typing and type inference such as Haskell
+   will enforce this constraint on conditions.
+
 Validity
 --------
 
@@ -427,3 +438,7 @@ into for the purpose of this course, though the above illustrative example
 is given to give you a flavour of how having a type system is useful.
 
 
+.. [#write] For example ``(display <thing>)`` will work whether ``<thing>`` is
+   a string or a number. Apart from some such generic facilities, programs
+   become harder to understand if you mix categories like in the example ``(if
+   ...)``.
