@@ -181,7 +181,7 @@ string when <code class="docutils literal notranslate"><span class="pre">and</sp
 <li><p>So the combined <code class="docutils literal notranslate"><span class="pre">(and</span> <span class="pre">...)</span></code> expression is saying “<code class="docutils literal notranslate"><span class="pre">str</span></code> is a string and <code class="docutils literal notranslate"><span class="pre">pos</span></code> is an
 integer and <code class="docutils literal notranslate"><span class="pre">pos</span></code> is &gt;= 0 and <code class="docutils literal notranslate"><span class="pre">pos</span></code> is &lt;= the length of <code class="docutils literal notranslate"><span class="pre">str</span></code>”. As we read that,
 we can realize that the moment any one of the sub-conditions becomes false, there is no
-point even looking at any sub-conditions after that.</p>
+point even looking at any sub-conditions after that. <a class="footnote-reference brackets" href="#short-circuit" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p><strong>A closer reading</strong>: While we’re checking whether <code class="docutils literal notranslate"><span class="pre">pos</span></code> is <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>
@@ -432,6 +432,24 @@ is given to give you a flavour of how having a type system is useful.</p>
 a string or a number. Apart from some such generic facilities, programs
 become harder to understand if you mix categories like in the example <code class="docutils literal notranslate"><span class="pre">(if</span>
 <span class="pre">...)</span></code>.</p>
+</aside>
+<aside class="footnote brackets" id="short-circuit" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>This property of the boolean operators <code class="docutils literal notranslate"><span class="pre">and</span></code> and <code class="docutils literal notranslate"><span class="pre">or</span></code>
+in Racket is called “short circuiting”. So these are more syntax than
+abstractions. It is easy to see this if you type the expression <code class="docutils literal notranslate"><span class="pre">(and</span> <span class="pre">(&gt;</span> <span class="pre">2</span>
+<span class="pre">3)</span> <span class="pre">(error</span> <span class="pre">&quot;faulty</span> <span class="pre">universe&quot;))</span></code> into the interactions window. In a normal
+reading of <code class="docutils literal notranslate"><span class="pre">and</span></code> as a abstraction, we’ll have to find what the
+<code class="docutils literal notranslate"><span class="pre">(error..)</span></code> expression stands for before getting to evaluating <code class="docutils literal notranslate"><span class="pre">and</span></code>.
+However you find that this expression just gives <code class="docutils literal notranslate"><span class="pre">#f</span></code>. Since the first
+condition is <code class="docutils literal notranslate"><span class="pre">#f</span></code>, <code class="docutils literal notranslate"><span class="pre">and</span></code> will not even evaluate the second error
+expression. Thus the evaluation of the complete term as been “short
+circuited”, drawing an analogy with electrical circuits where a component
+like a capacitor is bypassed by connecting its terminals with a conducting
+wire, thus making the circuit “shorter”. While in electrical engineering
+this is in general not a good idea unless you know what you’re doing,
+short circuited operators in Racket (and other languages too) help save
+computations and also simplify code.</p>
 </aside>
 </aside>
 </section>

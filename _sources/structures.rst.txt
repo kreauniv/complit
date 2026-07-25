@@ -170,7 +170,7 @@ Now let's pick that definition apart and figure out how to "read" it.
 - So the combined ``(and ...)`` expression is saying "``str`` is a string and ``pos`` is an
   integer and ``pos`` is >= 0 and ``pos`` is <= the length of ``str``". As we read that,
   we can realize that the moment any one of the sub-conditions becomes false, there is no
-  point even looking at any sub-conditions after that. 
+  point even looking at any sub-conditions after that. [#short-circuit]_
 
   .. tip:: **A closer reading**: While we're checking whether ``pos`` is ``<=``
      the number of characters in the strings ``str``, what we're **really**
@@ -442,3 +442,19 @@ is given to give you a flavour of how having a type system is useful.
    a string or a number. Apart from some such generic facilities, programs
    become harder to understand if you mix categories like in the example ``(if
    ...)``.
+
+.. [#short-circuit] This property of the boolean operators ``and`` and ``or``
+   in Racket is called "short circuiting". So these are more syntax than
+   abstractions. It is easy to see this if you type the expression ``(and (> 2
+   3) (error "faulty universe"))`` into the interactions window. In a normal
+   reading of ``and`` as a abstraction, we'll have to find what the
+   ``(error..)`` expression stands for before getting to evaluating ``and``.
+   However you find that this expression just gives ``#f``. Since the first
+   condition is ``#f``, ``and`` will not even evaluate the second error
+   expression. Thus the evaluation of the complete term as been "short
+   circuited", drawing an analogy with electrical circuits where a component
+   like a capacitor is bypassed by connecting its terminals with a conducting
+   wire, thus making the circuit "shorter". While in electrical engineering
+   this is in general not a good idea unless you know what you're doing,
+   short circuited operators in Racket (and other languages too) help save
+   computations and also simplify code.
