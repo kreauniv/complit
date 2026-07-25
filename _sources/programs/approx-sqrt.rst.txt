@@ -76,7 +76,7 @@ like -
 ------------------------
 
 Now that we know how ``sufficiently-precise`` will be used, we can define
-it quit easily --
+it quite easily --
 
 .. code:: racket
 
