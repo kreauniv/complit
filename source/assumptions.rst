@@ -233,8 +233,12 @@ an operator (if you're defining an abstraction, that is).
 for their arguments and implied values.
 
 To make definitions with contracts, you use ``define/contract`` instead of
-``define``. For example, in :ref:`The number guessing game`, we checked an
-argument of our procedure like this --
+``define``. In Racket, words with the "/" character are often intended to be
+read as though "/" stood for "with". So ``define/contract`` is intended to be
+read as "define with contract". 
+
+For example, in :ref:`The number guessing game`, we checked an argument of our
+procedure like this --
 
 .. code:: racket
 
