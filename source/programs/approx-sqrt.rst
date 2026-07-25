@@ -87,7 +87,7 @@ it quite easily --
 ---------------------
 
 This is now just the Newton-Raphson calculation step.
-We know its shape from how we used ``next-step`` above.
+We know its shape from how we used ``improved-estimate`` above.
 
 .. code:: racket
 
