@@ -313,7 +313,7 @@ This would then be a summation loop --
 Note that we've wrapped the integration loop into a lambda so that the
 integral of a function is also a function in our representation.
 
-.. asmonition:: **Task**
+.. admonition:: **Task**
 
    Write a Racket definition (using either representation) for the n-th
    derivative of a function.
