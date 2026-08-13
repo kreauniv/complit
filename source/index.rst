@@ -21,6 +21,7 @@ CompLIT: Programming Literacy (WORK-IN-PROGRESS)
    alternative-syntax
    recap
    technical-terms
+   calculus
    modelling-images
    representations
    svg
