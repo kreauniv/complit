@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Modelling basic calculus &#8212; CompLIT: Programming Literacy v1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d8a2add5" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=17171a54" />
+    <script src="_static/documentation_options.js?v=5cb08e4e"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Modelling images" href="modelling-images.html" />
+    <link rel="prev" title="Optional: Technical terms" href="technical-terms.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="modelling-basic-calculus">
+<h1>Modelling basic calculus<a class="headerlink" href="#modelling-basic-calculus" title="Link to this heading">¶</a></h1>
+<p>Basic high-school level calculus offers a good warm up to
+modelling a domain and helps us explore various representations
+and their trade-offs.</p>
+<section id="vocabulary-and-concepts">
+<h2>Vocabulary and concepts<a class="headerlink" href="#vocabulary-and-concepts" title="Link to this heading">¶</a></h2>
+<p>First off, we need to list out the concepts that we want modelled.</p>
+<p>We’ll restrict ourselves to the calculus of functions of a single
+variable. That’s already two words right there - “function” and
+“variable”. We’ll use the symbol <span class="math notranslate nohighlight">\(x\)</span> for a variable and
+other symbols like <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> for functions. The value
+a function takes for a given value of its variable is written
+<span class="math notranslate nohighlight">\(f(x)\)</span>.</p>
+<p>A key operation in calculus is the computation of the “derivative”
+of a function, written <span class="math notranslate nohighlight">\(f'(x)\)</span> or as <span class="math notranslate nohighlight">\(\mathrm{d} f/\mathrm{d} x\)</span>.</p>
+<p>Definition-wise, the derivative is often defined as –</p>
+<div class="math notranslate nohighlight">
+\[f'(x) = \lim_{\epsilon \to 0}\frac{f(x+\epsilon) - f(x)}{\epsilon}\]</div>
+<p>Or symmetrically as -</p>
+<div class="math notranslate nohighlight">
+\[f'(x) = \lim_{\epsilon \to 0}\frac{f(x+\epsilon/2) - f(x-\epsilon/2)}{\epsilon}\]</div>
+<p>Some common derivatives are given below to refresh your memory -</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+\frac{\mathrm{d}}{\mathrm{d} x} k &amp; = &amp; 0 \\
+\frac{\mathrm{d}}{\mathrm{d} x} x^n &amp; = &amp; n x^{n-1} \\
+\frac{\mathrm{d}}{\mathrm{d} x} e^x &amp; = &amp; e^x \\
+\frac{\mathrm{d}}{\mathrm{d} x} \sin(x) &amp; = &amp; \cos(x) \\
+\frac{\mathrm{d}}{\mathrm{d} x} \cos(x) &amp; = &amp; -\sin(x)
+\end{array}\end{split}\]</div>
+<p>We also have some rules that the derivative obeys –</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+\frac{\mathrm{d}}{\mathrm{d}x} (f(x) + g(x)) &amp; = &amp; f'(x) + g'(x) \\
+\frac{\mathrm{d}}{\mathrm{d}x} kf(x) &amp; = &amp; k f'(x) \\
+\frac{\mathrm{d}}{\mathrm{d}x} f(kx) &amp; = &amp; k f'(kx) \\
+\frac{\mathrm{d}}{\mathrm{d}y} f(x)g(x) &amp; = &amp; f'(x)g(x) + f(x)g'(x) \\
+\frac{\mathrm{d}}{\mathrm{d}y} f(g(x)) &amp; = &amp; f'(g(x)) g'(x)
+\end{array}\end{split}\]</div>
+<p>So we need to come up with a representation for “functions”, such that we can
+represent derivatives and their properties.</p>
+</section>
+<section id="polynomials">
+<h2>Polynomials<a class="headerlink" href="#polynomials" title="Link to this heading">¶</a></h2>
+<p>Polynomials – of the form <span class="math notranslate nohighlight">\(f(x) = a_0x^0 + a_1x^1 + a_2x^2 + ...\)</span> are a
+useful class of functions to model. Since they have an interesting property
+that every polynomial <span class="math notranslate nohighlight">\(f(x)\)</span> can be expressed as <span class="math notranslate nohighlight">\(f(x) = a + x
+g(x)\)</span> where <span class="math notranslate nohighlight">\(g(x)\)</span> is also a polynomial. In the trivial case where
+<span class="math notranslate nohighlight">\(g(x) = 0\)</span>, we have <span class="math notranslate nohighlight">\(f(x) = a\)</span> a constant.</p>
+<div class="math notranslate nohighlight">
+\[f(x) = a_0 + x (a_1 + a_2 x + a_3 x^2 + ..)\]</div>
+<p>So if we represent a polynomial function as a list of the coefficients
+of the powers of <span class="math notranslate nohighlight">\(x\)</span>, like <span class="math notranslate nohighlight">\((\text{list}\ a_0\ a_1\ a_2\ ...)\)</span>,
+then we can get the representation for the <span class="math notranslate nohighlight">\(g(x)\)</span> by just dropping
+the first element of the list.</p>
+<p>For example, the polynomial <span class="math notranslate nohighlight">\(f(x) = 7 - 3x + x^2\)</span> can be written
+as <cite>(list 7 -3 1)</cite>. We can write <span class="math notranslate nohighlight">\(f(x) = 7 + x(-3 + x)\)</span>. The
+polynomial <span class="math notranslate nohighlight">\(-3 + x\)</span> has the list representation <cite>(list -3 1)</cite>,
+which we can see is simply <cite>(rest (list 7 -3 1))</cite>. We’ll exploit this
+structure shortly.</p>
+<p>Once we’ve made this connection, we can go back and re-examine the structure
+to see that we can define polynomials recursively in the same way we
+can define lists recursively.</p>
+<table class="docutils align-center" id="id1">
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">Parallels between polynomials and lists</span><a class="headerlink" href="#id1" title="Link to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Polynomials</p></th>
+<th class="head"><p>Lists</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(0\)</span> is a polynomial.</p></td>
+<td><p><cite>empty</cite> is a list.</p></td>
+</tr>
+<tr class="row-odd"><td><p>If <span class="math notranslate nohighlight">\(g(x)\)</span> is a polynomial,
+then <span class="math notranslate nohighlight">\(f(x) = a + xg(x)\)</span> is
+also a polynomial for any <span class="math notranslate nohighlight">\(a\)</span>.</p></td>
+<td><p>If L is a list, then <cite>(cons a L)</cite>
+is also a list.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Since we’re thinking of polynomials as pairs <span class="math notranslate nohighlight">\((a,g(x))\)</span> where <span class="math notranslate nohighlight">\(a\)</span>
+is a number and <span class="math notranslate nohighlight">\(g(x)\)</span> is a polynomial, with <span class="math notranslate nohighlight">\(0\)</span> also qualifying
+as a polynomial, the resemblance with lists where <cite>(cons a &lt;another-list&gt;)</cite> is
+very close, permitting the use of lists as a “natural” representation, since
+we can decompose a polynomial into the <span class="math notranslate nohighlight">\(a\)</span> and the <span class="math notranslate nohighlight">\(g(x)\)</span> using
+<cite>first</cite> and <cite>rest</cite>.</p>
+<p>Using this, we can now express the “value of a polynomial at a given <span class="math notranslate nohighlight">\(x\)</span>”.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="n">x</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">f</span><span class="p">)</span>
+<span class="w">       </span><span class="mi">0</span>
+<span class="w">       </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="p">)))))</span>
+
+<span class="c1">; f(x) = 7 - 3x + x^2</span>
+<span class="c1">; f_repr = (list 7 -3 1)</span>
+<span class="c1">; f(2) = 5</span>
+<span class="c1">; (value f_repr 2)</span>
+<span class="c1">; = (+ 7 (* 2 (value (list -3 1) 2)))</span>
+<span class="c1">; = (+ 7 (* 2 (+ -3 (* 2 (value (list 1) 2)))))</span>
+<span class="c1">; = (+ 7 (* 2 (+ -3 (* 2 (+ 1 (value empty 2))))))</span>
+<span class="c1">; = (+ 7 (* 2 (+ -3 (* 2 (+ 1 0)))))</span>
+<span class="c1">; = (+ 7 (* 2 (+ -3 (* 2 1))))</span>
+<span class="c1">; = (+ 7 (* 2 (+ -3 2)))</span>
+<span class="c1">; = (+ 7 (* 2 -1))</span>
+<span class="c1">; = (+ 7 -2)</span>
+<span class="c1">; = 5</span>
+</pre></div>
+</div>
+<p>Remember that here the argument <cite>f</cite> to <cite>value</cite> is expected to be a list of numbers
+and the argument <cite>x</cite> is a number at which we want to evaluate <cite>f</cite>.</p>
+<p>Now, how do we approach the derivative? First off, we can see that the derivative
+of a polynomial function is another polynomial. So we we merely have to derive
+one list from another.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+f(x) &amp; = &amp; \sum_{k=0}^{N} a_k x^k \\
+f'(x) &amp; = &amp; \sum_{k=1}^{N} k a_k x^{k-1}
+\end{array}\end{split}\]</div>
+<p>But we also know <span class="math notranslate nohighlight">\(f(x) = a + xg(x)\)</span> and that tells us that
+<span class="math notranslate nohighlight">\(f'(x) = g(x) + xg'(x)\)</span>. So we can write the derivative
+calculation as –</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>; maps polynomial to polynomial
+(define (derivative f)
+   (if (empty? f)
+       empty
+       (padd (rest f) (xtimes (derivative (rest f))))))
+</pre></div>
+</div>
+<p>Here we’re introducing the word <cite>padd</cite> to stand for polynomial addition, and
+the word <cite>xtimes</cite> to represent the construction <span class="math notranslate nohighlight">\(xg(x)\)</span> given
+<span class="math notranslate nohighlight">\(g(x)\)</span>. These are easy to define.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(define (padd p1 p2)
+   (if (empty? p1) p2
+       (if (empty? p2) p1
+           (cons (+ (first p1) (first p2))
+                 (padd (rest p1) (rest p2))))))
+
+(define (xtimes g) (cons 0 g))
+
+; We can also generalize that a little for convenience.
+; With `plin`, we compute a * p1 + b * p2
+(define (plin a p1 b p2)
+   (if (empty? p1) (map (lambda (x) (* x b)) p2)
+       (if (empty? p2) (map (lambda (x) (* x a)) p1)
+           (cons (+ (* a (first p1)) (* b (first p2)))
+                 (plin a (rest p1) b (rest p2))))))
+</pre></div>
+</div>
+<div class="admonition-task admonition">
+<p class="admonition-title"><strong>Task</strong></p>
+<p>Also define <cite>(pmul p1 p2)</cite> which multiplies two polynomials to
+produce a product polynomial.</p>
+</div>
+<p>We also know that the “indefinite integral” of a polynomial is also a polynomial.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+f(x) &amp; = &amp; \sum_{k=0}^{N} a_k x^k \\
+\int f(x)\mathrm{d}x &amp; = &amp; C + \sum_{k=0}^{N} \frac{a_k}{k+1}x^{k+1}
+\end{array}\end{split}\]</div>
+<p>However, we can also use our list-like formulation to help us with this
+calculation.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+f(x) &amp; = &amp; a + x g(x) \\
+\int f(x) \mathrm{d}x &amp; = &amp; C + ax + \int x\mathrm{d}G(x) \\
+&amp; = &amp; C + ax + xG(x) - \int G(x)\mathrm{d}x
+\end{array}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(G(x) = \int g(x)\mathrm{d}x\)</span>.</p>
+<p>So, a naive translation of that gives us –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">integral</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="n">C</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">f</span><span class="p">)</span>
+<span class="w">       </span><span class="p">(</span><span class="nb">list</span><span class="w"> </span><span class="n">C</span><span class="p">)</span>
+<span class="w">       </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">G</span><span class="w"> </span><span class="p">(</span><span class="n">integral</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="mi">0</span><span class="p">)])</span>
+<span class="w">          </span><span class="p">(</span><span class="n">padd</span><span class="w"> </span><span class="p">(</span><span class="nb">list</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">f</span><span class="p">))</span>
+<span class="w">                </span><span class="p">(</span><span class="n">plin</span><span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="n">xtimes</span><span class="w"> </span><span class="n">G</span><span class="p">)</span><span class="w"> </span><span class="mi">-1</span><span class="w"> </span><span class="p">(</span><span class="n">integral</span><span class="w"> </span><span class="n">G</span><span class="w"> </span><span class="mi">0</span><span class="p">))))))</span>
+</pre></div>
+</div>
+<div class="admonition-question admonition">
+<p class="admonition-title"><strong>Question:</strong></p>
+<p>Why is that “naive”? Try out the calculation and see what happens?
+Can you figure out what’s happening? Try, for example,
+<cite>(integral (list 1) 0)</cite> and work out the reduction by hand.
+What do you think you can do?</p>
+</div>
+<p>How about the following definition based on the explicit formula?</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">integral</span><span class="w"> </span><span class="n">f</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="n">xtimes</span><span class="w"> </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="n">poly-integral</span><span class="w"> </span><span class="p">([</span><span class="n">f</span><span class="w"> </span><span class="n">f</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">k</span><span class="w"> </span><span class="mi">1</span><span class="p">])</span>
+<span class="w">              </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">f</span><span class="p">)</span>
+<span class="w">                  </span><span class="nb">empty</span>
+<span class="w">                  </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="p">(</span><span class="nb">/</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="n">k</span><span class="p">)</span>
+<span class="w">                        </span><span class="p">(</span><span class="n">poly-integral</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="mi">1</span><span class="p">)))))))</span>
+</pre></div>
+</div>
+<p>What we see here is that while the derivative aligns well with the recursive
+structure of the list, the integral really does not, since in order to compute
+the integral of <span class="math notranslate nohighlight">\(f=a+xg\)</span>, we’ll have to compute the double-integral of
+<span class="math notranslate nohighlight">\(g\)</span>!! So in this case, the explicit polynomial form is more useful to help
+define the integral within our list representation.</p>
+<div class="admonition-task admonition">
+<p class="admonition-title"><strong>Task</strong></p>
+<p>Extend the range of functions we can represent beyond polynomials in <span class="math notranslate nohighlight">\(x\)</span>
+to also include powers of <span class="math notranslate nohighlight">\(1/x\)</span>. i.e. -</p>
+<div class="math notranslate nohighlight">
+\[f(x) = \sum_{k=m}^{n} a_k x^k\]</div>
+<p>where <span class="math notranslate nohighlight">\(m\)</span> and <span class="math notranslate nohighlight">\(n\)</span> are both <strong>integers</strong> such that <span class="math notranslate nohighlight">\(n &gt;=
+m\)</span>. How will we represent such functions as a data structure? You’ll have to
+explore the math of such polynomials a bit before you can see the data
+structure relevant to it. <strong>Hint:</strong> Consider what happens when you multiply
+such a polynomial by <span class="math notranslate nohighlight">\(x\)</span> or <span class="math notranslate nohighlight">\(1/x\)</span>.</p>
+<p>Also, while the derivative of such polynomials is also in the same class,
+the integral is not!</p>
+<p>Here is another class of polynomial-like functions for you to explore –</p>
+<div class="math notranslate nohighlight">
+\[f(x) = \sqrt{x}\sum_{k=m}^{n} a_k x^k\]</div>
+</div>
+</section>
+<section id="arbitrary-functions-using-lambda">
+<h2>Arbitrary functions using <cite>lambda</cite><a class="headerlink" href="#arbitrary-functions-using-lambda" title="Link to this heading">¶</a></h2>
+<p>What if we represented a function as a lambda-function of a single argument?
+Like this -</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">-3</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">x</span><span class="p">))))</span>
+</pre></div>
+</div>
+<p>We can easily see that it is no longer possible to calculate its exact derivative.
+We can at best approximate it using the “limit” definition of the derivative.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">ε</span><span class="w"> </span><span class="mf">1e-6</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">derivative</span><span class="w"> </span><span class="n">f</span><span class="p">)</span>
+<span class="w">     </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="w">         </span><span class="p">(</span><span class="nb">/</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="p">(</span><span class="nb">/</span><span class="w"> </span><span class="n">ε</span><span class="w"> </span><span class="mi">2</span><span class="p">)))</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="p">(</span><span class="nb">/</span><span class="w"> </span><span class="n">ε</span><span class="w"> </span><span class="mi">2</span><span class="p">))))</span><span class="w"> </span><span class="n">ε</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>Notice how we can pass in a lambda-function to <cite>derivative</cite> and get back
+another lambda function as a result which is the “derivative of f, as a
+function”.</p>
+<p>We can no longer calculate the indefinite integral, but can do a definite
+integral. So we’ll also need a similar approximate form for the definite
+integral as well.</p>
+<div class="math notranslate nohighlight">
+\[\int_{a_1}^{a_2}f(x)\mathrm{d}x = \lim_{N \to \infty}\left[\frac{1}{N}\sum_{k=0}^{N}f(a_1 + (k/N)(a_2 - a_1))\right]\]</div>
+<p>This would then be a summation loop –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">integral</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="n">a1</span><span class="p">)</span>
+<span class="w">  </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">a2</span><span class="p">)</span>
+<span class="w">     </span><span class="p">(</span><span class="k">when</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="n">a2</span><span class="w"> </span><span class="n">a1</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">error</span><span class="w"> </span><span class="s2">&quot;a2 must be &gt; a1&quot;</span><span class="p">))</span>
+<span class="w">     </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="p">([</span><span class="n">x</span><span class="w"> </span><span class="n">a1</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">s</span><span class="w"> </span><span class="mf">0.0</span><span class="p">])</span>
+<span class="w">        </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">a2</span><span class="p">)</span>
+<span class="w">           </span><span class="p">(</span><span class="n">sum</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">ε</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="w"> </span><span class="n">x</span><span class="p">)))</span>
+<span class="w">           </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">ε</span><span class="w"> </span><span class="n">s</span><span class="p">)))))</span>
+</pre></div>
+</div>
+<p>Note that we’ve wrapped the integration loop into a lambda so that the
+integral of a function is also a function in our representation.</p>
+</section>
+<section id="arbitrary-functions-with-exact-derivatives">
+<h2>Arbitrary functions with exact derivatives<a class="headerlink" href="#arbitrary-functions-with-exact-derivatives" title="Link to this heading">¶</a></h2>
+<p>With polynomials, we could get exact derivatives, but not have every possible
+function represented using polynomials with finite terms. For example, the
+trigonometric, exponential, irrational, multiplicative inverses, and such
+functions are not representable with finite polynomials. We also saw that
+if we chose the general “a function is just a lambda” representation, we
+lost our ability to compute exact derivatives though we gained generality.
+We could only get a numerical approximation to the derivative.</p>
+<p>Can we have both? Exact integrals are much harder or impossible in many
+circumstances, so we’ll leave those alone. Can we have the ability to write
+general functions and also be able to compute derivatives exactly?</p>
+<p>So far, we’ve used one or more definitions of a derivative to implement it
+for our representation. We haven’t used its properties directly. The question
+at hand is that if we have a few simple functions whose derivatives are known,
+and we arrange things so that <cite>derivative</cite> obeys the stated properties, would
+it then suffice as an implementation of differentiation? After all, we construct
+functions by combining basic functions like <span class="math notranslate nohighlight">\(x\)</span>, <span class="math notranslate nohighlight">\(e^x\)</span>, <span class="math notranslate nohighlight">\(sin(x)\)</span>
+and such. If we have a roster of these with a table of known derivatives, and an
+implementation that obeys the rules for combining derivatives, won’t we get
+both (reasonable) generality <em>and</em> exact derivatives?</p>
+<p>Towards this, we consider modelling not what a function is at a given argument
+<span class="math notranslate nohighlight">\(x\)</span>, but <strong>all</strong> the values that it takes in a small neighbourhood around
+<span class="math notranslate nohighlight">\(x\)</span> – <span class="math notranslate nohighlight">\((x-ε,x+ε)\)</span>. By the definition of the derivative we saw earlier,
+we can represent the behaviour of the function in this interval by giving two
+values – <span class="math notranslate nohighlight">\(f(x)\)</span> and <span class="math notranslate nohighlight">\(f'(x)\)</span>. Note that <span class="math notranslate nohighlight">\(x\)</span> here is not a “variable”,
+but a specific position around which we’re exploring what <span class="math notranslate nohighlight">\(f\)</span> looks like.
+Since it requires two values, we can represent this region as a pair <span class="math notranslate nohighlight">\((f(x), f'(x))\)</span>.</p>
+<p>What does this pair for <span class="math notranslate nohighlight">\(f(x) = x\)</span> look like? It would be <span class="math notranslate nohighlight">\((x,1)\)</span> for whatever
+given value of <span class="math notranslate nohighlight">\(x\)</span>. Let’s use lambdas for the two functions in this representation,
+and use a list of two functions as the representation for the behaviour of the function
+around a given region. So we’ll represent <span class="math notranslate nohighlight">\(f(x) = x\)</span> around <span class="math notranslate nohighlight">\(x = 3\)</span> as the list
+<cite>(dual 3 1)</cite>. The constant function <span class="math notranslate nohighlight">\(f(x) = k\)</span> will then have the representation
+<cite>(dual k 0)</cite>.</p>
+<div class="admonition-struct admonition">
+<p class="admonition-title"><cite>struct</cite></p>
+<p>The <cite>struct</cite> declaration helps us keep associated data together and provide
+appropriate names. In this case, declaring <cite>(struct dual (x dx))</cite> provides a
+number of words automatically for us.</p>
+<ol class="arabic simple">
+<li><p>We can construct such a pair using the word <cite>dual</cite> like <cite>(dual 3.0 1.0)</cite>.</p></li>
+<li><p>The word <cite>dual?</cite> can be used to check whether a given value is this kind
+of struct or not, like <cite>(dual? d)</cite>.</p></li>
+<li><p>Given such a struct value bound to some identifier, say <cite>d</cite>, the words
+<cite>dual-x</cite> and <cite>dual-dx</cite>, derived from the struct’s name and the names we gave
+to its two fields, can be used to get at the two fields like <cite>(dual-x d)</cite>
+and <cite>(dual-dx d)</cite>.</p></li>
+</ol>
+</div>
+<p>Now, using the properties of derivatives of functions, we can write down
+operations on these “dual numbers” like this –</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="n">dual</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="n">dx</span><span class="p">))</span>
+
+<span class="c1">; Derivates add straightforwardly.</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">d+</span><span class="w"> </span><span class="n">d1</span><span class="w"> </span><span class="n">d2</span><span class="p">)</span>
+<span class="w">  </span><span class="p">(</span><span class="n">dual</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">d1</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">d2</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="n">dual-dx</span><span class="w"> </span><span class="n">d1</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">dual-dx</span><span class="w"> </span><span class="n">d2</span><span class="p">))))</span>
+
+<span class="c1">; Derivatives substract straightforwardly too.</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">d-</span><span class="w"> </span><span class="n">d1</span><span class="w"> </span><span class="n">d2</span><span class="p">)</span>
+<span class="w">  </span><span class="p">(</span><span class="n">dual</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">d1</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">d2</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="p">(</span><span class="n">dual-dx</span><span class="w"> </span><span class="n">d1</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">dual-dx</span><span class="w"> </span><span class="n">d2</span><span class="p">))))</span>
+
+<span class="c1">; We need to use the derivative of products rule here.</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">d*</span><span class="w"> </span><span class="n">d1</span><span class="w"> </span><span class="n">d2</span><span class="p">)</span>
+<span class="w">  </span><span class="p">(</span><span class="n">dual</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">d1</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">d2</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">d1</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">dual-dx</span><span class="w"> </span><span class="n">d2</span><span class="p">))</span>
+<span class="w">           </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="n">dual-dx</span><span class="w"> </span><span class="n">d1</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">d2</span><span class="p">)))))</span>
+
+<span class="c1">; (a+εb)/(c+εd)</span>
+<span class="c1">; = (1/c)(a+εb)(1-εd/c)</span>
+<span class="c1">; = (1/c)(a+ε(b-ad/c))</span>
+<span class="c1">; = (a/c) + ε(b/c-ad/c²)</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">d/</span><span class="w"> </span><span class="n">d1</span><span class="w"> </span><span class="n">d2</span><span class="p">)</span>
+<span class="w">  </span><span class="p">(</span><span class="n">dual</span><span class="w"> </span><span class="p">(</span><span class="nb">/</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">d1</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">d2</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">/</span><span class="w"> </span><span class="p">(</span><span class="n">dual-dx</span><span class="w"> </span><span class="n">d1</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">d2</span><span class="p">))</span>
+<span class="w">           </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="p">(</span><span class="nb">/</span><span class="w"> </span><span class="p">(</span><span class="n">dual-dx</span><span class="w"> </span><span class="n">d1</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">d2</span><span class="p">))</span>
+<span class="w">              </span><span class="p">(</span><span class="nb">/</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">d1</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">dual-dx</span><span class="w"> </span><span class="n">d2</span><span class="p">))</span>
+<span class="w">                 </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">d2</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">d2</span><span class="p">)))))))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">dconst</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">dual</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span>
+
+<span class="c1">; 1/(a+εb) = 1/a -εb/a²</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">d1/</span><span class="w"> </span><span class="n">d</span><span class="p">)</span>
+<span class="w">  </span><span class="p">(</span><span class="n">dual</span><span class="w"> </span><span class="p">(</span><span class="nb">/</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">d</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="nb">/</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="p">(</span><span class="n">dual-dx</span><span class="w"> </span><span class="n">d</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">d</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">d</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">dlinear</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="n">x</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="n">dual</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">x</span><span class="p">))</span><span class="w"> </span><span class="n">c</span><span class="p">)</span>
+<span class="w">          </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="p">(</span><span class="n">dual-dx</span><span class="w"> </span><span class="n">x</span><span class="p">))))</span>
+
+<span class="c1">; (a+εb)^n = a^n+εnba^(n-1)</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">dpow</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">n</span><span class="p">)</span>
+<span class="w">  </span><span class="p">(</span><span class="n">dual</span><span class="w"> </span><span class="p">(</span><span class="nb">expt</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="n">n</span><span class="p">)</span>
+<span class="w">        </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="n">dual-dx</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="p">(</span><span class="nb">expt</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="mi">1</span><span class="p">)))))</span>
+
+<span class="c1">; e^(a+εb) = e^a(1+εb)</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">dexp</span><span class="w"> </span><span class="n">x</span><span class="p">)</span>
+<span class="w">  </span><span class="p">(</span><span class="n">dual</span><span class="w"> </span><span class="p">(</span><span class="nb">exp</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">x</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="n">dual-dx</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">exp</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">x</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">dsin</span><span class="w"> </span><span class="n">x</span><span class="p">)</span>
+<span class="w">  </span><span class="p">(</span><span class="n">dual</span><span class="w"> </span><span class="p">(</span><span class="nb">sin</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">x</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="n">dual-dx</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">cos</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">x</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">dcos</span><span class="w"> </span><span class="n">x</span><span class="p">)</span>
+<span class="w">  </span><span class="p">(</span><span class="n">dual</span><span class="w"> </span><span class="p">(</span><span class="nb">cos</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">x</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="n">dual-dx</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="mi">-1</span><span class="w"> </span><span class="p">(</span><span class="nb">sin</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">x</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">dsq</span><span class="w"> </span><span class="n">x</span><span class="p">)</span>
+<span class="w">  </span><span class="p">(</span><span class="n">dual</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">x</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="n">dual-dx</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">x</span><span class="p">))))</span>
+
+<span class="c1">; sqrt(a+εb) = sqrt(a)(1+ε(b/2a)) = sqrt(a)+εb/(2sqrt(a))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">dsqrt</span><span class="w"> </span><span class="n">x</span><span class="p">)</span>
+<span class="w">  </span><span class="p">(</span><span class="n">dual</span><span class="w"> </span><span class="p">(</span><span class="nb">sqrt</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">x</span><span class="p">))</span>
+<span class="w">        </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="n">dual-dx</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">/</span><span class="w"> </span><span class="m">1/2</span><span class="w"> </span><span class="p">(</span><span class="nb">sqrt</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">x</span><span class="p">))))))</span>
+
+<span class="c1">; ... and more, for whatever vocabulary of basic functions you need.</span>
+</pre></div>
+</div>
+<p>With that, we can express a non-polynomial function like <span class="math notranslate nohighlight">\(\sigma(x) =
+1/(1+e^{-x})\)</span> like this -</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">dsigma</span><span class="w"> </span><span class="n">x</span><span class="p">)</span>
+<span class="w">  </span><span class="p">(</span><span class="n">d1/</span><span class="w"> </span><span class="p">(</span><span class="n">d+</span><span class="w"> </span><span class="p">(</span><span class="n">dconst</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">dexp</span><span class="w"> </span><span class="p">(</span><span class="n">dlinear</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">-1</span><span class="w"> </span><span class="n">x</span><span class="p">)))))</span>
+</pre></div>
+</div>
+<p>And when we calculate, say <cite>(dsigma (dual 0.5 1.0))</cite>, we’ll not only get the value of the
+function in the first element of the result list, but the second will us the
+exact derivative at that position as well!</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This representation works with what is called “dual numbers” which we
+represent using the struct <cite>dual</cite>. By threading this “pair of numbers”
+through the entire computation, we can compute both the value of a function
+at a point and its derivative at the point <strong>exactly</strong> (i.e. without
+assuming an <span class="math notranslate nohighlight">\(\epsilon\)</span> and using the limit definition).</p>
+</div>
+<p>We can test this out using a simple linear regression learning loop. We model a
+dataset of (x,y) pairs using the equation <span class="math notranslate nohighlight">\(y=px\)</span> with parameter <cite>p</cite>, and
+the loss function <span class="math notranslate nohighlight">\((1/N)\sum_i|y_i-px_i|^2\)</span>. The key thing to note here
+is that we only express the loss function using the operators for <cite>dual</cite> which
+has the same form as the loss function formula. The computation when run, will
+<strong>automatically</strong> construct the derivative of the loss function w.r.t. <cite>p</cite>,
+which enables us to run the learning loop.</p>
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="c1">; Loss for a single (x,y) datum  |y-px|^2</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">xyloss</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">dsq</span><span class="w"> </span><span class="p">(</span><span class="n">d-</span><span class="w"> </span><span class="p">(</span><span class="n">dual</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">d*</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="p">(</span><span class="n">dual</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="mi">0</span><span class="p">)))))</span>
+
+<span class="c1">; Loss for a dataset of xs, ys both of which are lists.</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">loss</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="n">xs</span><span class="w"> </span><span class="n">ys</span><span class="p">)</span>
+<span class="w">  </span><span class="p">(</span><span class="n">d/</span><span class="w"> </span><span class="p">(</span><span class="n">xysum</span><span class="w"> </span><span class="n">xyloss</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="n">xs</span><span class="w"> </span><span class="n">ys</span><span class="w"> </span><span class="p">(</span><span class="n">dual</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="mf">0.0</span><span class="p">))</span>
+<span class="w">      </span><span class="p">(</span><span class="n">dconst</span><span class="w"> </span><span class="p">(</span><span class="nb">length</span><span class="w"> </span><span class="n">xs</span><span class="p">))))</span>
+
+<span class="c1">; \sum_i|y-px|^2</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">xysum</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="n">xs</span><span class="w"> </span><span class="n">ys</span><span class="w"> </span><span class="n">result</span><span class="p">)</span>
+<span class="w">  </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">xs</span><span class="p">)</span>
+<span class="w">      </span><span class="n">result</span>
+<span class="w">      </span><span class="p">(</span><span class="n">xysum</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">xs</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">ys</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">d+</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">xs</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">ys</span><span class="p">))</span><span class="w"> </span><span class="n">result</span><span class="p">))))</span>
+
+<span class="c1">; pinitial is the initial guess for the slope parameter.</span>
+<span class="c1">; lr = learning rate, set to 0.01</span>
+<span class="c1">; loss is the loss function (use above `loss`)</span>
+<span class="c1">; stop-loss is the loss value below which we don&#39;t need to train.</span>
+<span class="c1">; maxN is the max number of iterations, in case we put bad values</span>
+<span class="c1">;      for the other parameters.</span>
+<span class="c1">; Results in a 3-element list of p, loss and number of iterations.</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">learn-p</span><span class="w"> </span><span class="n">pinitial</span><span class="w"> </span><span class="n">xs</span><span class="w"> </span><span class="n">ys</span><span class="w"> </span><span class="n">lr</span><span class="w"> </span><span class="n">loss</span><span class="w"> </span><span class="n">stop-loss</span><span class="w"> </span><span class="n">maxN</span><span class="p">)</span>
+<span class="w">  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="n">loop</span><span class="w"> </span><span class="p">([</span><span class="n">p</span><span class="w"> </span><span class="p">(</span><span class="n">dual</span><span class="w"> </span><span class="n">pinitial</span><span class="w"> </span><span class="mf">1.0</span><span class="p">)]</span><span class="w"> </span><span class="p">[</span><span class="n">N</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span>
+<span class="w">    </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">l</span><span class="w"> </span><span class="p">(</span><span class="n">loss</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="n">xs</span><span class="w"> </span><span class="n">ys</span><span class="p">)])</span>
+<span class="w">      </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">or</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="n">maxN</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="p">(</span><span class="nb">sqrt</span><span class="w"> </span><span class="p">(</span><span class="n">dual-x</span><span class="w"> </span><span class="n">l</span><span class="p">))</span><span class="w"> </span><span class="n">stop-loss</span><span class="p">))</span>
+<span class="w">          </span><span class="p">(</span><span class="nb">list</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="n">N</span><span class="p">)</span>
+<span class="w">          </span><span class="p">(</span><span class="n">loop</span><span class="w"> </span><span class="p">(</span><span class="n">d-</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="p">(</span><span class="n">dual</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">lr</span><span class="w"> </span><span class="p">(</span><span class="n">dual-dx</span><span class="w"> </span><span class="n">l</span><span class="p">))</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="mi">1</span><span class="p">))))))</span>
+
+<span class="c1">; Example case where the learnt parameter should be approx 2.1</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">xs</span><span class="w"> </span><span class="p">(</span><span class="nb">list</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">5</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="n">ys</span><span class="w"> </span><span class="p">(</span><span class="nb">list</span><span class="w"> </span><span class="mf">2.1</span><span class="w"> </span><span class="mf">4.2</span><span class="w"> </span><span class="mf">6.3</span><span class="w"> </span><span class="mf">8.4</span><span class="w"> </span><span class="mf">10.5</span><span class="p">))</span>
+<span class="p">(</span><span class="n">learn-p</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="n">xs</span><span class="w"> </span><span class="n">ys</span><span class="w"> </span><span class="mf">0.01</span><span class="w"> </span><span class="n">loss</span><span class="w"> </span><span class="mf">0.0001</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-task admonition">
+<p class="admonition-title"><strong>Task</strong></p>
+<p>How will this code look like if you want a model with, say, two parameters?
+How about n-parameters?</p>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">CompLIT: Programming Literacy</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="words.html">Words</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interrogation.html">Interrogating programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="editor.html">The editor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strings.html">Strings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample-programs.html">Sample programs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipd.html">IPD: Incremental Program Decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structures.html">Structures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assumptions.html">Assumptions and implications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing2.html">More parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="alternative-syntax.html">Optional: Alternative language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recap.html">Recap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="technical-terms.html">Optional: Technical terms</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Modelling basic calculus</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#vocabulary-and-concepts">Vocabulary and concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#polynomials">Polynomials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#arbitrary-functions-using-lambda">Arbitrary functions using <cite>lambda</cite></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#arbitrary-functions-with-exact-derivatives">Arbitrary functions with exact derivatives</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modelling-images.html">Modelling images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="representations.html">Representations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="svg.html">Interlude: SVG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generalizations.html">Generalizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantum.html">Optional: Modelling quantum computations</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="technical-terms.html" title="previous chapter">Optional: Technical terms</a></li>
+      <li>Next: <a href="modelling-images.html" title="next chapter">Modelling images</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Srikumar K. S..
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/calculus.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

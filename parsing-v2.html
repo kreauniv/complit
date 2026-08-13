@@ -3,8 +3,9 @@
 <html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; CompLIT: Programming Literacy v1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Parsing v2 &#8212; CompLIT: Programming Literacy v1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d8a2add5" />
     <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
@@ -14,7 +15,7 @@
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
-    <link rel="index" title="Index" href="#" />
+    <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -33,12 +34,49 @@
 
           <div class="body" role="main">
             
-
-<h1 id="index">Index</h1>
-
-<div class="genindex-jumpbox">
- 
-</div>
+  <section id="parsing-v2">
+<h1>Parsing v2<a class="headerlink" href="#parsing-v2" title="Link to this heading">¶</a></h1>
+<p>While working with strings looks straightforward – a string is after all
+“just” a sequence of characters – however much of the infrastructure of
+computing is built around things we express using strings. Here is an
+incomplete list –</p>
+<ul class="simple">
+<li><p>Programs are strings stored in text files.</p></li>
+<li><p>Human input without text would make for poor social media.</p></li>
+<li><p>URLs are strings without which we won’t have a way to point to something on
+the internet.</p></li>
+<li><p>A web page is a specially constructed string that contains patterns (HTML)
+that a web browser translates into what you see in the browser window.</p></li>
+<li><p>When systems query a database, they send over a special string
+called a SQL query string from which the database figures out what
+the caller asked for.</p></li>
+<li><p>People embed smileys :-), frownies )-:, #hashtags in regular communication on
+social media these days. So the tools will have to detect and work with
+these.</p></li>
+<li><p>Google search has special “syntax” to describe various specific kinds
+of queries over what is essentially all of “the internet”.</p></li>
+<li><p>Applications on the internet send data to each other using special
+strings such as XML and JSON.</p></li>
+<li><p>The HTTP protocol is a textual protocol with special structure that
+servers know how to interpret.</p></li>
+</ul>
+<p>You might’ve noticed a few words – “special string”, “syntax”, “interpret” –
+that talk about what the string <strong>contains</strong>. So working with strings is far
+more than treating it as a mere sequence of characters, because they convey
+information of various kinds.</p>
+<p>Making sense of a string in the context of an application is the act of taking
+a string and constructing a data structure that corresponds to the information
+conveyed through the string. It is this act that we call <strong>Parsing</strong>.</p>
+<section id="patterns-in-strings">
+<h2>Patterns in strings<a class="headerlink" href="#patterns-in-strings" title="Link to this heading">¶</a></h2>
+<p>Say your program receives a string that is supposed to have a 3-digit decimal
+number in it – like <code class="docutils literal notranslate"><span class="pre">&quot;449&quot;</span></code>. How do you go from this string to the number
+typed value <code class="docutils literal notranslate"><span class="pre">449</span></code> in your program? That is the task of parsing.</p>
+<p>How would you describe the pattern in words? You might say “three digits”. Or
+to be pedantic, you might say “a sequence of digit digit digit”. We can express
+this idea as an s-expression as <code class="docutils literal notranslate"><span class="pre">(sequence</span> <span class="pre">digit</span> <span class="pre">digit</span> <span class="pre">digit)</span></code>.</p>
+</section>
+</section>
 
 
           </div>
@@ -83,7 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="recap.html">Recap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="technical-terms.html">Optional: Technical terms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="calculus.html">Modelling basic calculus</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modelling-images.html">Modelling images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelling-images.html">Modelling a domain - Images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="representations.html">Representations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="svg.html">Interlude: SVG</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generalizations.html">Generalizations</a></li>
@@ -116,6 +154,9 @@
       Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
       &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
+      |
+      <a href="_sources/parsing-v2.rst.txt"
+          rel="nofollow">Page source</a>
     </div>
 
     

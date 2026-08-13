@@ -1,0 +1,46 @@
+Parsing v2
+==========
+
+While working with strings looks straightforward -- a string is after all
+"just" a sequence of characters -- however much of the infrastructure of
+computing is built around things we express using strings. Here is an
+incomplete list --
+
+- Programs are strings stored in text files.
+- Human input without text would make for poor social media.
+- URLs are strings without which we won't have a way to point to something on
+  the internet.
+- A web page is a specially constructed string that contains patterns (HTML)
+  that a web browser translates into what you see in the browser window.
+- When systems query a database, they send over a special string 
+  called a SQL query string from which the database figures out what
+  the caller asked for.
+- People embed smileys :-), frownies )-:, #hashtags in regular communication on
+  social media these days. So the tools will have to detect and work with
+  these.
+- Google search has special "syntax" to describe various specific kinds
+  of queries over what is essentially all of "the internet".
+- Applications on the internet send data to each other using special
+  strings such as XML and JSON.
+- The HTTP protocol is a textual protocol with special structure that
+  servers know how to interpret.
+
+You might've noticed a few words -- "special string", "syntax", "interpret" --
+that talk about what the string **contains**. So working with strings is far
+more than treating it as a mere sequence of characters, because they convey
+information of various kinds.
+
+Making sense of a string in the context of an application is the act of taking
+a string and constructing a data structure that corresponds to the information
+conveyed through the string. It is this act that we call **Parsing**.
+
+Patterns in strings
+-------------------
+
+Say your program receives a string that is supposed to have a 3-digit decimal
+number in it -- like ``"449"``. How do you go from this string to the number
+typed value ``449`` in your program? That is the task of parsing.
+
+How would you describe the pattern in words? You might say "three digits". Or
+to be pedantic, you might say "a sequence of digit digit digit". We can express
+this idea as an s-expression as ``(sequence digit digit digit)``.

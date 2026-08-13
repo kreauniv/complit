@@ -1,5 +1,5 @@
-Modelling a domain - Images
-===========================
+Modelling images
+================
 
 In this section, we work through the process of how to use programming to try
 and understand a domain better, by working our way ground up. It requires
