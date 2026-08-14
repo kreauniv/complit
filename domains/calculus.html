@@ -434,6 +434,9 @@ through the entire computation, we can compute both the value of a function
 at a point and its derivative at the point <strong>exactly</strong> (i.e. without
 assuming an <span class="math notranslate nohighlight">\(\epsilon\)</span> and using the limit definition).</p>
 </div>
+</section>
+<section id="simple-linear-regression">
+<h2>Simple linear regression<a class="headerlink" href="#simple-linear-regression" title="Link to this heading">¶</a></h2>
 <p>We can test this out using a simple linear regression learning loop. We model a
 dataset of (x,y) pairs using the equation <span class="math notranslate nohighlight">\(y=px\)</span> with parameter <cite>p</cite>, and
 the loss function <span class="math notranslate nohighlight">\((1/N)\sum_i|y_i-px_i|^2\)</span>. The key thing to note here
