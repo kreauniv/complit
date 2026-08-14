@@ -104,8 +104,7 @@ numfig = True
 exclude_patterns = ["excluded/*"]
 
 # pdf_documents = [('index', u'rst2pdf', u'Sample rst2pdf doc', u'Srikumar K. S.'),]
-
-rst_prolog = """
+rst_prolog += """
 .. role:: hl
    :class: yellow-highlight
 """
