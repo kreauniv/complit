@@ -1,5 +1,5 @@
-Modelling basic calculus
-========================
+Basic calculus
+==============
 
 Basic high-school level calculus offers a good warm up to
 modelling a domain and helps us explore various representations
