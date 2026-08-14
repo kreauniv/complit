@@ -1,4 +1,4 @@
-Modeeling sound synthesis
+Modelling sound synthesis
 =========================
 
 .. admonition:: **Note**
