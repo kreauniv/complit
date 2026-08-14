@@ -356,7 +356,7 @@ that are to be produced by <cite>(konst v)</cite>.</p>
 same value - therefore a constant in time. For the other operators, we’re going
 to have to do something similar.</p>
 <section id="oscil-freq-phase">
-<h3><cite>(oscil freq phase)</cite><a class="headerlink" href="#oscil-freq-phase" title="Link to this heading">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">(oscil</span> <span class="pre">freq</span> <span class="pre">phase)</span></code><a class="headerlink" href="#oscil-freq-phase" title="Link to this heading">¶</a></h3>
 <p>We can use a sinusoid to define the idea of an oscillator. For an oscillator
 with constant frequency <span class="math notranslate nohighlight">\(f\)</span>, oscillator, we might just be able to write
 it as <span class="math notranslate nohighlight">\(\sin(2\pi ft + \phi)\)</span>. However, such an oscillator is not very
@@ -375,7 +375,7 @@ according to the <em>instantaneous</em> value of the frequency at each time step
 </div>
 </section>
 <section id="mod-a-b">
-<h3><cite>(mod a b)</cite><a class="headerlink" href="#mod-a-b" title="Link to this heading">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">(mod</span> <span class="pre">a</span> <span class="pre">b)</span></code><a class="headerlink" href="#mod-a-b" title="Link to this heading">¶</a></h3>
 <p>The word “modulate” is overloaded in the audio synthesis world. In the simplest
 case, it just means “one signal multiplied by another”. The multiplication varies
 one signal in some understandable way. The more generalized sense in which “modulate”
@@ -391,7 +391,7 @@ or multiplication.</p>
 </div>
 </section>
 <section id="stitch-a-dur-b">
-<h3><cite>(stitch a dur b)</cite><a class="headerlink" href="#stitch-a-dur-b" title="Link to this heading">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">(stitch</span> <span class="pre">a</span> <span class="pre">dur</span> <span class="pre">b)</span></code><a class="headerlink" href="#stitch-a-dur-b" title="Link to this heading">¶</a></h3>
 <p>Being able to sequence two sounds a given time apart is a useful “primitive” to
 have at hand. What we understand of this <cite>stitch</cite> word is that <cite>(stitch a 0 b)
 = b</cite> and otherwise it behaves like <cite>a</cite>, reducing the <cite>dur</cite> one step at a time.</p>
@@ -406,21 +406,23 @@ have at hand. What we understand of this <cite>stitch</cite> word is that <cite>
 </div>
 </section>
 <section id="mix-a-sa-b-sb">
-<h3><cite>(mix a sa b sb)</cite><a class="headerlink" href="#mix-a-sa-b-sb" title="Link to this heading">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">(mix</span> <span class="pre">a</span> <span class="pre">sa</span> <span class="pre">b</span> <span class="pre">sb)</span></code><a class="headerlink" href="#mix-a-sa-b-sb" title="Link to this heading">¶</a></h3>
 <p>Mixing two sounds is a basic operation. Depending on the mixed sounds, our ear
 can often tease apart what is mixed. This is how we can hear a band or an orchestra
 playing “at the same time”, since the sound pressure waves produced by all the instruments
 of the band or orchestra all add up when they reach our ears.</p>
+<p>This way of defining mix lets us do a number of things with a single operator.
+Simple addition of gens works, we can also subtract, or do a proportional mix.</p>
 <div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">mix</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">sa</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="n">sb</span><span class="p">)</span>
 <span class="w">  </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">([</span><span class="n">av</span><span class="w"> </span><span class="p">(</span><span class="n">sa</span><span class="w"> </span><span class="n">dt</span><span class="p">)]</span><span class="w"> </span><span class="p">[</span><span class="n">bv</span><span class="w"> </span><span class="p">(</span><span class="n">sb</span><span class="w"> </span><span class="n">dt</span><span class="p">)])</span>
 <span class="w">      </span><span class="p">(</span><span class="n">step</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="p">(</span><span class="n">step-val</span><span class="w"> </span><span class="n">av</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">(</span><span class="n">step-val</span><span class="w"> </span><span class="n">bv</span><span class="p">)))</span>
-<span class="w">            </span><span class="p">(</span><span class="n">mix</span><span class="w"> </span><span class="p">(</span><span class="n">step-gen</span><span class="w"> </span><span class="n">av</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">step-gen</span><span class="w"> </span><span class="n">bv</span><span class="p">))))))</span>
+<span class="w">            </span><span class="p">(</span><span class="n">mix</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="p">(</span><span class="n">step-gen</span><span class="w"> </span><span class="n">av</span><span class="p">)</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">(</span><span class="n">step-gen</span><span class="w"> </span><span class="n">bv</span><span class="p">))))))</span>
 </pre></div>
 </div>
 </section>
 <section id="after-dur-s">
-<h3><cite>(after dur s)</cite><a class="headerlink" href="#after-dur-s" title="Link to this heading">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">(after</span> <span class="pre">dur</span> <span class="pre">s)</span></code><a class="headerlink" href="#after-dur-s" title="Link to this heading">¶</a></h3>
 <p>A “melody” consist of playing “notes” at specific times. This means that a gen
 that produces a note will need to be delayed until it is time to play it.
 We’ll use the word “after” to suggest that the sound represented by a given
@@ -431,7 +433,7 @@ generator <cite>s</cite> should be played “after” the given duration.</p>
 <p>Note that <cite>(after 0.0 s) = s</cite> but until then, it is basically silence.</p>
 </section>
 <section id="cut-dur-s">
-<h3><cite>(cut dur s)</cite><a class="headerlink" href="#cut-dur-s" title="Link to this heading">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">(cut</span> <span class="pre">dur</span> <span class="pre">s)</span></code><a class="headerlink" href="#cut-dur-s" title="Link to this heading">¶</a></h3>
 <p>Combining sounds in an editor often involves editor-like cut-copy-paste
 operations. A “cut” is a moment when one sound ends and another begins.
 Let’s use <cite>cut</cite> to represent the ending of a sound - meaning after a
@@ -443,7 +445,7 @@ runs out”.</p>
 </div>
 </section>
 <section id="line-a-dur-b">
-<h3><cite>(line a dur b)</cite><a class="headerlink" href="#line-a-dur-b" title="Link to this heading">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">(line</span> <span class="pre">a</span> <span class="pre">dur</span> <span class="pre">b)</span></code><a class="headerlink" href="#line-a-dur-b" title="Link to this heading">¶</a></h3>
 <p>Synth sounds are often shaped by “envelopes” and the “linear ramp”
 is a fundamental shape that can be combined to make envelopes of
 various kinds. A very common such envelope shape is called “ADSR”,
