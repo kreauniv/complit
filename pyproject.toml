@@ -1,7 +1,7 @@
 [project]
-name = "compPRL"
+name = "comp121"
 version = "0.1.0"
-description = "Course notes for COMPPRL - Programming Literacy"
+description = "Course notes for COMP121 at Krea University"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

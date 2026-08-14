@@ -23,6 +23,7 @@ CompLIT: Programming Literacy (WORK-IN-PROGRESS)
    technical-terms
    calculus
    modelling-images
+   synthlang
    representations
    svg
    generalizations
