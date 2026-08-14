@@ -127,7 +127,7 @@ twice as much to the right as ``(shift 1 1 apple)``. Depending on how we choose
 our y axis, say we pick it to be pointing vertically upwards, ``(shift 1 2 apple)``
 would shift it twice as much upwards as ``(shift 1 1 apple)``.
 
-.. figure:: images/scaling.png
+.. figure:: ../images/scaling.png
    :align: center
 
    Scaling a picture of a cat by half using ``(scale 0.5 0.5 cat)``.
