@@ -644,8 +644,8 @@ in the first position of a ``(...)`` expression as well.
    There are **some** occasions where it is clearer to use ``λ`` abstractions,
    and we'll point them out when they arise.
 
-Recap
------
+Recap "interrogation"
+---------------------
 
 We've seen a case of understanding a simple program by "interrogating" it.
 
