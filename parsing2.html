@@ -298,7 +298,7 @@ word in the string <code class="docutils literal notranslate"><span class="pre">
 care about the <code class="docutils literal notranslate"><span class="pre">&quot;1.)&quot;</span></code> part and only want <code class="docutils literal notranslate"><span class="pre">&quot;Programs&quot;</span></code> to be
 matched. We can express this as a general idea like this –</p>
 <details class="summary-first-occurrence-try-it-first-before-opening-this">
-<summary>``first-occurrence`` - Try it first before opening this.</summary><div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">first-occurrence</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span>
+<summary><code class="docutils literal notranslate"><span class="pre">first-occurrence</span></code> - Try it first before opening this.</summary><div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">first-occurrence</span><span class="w"> </span><span class="n">pat</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
 <span class="w">        </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
 <span class="w">            </span><span class="no">#f</span>
@@ -429,7 +429,7 @@ Can you define it so that when you use such a Morse string with
 that’s used like <code class="docutils literal notranslate"><span class="pre">(literal</span> <span class="pre">&quot;xyz&quot;)</span></code> to match the literal string
 can make your Morse pattern simpler to define.</p>
 <details class="summary-expand-to-see-a-definition-of-literal">
-<summary>Expand to see a definition of ``literal``.</summary><div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">literal</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
+<summary>Expand to see a definition of <code class="docutils literal notranslate"><span class="pre">literal</span></code>.</summary><div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">literal</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
 <span class="w">    </span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">pattern</span><span class="w"> </span><span class="n">text</span><span class="p">)</span>
 <span class="w">        </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">string-prefix?</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="n">str</span><span class="p">)</span>
 <span class="w">            </span><span class="p">(</span><span class="n">pattern-match</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="p">(</span><span class="nb">substring</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="p">(</span><span class="nb">string-length</span><span class="w"> </span><span class="n">str</span><span class="p">)))</span>
@@ -610,7 +610,9 @@ mathematics.</p>
 <li class="toctree-l1"><a class="reference internal" href="alternative-syntax.html">Optional: Alternative language</a></li>
 <li class="toctree-l1"><a class="reference internal" href="recap.html">Recap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="technical-terms.html">Optional: Technical terms</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modelling-images.html">Modelling a domain - Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calculus.html">Modelling basic calculus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelling-images.html">Modelling images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="synthlang.html">A language for basic sound synthesis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="representations.html">Representations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="svg.html">Interlude: SVG</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generalizations.html">Generalizations</a></li>

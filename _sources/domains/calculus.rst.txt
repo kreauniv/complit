@@ -1,0 +1,516 @@
+Modelling basic calculus
+========================
+
+Basic high-school level calculus offers a good warm up to
+modelling a domain and helps us explore various representations
+and their trade-offs.
+
+Vocabulary and concepts
+-----------------------
+
+First off, we need to list out the concepts that we want modelled.
+
+We'll restrict ourselves to the calculus of functions of a single
+variable. That's already two words right there - "function" and
+"variable". We'll use the symbol :math:`x` for a variable and
+other symbols like :math:`f` and :math:`g` for functions. The value
+a function takes for a given value of its variable is written
+:math:`f(x)`.
+
+A key operation in calculus is the computation of the "derivative"
+of a function, written :math:`f'(x)` or as :math:`\mathrm{d} f/\mathrm{d} x`.
+
+Definition-wise, the derivative is often defined as --
+
+.. math::
+
+   f'(x) = \lim_{\epsilon \to 0}\frac{f(x+\epsilon) - f(x)}{\epsilon}
+
+Or symmetrically as -
+
+.. math::
+
+   f'(x) = \lim_{\epsilon \to 0}\frac{f(x+\epsilon/2) - f(x-\epsilon/2)}{\epsilon}
+
+Some common derivatives are given below to refresh your memory -
+
+.. math::
+
+   \begin{array}{rcl}
+   \frac{\mathrm{d}}{\mathrm{d} x} k & = & 0 \\
+   \frac{\mathrm{d}}{\mathrm{d} x} x^n & = & n x^{n-1} \\
+   \frac{\mathrm{d}}{\mathrm{d} x} e^x & = & e^x \\
+   \frac{\mathrm{d}}{\mathrm{d} x} \sin(x) & = & \cos(x) \\
+   \frac{\mathrm{d}}{\mathrm{d} x} \cos(x) & = & -\sin(x)
+   \end{array}
+
+We also have some rules that the derivative obeys --
+
+.. math::
+
+   \begin{array}{rcl}
+   \frac{\mathrm{d}}{\mathrm{d}x} (f(x) + g(x)) & = & f'(x) + g'(x) \\
+   \frac{\mathrm{d}}{\mathrm{d}x} kf(x) & = & k f'(x) \\
+   \frac{\mathrm{d}}{\mathrm{d}x} f(kx) & = & k f'(kx) \\
+   \frac{\mathrm{d}}{\mathrm{d}y} f(x)g(x) & = & f'(x)g(x) + f(x)g'(x) \\
+   \frac{\mathrm{d}}{\mathrm{d}y} f(g(x)) & = & f'(g(x)) g'(x)
+   \end{array}
+
+So we need to come up with a representation for "functions", such that we can
+represent derivatives and their properties.
+
+Polynomials
+-----------
+
+Polynomials -- of the form :math:`f(x) = a_0x^0 + a_1x^1 + a_2x^2 + ...` are a
+useful class of functions to model. Since they have an interesting property
+that every polynomial :math:`f(x)` can be expressed as :math:`f(x) = a + x
+g(x)` where :math:`g(x)` is also a polynomial. In the trivial case where
+:math:`g(x) = 0`, we have :math:`f(x) = a` a constant.
+
+.. math::
+
+   f(x) = a_0 + x (a_1 + a_2 x + a_3 x^2 + ..)
+
+So if we represent a polynomial function as a list of the coefficients
+of the powers of :math:`x`, like :math:`(\text{list}\ a_0\ a_1\ a_2\ ...)`,
+then we can get the representation for the :math:`g(x)` by just dropping
+the first element of the list.
+
+For example, the polynomial :math:`f(x) = 7 - 3x + x^2` can be written
+as `(list 7 -3 1)`. We can write :math:`f(x) = 7 + x(-3 + x)`. The
+polynomial :math:`-3 + x` has the list representation `(list -3 1)`, 
+which we can see is simply `(rest (list 7 -3 1))`. We'll exploit this
+structure shortly.
+
+Once we've made this connection, we can go back and re-examine the structure
+to see that we can define polynomials recursively in the same way we
+can define lists recursively.
+
+.. list-table:: Parallels between polynomials and lists
+   :header-rows: 1
+   :align: center
+
+   * - Polynomials
+     - Lists
+   * - :math:`0` is a polynomial.
+     - `empty` is a list.
+   * - If :math:`g(x)` is a polynomial,
+       then :math:`f(x) = a + xg(x)` is
+       also a polynomial for any :math:`a`.
+     - If L is a list, then `(cons a L)` 
+       is also a list.
+
+Since we're thinking of polynomials as pairs :math:`(a,g(x))` where :math:`a`
+is a number and :math:`g(x)` is a polynomial, with :math:`0` also qualifying
+as a polynomial, the resemblance with lists where `(cons a <another-list>)` is
+very close, permitting the use of lists as a "natural" representation, since
+we can decompose a polynomial into the :math:`a` and the :math:`g(x)` using
+`first` and `rest`.
+
+Using this, we can now express the "value of a polynomial at a given :math:`x`".
+
+.. code:: racket
+
+   (define (value f x)
+      (if (empty? f)
+          0
+          (+ (first f) (* x (value (rest f) x))))) 
+
+   ; f(x) = 7 - 3x + x^2
+   ; f_repr = (list 7 -3 1)
+   ; f(2) = 5
+   ; (value f_repr 2) 
+   ; = (+ 7 (* 2 (value (list -3 1) 2)))
+   ; = (+ 7 (* 2 (+ -3 (* 2 (value (list 1) 2)))))
+   ; = (+ 7 (* 2 (+ -3 (* 2 (+ 1 (value empty 2))))))
+   ; = (+ 7 (* 2 (+ -3 (* 2 (+ 1 0)))))
+   ; = (+ 7 (* 2 (+ -3 (* 2 1))))
+   ; = (+ 7 (* 2 (+ -3 2)))
+   ; = (+ 7 (* 2 -1))
+   ; = (+ 7 -2)
+   ; = 5
+
+Remember that here the argument `f` to `value` is expected to be a list of numbers
+and the argument `x` is a number at which we want to evaluate `f`.
+
+Now, how do we approach the derivative? First off, we can see that the derivative
+of a polynomial function is another polynomial. So we we merely have to derive
+one list from another.
+
+.. math::
+
+   \begin{array}{rcl}
+   f(x) & = & \sum_{k=0}^{N} a_k x^k \\
+   f'(x) & = & \sum_{k=1}^{N} k a_k x^{k-1}
+   \end{array}
+
+But we also know :math:`f(x) = a + xg(x)` and that tells us that
+:math:`f'(x) = g(x) + xg'(x)`. So we can write the derivative
+calculation as --
+
+.. code::
+
+   ; maps polynomial to polynomial
+   (define (derivative f)
+      (if (empty? f)
+          empty
+          (padd (rest f) (xtimes (derivative (rest f))))))
+
+Here we're introducing the word `padd` to stand for polynomial addition, and
+the word `xtimes` to represent the construction :math:`xg(x)` given
+:math:`g(x)`. These are easy to define.
+
+.. code::
+
+   (define (padd p1 p2)
+      (if (empty? p1) p2
+          (if (empty? p2) p1
+              (cons (+ (first p1) (first p2))
+                    (padd (rest p1) (rest p2))))))
+
+   (define (xtimes g) (cons 0 g))
+
+   ; We can also generalize that a little for convenience.
+   ; With `plin`, we compute a * p1 + b * p2
+   (define (plin a p1 b p2)
+      (if (empty? p1) (map (lambda (x) (* x b)) p2)
+          (if (empty? p2) (map (lambda (x) (* x a)) p1)
+              (cons (+ (* a (first p1)) (* b (first p2)))
+                    (plin a (rest p1) b (rest p2))))))
+
+.. admonition:: **Task**
+
+   Also define `(pmul p1 p2)` which multiplies two polynomials to
+   produce a product polynomial.
+
+We also know that the "indefinite integral" of a polynomial is also a polynomial.
+
+.. math::
+
+   \begin{array}{rcl}
+   f(x) & = & \sum_{k=0}^{N} a_k x^k \\
+   \int f(x)\mathrm{d}x & = & C + \sum_{k=0}^{N} \frac{a_k}{k+1}x^{k+1}
+   \end{array}
+
+However, we can also use our list-like formulation to help us with this
+calculation. 
+
+.. math::
+
+   \begin{array}{rcl}
+   f(x) & = & a + x g(x) \\
+   \int f(x) \mathrm{d}x & = & C + ax + \int x\mathrm{d}G(x) \\
+   & = & C + ax + xG(x) - \int G(x)\mathrm{d}x
+   \end{array}
+
+where :math:`G(x) = \int g(x)\mathrm{d}x`.
+
+So, a naive translation of that gives us --
+
+.. code:: racket
+
+   (define (integral f C)
+      (if (empty? f)
+          (list C)
+          (let ([G (integral (rest f) 0)])
+             (padd (list C (first f))
+                   (plin  1 (xtimes G) -1 (integral G 0))))))
+
+.. admonition:: **Question:**
+
+   Why is that "naive"? Try out the calculation and see what happens?
+   Can you figure out what's happening? Try, for example,
+   `(integral (list 1) 0)` and work out the reduction by hand.
+   What do you think you can do?
+
+How about the following definition based on the explicit formula?
+
+.. code:: racket
+
+   (define (integral f)
+      (xtimes (let poly-integral ([f f] [k 1])
+                 (if (empty? f)
+                     empty
+                     (cons (/ (first f) k)
+                           (poly-integral (rest f) (+ k 1)))))))
+
+What we see here is that while the derivative aligns well with the recursive
+structure of the list, the integral really does not, since in order to compute
+the integral of :math:`f=a+xg`, we'll have to compute the double-integral of
+:math:`g`!! So in this case, the explicit polynomial form is more useful to help
+define the integral within our list representation.
+
+.. admonition:: **Task**
+
+   Extend the range of functions we can represent beyond polynomials in :math:`x`
+   to also include powers of :math:`1/x`. i.e. -
+
+   .. math::
+
+      f(x) = \sum_{k=m}^{n} a_k x^k
+
+   where :math:`m` and :math:`n` are both **integers** such that :math:`n >=
+   m`. How will we represent such functions as a data structure? You'll have to
+   explore the math of such polynomials a bit before you can see the data
+   structure relevant to it. **Hint:** Consider what happens when you multiply
+   such a polynomial by :math:`x` or :math:`1/x`.
+
+   Also, while the derivative of such polynomials is also in the same class,
+   the integral is not!
+
+   Here is another class of polynomial-like functions for you to explore -- 
+
+   .. math::
+
+      f(x) = \sqrt{x}\sum_{k=m}^{n} a_k x^k
+
+Arbitrary functions using `lambda`
+----------------------------------
+
+What if we represented a function as a lambda-function of a single argument?
+Like this - 
+
+.. code:: racket
+
+   (define f (lambda (x) (+ 7 (* -3 x) (* x x))))
+
+We can easily see that it is no longer possible to calculate its exact derivative.
+We can at best approximate it using the "limit" definition of the derivative.
+
+.. code:: racket
+
+   (define ε 1e-6)
+   (define (derivative f)
+        (lambda (x)
+            (/ (- (f (+ x (/ ε 2))) (f (- x (/ ε 2)))) ε)))
+
+Notice how we can pass in a lambda-function to `derivative` and get back
+another lambda function as a result which is the "derivative of f, as a
+function".
+
+We can no longer calculate the indefinite integral, but can do a definite
+integral. So we'll also need a similar approximate form for the definite
+integral as well.
+
+.. math::
+
+   \int_{a_1}^{a_2}f(x)\mathrm{d}x = \lim_{N \to \infty}\left[\frac{1}{N}\sum_{k=0}^{N}f(a_1 + (k/N)(a_2 - a_1))\right]
+
+
+This would then be a summation loop --
+
+.. code:: racket
+
+   (define (integral f a1)
+     (lambda (a2)
+        (when (< a2 a1) (error "a2 must be > a1"))
+        (let sum ([x a1] [s 0.0])
+           (if (< x a2)
+              (sum (+ x ε) (+ s (f x)))
+              (* ε s)))))
+
+Note that we've wrapped the integration loop into a lambda so that the
+integral of a function is also a function in our representation.
+
+.. admonition:: **Task**
+
+   Write a Racket definition (using either representation) for the n-th
+   derivative of a function.
+
+Arbitrary functions with exact derivatives
+------------------------------------------
+
+With polynomials, we could get exact derivatives, but not have every possible
+function represented using polynomials with finite terms. For example, the
+trigonometric, exponential, irrational, multiplicative inverses, and such
+functions are not representable with finite polynomials. We also saw that
+if we chose the general "a function is just a lambda" representation, we
+lost our ability to compute exact derivatives though we gained generality.
+We could only get a numerical approximation to the derivative.
+
+Can we have both? Exact integrals are much harder or impossible in many
+circumstances, so we'll leave those alone. Can we have the ability to write
+general functions and also be able to compute derivatives exactly?
+
+So far, we've used one or more definitions of a derivative to implement it
+for our representation. We haven't used its properties directly. The question
+at hand is that if we have a few simple functions whose derivatives are known,
+and we arrange things so that `derivative` obeys the stated properties, would
+it then suffice as an implementation of differentiation? After all, we construct
+functions by combining basic functions like :math:`x`, :math:`e^x`, :math:`sin(x)`
+and such. If we have a roster of these with a table of known derivatives, and an
+implementation that obeys the rules for combining derivatives, won't we get
+both (reasonable) generality *and* exact derivatives?
+
+Towards this, we consider modelling not what a function is at a given argument
+:math:`x`, but **all** the values that it takes in a small neighbourhood around
+:math:`x` -- :math:`(x-ε,x+ε)`. By the definition of the derivative we saw earlier,
+we can represent the behaviour of the function in this interval by giving two
+values -- :math:`f(x)` and :math:`f'(x)`. Note that :math:`x` here is not a "variable",
+but a specific position around which we're exploring what :math:`f` looks like.
+Since it requires two values, we can represent this region as a pair :math:`(f(x), f'(x))`.
+
+What does this pair for :math:`f(x) = x` look like? It would be :math:`(x,1)` for whatever
+given value of :math:`x`. Let's use lambdas for the two functions in this representation,
+and use a list of two functions as the representation for the behaviour of the function
+around a given region. So we'll represent :math:`f(x) = x` around :math:`x = 3` as the list
+`(dual 3 1)`. The constant function :math:`f(x) = k` will then have the representation
+`(dual k 0)`. 
+
+.. admonition:: `struct`
+
+   The `struct` declaration helps us keep associated data together and provide
+   appropriate names. In this case, declaring `(struct dual (x dx))` provides a
+   number of words automatically for us.
+
+   1. We can construct such a pair using the word `dual` like `(dual 3.0 1.0)`.
+   2. The word `dual?` can be used to check whether a given value is this kind
+      of struct or not, like `(dual? d)`.
+   3. Given such a struct value bound to some identifier, say `d`, the words
+      `dual-x` and `dual-dx`, derived from the struct's name and the names we gave
+      to its two fields, can be used to get at the two fields like `(dual-x d)`
+      and `(dual-dx d)`.
+
+Now, using the properties of derivatives of functions, we can write down
+operations on these "dual numbers" like this --
+
+.. code:: racket
+
+   (struct dual (x dx))
+
+   ; Derivates add straightforwardly.
+   (define (d+ d1 d2)
+     (dual (+ (dual-x d1) (dual-x d2))
+           (+ (dual-dx d1) (dual-dx d2))))
+
+   ; Derivatives substract straightforwardly too.
+   (define (d- d1 d2)
+     (dual (- (dual-x d1) (dual-x d2))
+           (- (dual-dx d1) (dual-dx d2))))
+
+   ; We need to use the derivative of products rule here.
+   (define (d* d1 d2)
+     (dual (* (dual-x d1) (dual-x d2))
+           (+ (* (dual-x d1) (dual-dx d2)) 
+              (* (dual-dx d1) (dual-x d2)))))
+
+   ; (a+εb)/(c+εd)
+   ; = (1/c)(a+εb)(1-εd/c)
+   ; = (1/c)(a+ε(b-ad/c)) 
+   ; = (a/c) + ε(b/c-ad/c²)
+   (define (d/ d1 d2)
+     (dual (/ (dual-x d1) (dual-x d2))
+           (+ (/ (dual-dx d1) (dual-x d2))
+              (- (/ (dual-dx d1) (dual-x d2))
+                 (/ (* (dual-x d1) (dual-dx d2))
+                    (* (dual-x d2) (dual-x d2)))))))
+
+   (define (dconst k) (dual k 0))
+
+   ; 1/(a+εb) = 1/a -εb/a²
+   (define (d1/ d)
+     (dual (/ 1 (dual-x d)) 
+           (/ (- (dual-dx d)) (* (dual-x d) (dual-x d)))))
+
+   (define (dlinear c m x)
+       (dual (+ (* m (dual-x x)) c)
+             (* m (dual-dx x))))
+
+   ; (a+εb)^n = a^n+εnba^(n-1)
+   (define (dpow x n)
+     (dual (expt (dual-x x) n)
+           (* (dual-dx x) n (expt (dual-x x) (- n 1)))))
+
+   ; e^(a+εb) = e^a(1+εb)
+   (define (dexp x)
+     (dual (exp (dual-x x))
+           (* (dual-dx x) (exp (dual-x x)))))
+     
+   (define (dsin x)
+     (dual (sin (dual-x x))
+           (* (dual-dx x) (cos (dual-x x)))))
+
+   (define (dcos x)
+     (dual (cos (dual-x x))
+           (* (dual-dx x) -1 (sin (dual-x x)))))
+
+   (define (dsq x)
+     (dual (* (dual-x x) (dual-x x))
+           (* (dual-dx x) 2 (dual-x x))))
+
+   ; sqrt(a+εb) = sqrt(a)(1+ε(b/2a)) = sqrt(a)+εb/(2sqrt(a))
+   (define (dsqrt x)
+     (dual (sqrt (dual-x x))
+           (* (dual-dx x) (/ 1/2 (sqrt (dual-x x))))))
+
+   ; ... and more, for whatever vocabulary of basic functions you need.
+
+With that, we can express a non-polynomial function like :math:`\sigma(x) =
+1/(1+e^{-x})` like this - 
+
+.. code:: racket
+
+   (define (dsigma x)
+     (d1/ (d+ (dconst 1) (dexp (dlinear 0 -1 x)))))
+
+And when we calculate, say `(dsigma (dual 0.5 1.0))`, we'll not only get the value of the
+function in the first element of the result list, but the second will us the
+exact derivative at that position as well!
+
+.. note:: This representation works with what is called "dual numbers" which we
+   represent using the struct `dual`. By threading this "pair of numbers"
+   through the entire computation, we can compute both the value of a function
+   at a point and its derivative at the point **exactly** (i.e. without
+   assuming an :math:`\epsilon` and using the limit definition).
+
+We can test this out using a simple linear regression learning loop. We model a
+dataset of (x,y) pairs using the equation :math:`y=px` with parameter `p`, and
+the loss function :math:`(1/N)\sum_i|y_i-px_i|^2`. The key thing to note here
+is that we only express the loss function using the operators for `dual` which
+has the same form as the loss function formula. The computation when run, will
+**automatically** construct the derivative of the loss function w.r.t. `p`,
+which enables us to run the learning loop.
+
+.. code:: racket
+
+   ; Loss for a single (x,y) datum  |y-px|^2
+   (define (xyloss p x y) (dsq (d- (dual y 0) (d* p (dual x 0)))))
+
+   ; Loss for a dataset of xs, ys both of which are lists.
+   (define (loss p xs ys)
+     (d/ (xysum xyloss p xs ys (dual 0.0 0.0))
+         (dconst (length xs))))
+
+   ; \sum_i|y-px|^2
+   (define (xysum f p xs ys result)
+     (if (empty? xs)
+         result
+         (xysum f p (rest xs) (rest ys) (d+ (f p (first xs) (first ys)) result))))
+         
+   ; pinitial is the initial guess for the slope parameter.
+   ; lr = learning rate, set to 0.01
+   ; loss is the loss function (use above `loss`)
+   ; stop-loss is the loss value below which we don't need to train.
+   ; maxN is the max number of iterations, in case we put bad values
+   ;      for the other parameters.
+   ; Results in a 3-element list of p, loss and number of iterations.
+   (define (learn-p pinitial xs ys lr loss stop-loss maxN)
+     (let loop ([p (dual pinitial 1.0)] [N 0])
+       (let ([l (loss p xs ys)])
+         (if (or (> N maxN) (< (sqrt (dual-x l)) stop-loss))
+             (list p l N)
+             (loop (d- p (dual (* lr (dual-dx l)) 0)) (+ N 1))))))
+
+   ; Example case where the learnt parameter should be approx 2.1
+   (define xs (list 1 2 3 4 5))
+   (define ys (list 2.1 4.2 6.3 8.4 10.5))
+   (learn-p 1.0 xs ys 0.01 loss 0.0001 100)
+
+
+.. admonition:: **Task**
+
+   How will this code look like if you want a model with, say, two parameters?
+   How about n-parameters?
+
+
