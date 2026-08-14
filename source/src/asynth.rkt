@@ -14,68 +14,6 @@
                            
 (define *default-sampling-rate* 48000)
 
-(define (write-wav-file filename
-                        model
-                        duration
-                        [sample-rate *default-sampling-rate*])
-  (define dt (/ 1.0 sample-rate))
-  (define num-samples (exact-round (* duration sample-rate)))
-  (define num-channels 1)
-  (define bytes-per-sample 4)
-  (define bits-per-sample (* 8 bytes-per-sample))
-  (define byte-rate (* sample-rate num-channels bytes-per-sample))
-  (define block-align (* num-channels bytes-per-sample))
-  (define data-size (* num-samples num-channels bytes-per-sample))
-  (define file-size (+ 36 data-size))
-
-  (call-with-output-file filename #:exists 'replace
-    (lambda (out)
-      (write-RIFF-header file-size out)
-      (write-fmt-subchunk num-channels sample-rate byte-rate block-align bits-per-sample out)
-      (write-data-chunk data-size out)
-      (let loop ([i 0]
-                 [bytes (make-bytes 4)]
-                 [s model])
-        (let ([v (s dt)])
-          (when (< i num-samples)
-            (real->floating-point-bytes (step-val v)
-                                        4 ; bytes per value
-                                        #f ; little-endian
-                                        bytes
-                                        )
-            (write-bytes bytes out)
-            (loop (+ i 1) bytes (step-gen v))))))))
-
-(define (write-RIFF-header file-size out)
-  (write-bytes #"RIFF" out)
-  (write-int32le file-size out)
-  (write-bytes #"WAVE" out))
-
-(define (write-fmt-subchunk num-channels sample-rate byte-rate block-align bits-per-sample out)
-  (write-bytes #"fmt " out)
-  (write-int32le 16 out)    ; subchunk size
-  (write-int16le 3 out)     ; audio format (3 = IEEE float)
-  (write-int16le num-channels out)
-  (write-int32le sample-rate out)
-  (write-int32le byte-rate out)
-  (write-int16le block-align out)
-  (write-int16le bits-per-sample out))
-
-(define (write-data-chunk data-size out)
-  (write-bytes #"data" out)
-  (write-int32le data-size out))
-
-(define (write-int16le n out)
-  (write-byte (bitwise-and n #xFF) out)
-  (write-byte (bitwise-and (arithmetic-shift n -8) #xFF) out))
-
-(define (write-int32le n out)
-  (write-byte (bitwise-and n #xFF) out)
-  (write-byte (bitwise-and (arithmetic-shift n -8) #xFF) out)
-  (write-byte (bitwise-and (arithmetic-shift n -16) #xFF) out)
-  (write-byte (bitwise-and (arithmetic-shift n -24) #xFF) out))
-
-
 ; The "konst" primitive (for "constant") simply always produces the same
 ; sample value every time the model is asked for one.
 (define (konst v)
@@ -96,29 +34,13 @@
       ; 2.0, the clock will advance twice as fast.
       (step t (clock (step-gen s) (+ t (* (step-val s) dt)))))))
 
-; Given a Gen that produces a stream of values and a function that
-; maps a value to another, we can define a general operation of 
-; mapping the function over the Gen.
-
-(define (mapgen fn s)
-  (lambda (dt)
-    (let ([v (s dt)])
-      (step (fn (step-val v))
-            (mapgen fn (step-gen v))))))
-
-(define (mapgen2 fn s1 s2)
-  (lambda (dt)
-    (let ([v1 (s1 dt)]
-          [v2 (s2 dt)])
-      (step (fn (step-val v1) (step-val v2))
-            (mapgen2 fn (step-gen v1) (step-gen v2))))))
-
 ; A "phasor" is a simpler version of the clock which goes periodically from 0
-; to 1 over a duration determined by a given "frequency".
-
-(define (phasor f)
-  (mapgen (lambda (x) (- x (floor x)))
-          (clock f 0.0)))
+; to 1 over a duration determined by a given "frequency". `v` is like time,
+; so we need to update it by `(* f dt)` every time step.
+(define (phasor f [v 0.0])
+  (lambda (dt)
+    (let ([fv (f dt)] [vm (- v (floor v))])
+       (step vm (phasor (step-gen fv) (+ vm (* (step-val fv) dt)))))))
 
 ; The noise is scaled to [-1,1] range.
 (define noise
@@ -126,53 +48,63 @@
     (step (* 2.0 (- (random) 0.5)) noise)))
 
 ; An "oscil" is a sinusoidal oscillator. This can be easily derived from a
-; phasor, so we make use of the phasor.
+; phasor as well, but we're doing it from scratch to stay close to the ground
+(define (oscil f [phase 0.0])
+  (lambda (dt)
+    (let ([fv (f dt)]
+          [pm (- phase (floor phase))])
+      (step (sin (* 2 pi pm))
+            (oscil (step-gen fv) (+ pm (* (step-val fv) dt)))))))
 
-(define (oscil f)
-  (mapgen (lambda (x) (sin (* 2 pi x)))
-          (phasor f)))
-
-; MIDI note numbers have a logarithmic relationship to frequency in Hz.
-; middle octave A is MIDI note number 69 which is set at 440Hz for tuning purposes.
-; And a octave is a frequency doubling (or halving) and an octave is 12 MIDI notes
-; higher (or lower) from wherever you are.
+; MIDI note numbers have a logarithmic relationship to frequency in Hz. middle
+; octave A is MIDI note number 69 which is set at 440Hz for tuning purposes.
+; And an octave is a frequency doubling (or halving) and an octave is divided
+; into 12 MIDI notes higher (or lower) from wherever you are.
 (define (midi2hz notenum)
-  (mapgen (lambda (n) (* 440.0 (exp (* (log 2) (/ (- n 69) 12)))))
-          notenum))
+  (lambda (dt)
+    (let ([nv (notenum dt)])
+      (step (* 440.0 (exp (* (log 2) (/ (- (step-val nv) 69) 12))))
+            (midi2hz (step-gen nv))))))
 
 ; The simplest operation that combines two audio Gens is to "mix" them. This
 ; is simple addition of the sample values produced by the processes. However,
 ; you do need to be aware of whether the step can exceed the [-1,1] range.
-
-(define (mix a b)
-  (mapgen2 + a b))
+; This mixer computes a * sa + b * sb. An advantage of expressing it like
+; this instead of (mix a b) is that you can both add and subtract signals
+; with this, and mix them in various proportions too.
+(define (mix a sa b sb)
+  (lambda (dt)
+    (let ([av (sa dt)] [bv (sb dt)])
+      (step (+ (* a (step-val av)) (* b (step-val bv)))
+            (mix a (step-gen av) b (step-gen bv))))))
 
 ; "Modulation" refers to controlling the amplitude of one form with another
 ; form. This is often just the multiplication of two Gens. So we'll use that
 ; simple definition.
 
-(define (mod a b)
-  (mapgen2 * a b))
+(define (mod sa sb)
+  (lambda (dt)
+    (let ([av (sa dt)] [bv (sb dt)])
+      (step (* (step-val av) (step-val bv))
+            (mod (step-gen av) (step-gen bv))))))
 
 ; Controlling Gens often needs linear ramps as a primitive. So we'll make
 ; one. When given two values and a duration, a "line" will start at the
 ; starting value and change linearly to the ending value.
 
 (define (line a dur b)
-  (stitch (mapgen (λ (t) (+ a (* t (- b a))))
-                  (clock (konst (/ 1.0 dur)) 0.0))
-          dur
-          (konst b)))
+  (lambda (dt)
+    (if (<= dur 0.0)
+      (konst b)
+      (step a (line (+ a (* dt (/ (- b a) dur))) (- dur dt) b)))))
 
 ; expon is like line except it make an exponential curve instead of a linear one
 ; between the two end values a and b.
 (define (expon a dur b)
-  (let ([la (log a)]
-        [lb (log b)])
-    (stitch (mapgen (λ (t) (real-part (exp (+ la (* t (- lb la))))))
-                    (clock (konst (/ 1.0 dur)) 0.0))
-            dur
-            (konst b))))
+  (lambda (dt)
+    (if (<= dur 0.0)
+      (konst b)
+      (step a (expon (exp (+ a (* (- (log b) (log a)) (/ dt dur)))) (- dur dt) b)))))
 
 ; An exponential "decay" starts at some value and goes to 0 exponentially at some
 ; rate.
@@ -194,8 +126,9 @@
       b
       (lambda (dt)
         ; Keep reducing the duration as we run a.
-        (match-let ([(step av ag) (a dt)])
-          (step av (stitch ag (- dur dt) b))))))
+        (let ([av (a dt)])
+          (step (step-val a)
+                (stitch (step-gen a) (- dur dt) b))))))
 
 ; Single time step delay.
 (define (d g (v 0.0))
@@ -261,15 +194,15 @@
 ; So now we have a bunch of audio operators and methods to combine them so we can
 ; construct Gens and render them to a file for playback.
 
-; Below are some common "biquad filters" that are useful for synthesis.
-; I've included them here just to make the point that we can continue
-; modelling more operators using the same approach. Understanding the
-; math here requires getting into digital signal processing and that's
-; not a requirement. Just understand that `lpf` cuts of higher frequencies,
-; `bpf` selects frequencies around a given value and `hpf` cuts off lower
-; frequencies. `lpf` is useful to "smooth" sounds, "hpf" is useful to get
-; rid of offsets and "bpf" is useful as model of resonance. This isn't
-; an exhaustive list.
+; Below are some common "biquad filters" that are useful for synthesis. I've
+; included them here just to make the point that we can continue modelling more
+; operators using the same approach. Understanding the math here requires
+; getting into digital signal processing and that's not a requirement for our
+; purpose here. Just understand that `lpf` cuts of higher frequencies, `bpf`
+; selects frequencies around a given value and `hpf` cuts off lower
+; frequencies. `lpf` is useful to "smooth" noisy sounds, "hpf" is useful to get
+; rid of constant or nearly-constant offsets and "bpf" is useful as model of
+; resonance. This isn't an exhaustive list of possible filters.
 
 (define (biquad b0 b1 b2 a0 a1 a2 xn xn1 xn2 yn1 yn2)
   (/ (+ (* b0 xn) (* b1 xn1) (* b2 xn2)
@@ -351,3 +284,69 @@
           (let ([yn (biquad b0 b1 b2 a0 a1 a2 xn xn1 xn2 yn1 yn2)])
             (step yn (hpf* xg xn xn1 yn yn1))))))
     (hpf* g 0.0 0.0 0.0 0.0)))
+
+; Finally a word that lets us write the audio represented by a gen
+; to a "WAV" format file.
+(define (write-wav-file wav-filename
+                        gen
+                        duration
+                        [sample-rate *default-sampling-rate*])
+  (define dt (/ 1.0 sample-rate))
+  (define num-samples (exact-round (* duration sample-rate)))
+  (define num-channels 1)
+  (define bytes-per-sample 4)
+  (define bits-per-sample (* 8 bytes-per-sample))
+  (define byte-rate (* sample-rate num-channels bytes-per-sample))
+  (define block-align (* num-channels bytes-per-sample))
+  (define data-size (* num-samples num-channels bytes-per-sample))
+  (define file-size (+ 36 data-size))
+
+  (call-with-output-file wav-filename #:exists 'replace
+    (lambda (out)
+      (write-RIFF-header file-size out)
+      (write-fmt-subchunk num-channels sample-rate byte-rate block-align bits-per-sample out)
+      (write-data-chunk data-size out)
+      (let loop ([i 0]
+                 [bytes (make-bytes 4)]
+                 [s gen])
+        (let ([v (s dt)])
+          (when (< i num-samples)
+            (real->floating-point-bytes (step-val v)
+                                        4 ; bytes per value
+                                        #f ; little-endian
+                                        bytes
+                                        )
+            (write-bytes bytes out)
+            (loop (+ i 1) bytes (step-gen v))))))))
+
+(define (write-RIFF-header file-size out)
+  (write-bytes #"RIFF" out)
+  (write-int32le file-size out)
+  (write-bytes #"WAVE" out))
+
+(define (write-fmt-subchunk num-channels sample-rate byte-rate block-align bits-per-sample out)
+  (write-bytes #"fmt " out)
+  (write-int32le 16 out)    ; subchunk size
+  (write-int16le 3 out)     ; audio format (3 = IEEE float)
+  (write-int16le num-channels out)
+  (write-int32le sample-rate out)
+  (write-int32le byte-rate out)
+  (write-int16le block-align out)
+  (write-int16le bits-per-sample out))
+
+(define (write-data-chunk data-size out)
+  (write-bytes #"data" out)
+  (write-int32le data-size out))
+
+(define (write-int16le n out)
+  (write-byte (bitwise-and n #xFF) out)
+  (write-byte (bitwise-and (arithmetic-shift n -8) #xFF) out))
+
+(define (write-int32le n out)
+  (write-byte (bitwise-and n #xFF) out)
+  (write-byte (bitwise-and (arithmetic-shift n -8) #xFF) out)
+  (write-byte (bitwise-and (arithmetic-shift n -16) #xFF) out)
+  (write-byte (bitwise-and (arithmetic-shift n -24) #xFF) out))
+
+
+
