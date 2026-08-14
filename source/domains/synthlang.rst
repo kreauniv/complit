@@ -1,5 +1,5 @@
-Modelling sound synthesis
-=========================
+Sound synthesis
+===============
 
 .. admonition:: **Note**
 
