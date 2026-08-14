@@ -20,7 +20,7 @@ CompLIT: Programming Literacy (WORK-IN-PROGRESS)
    parsing2
    alternative-syntax
    recap
-   technical-term
+   technical-terms
    modelling-domains
    representations
    svg
