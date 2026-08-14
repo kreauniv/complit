@@ -464,6 +464,9 @@ exact derivative at that position as well!
    at a point and its derivative at the point **exactly** (i.e. without
    assuming an :math:`\epsilon` and using the limit definition).
 
+Simple linear regression
+------------------------
+
 We can test this out using a simple linear regression learning loop. We model a
 dataset of (x,y) pairs using the equation :math:`y=px` with parameter `p`, and
 the loss function :math:`(1/N)\sum_i|y_i-px_i|^2`. The key thing to note here
