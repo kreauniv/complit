@@ -186,9 +186,9 @@
 ; mod to express this combination approach.
 
 (define (crossfade xdur a adur b)
-  (mix (cut adur (mod (fadeout adur xdur) a))
-       (after (- adur xdur)
-              (mod (fadein xdur) b))))
+  (mix 1.0 (cut adur (mod (fadeout adur xdur) a))
+       1.0 (after (- adur xdur)
+                  (mod (fadein xdur) b))))
 
 
 ; So now we have a bunch of audio operators and methods to combine them so we can
