@@ -7,3 +7,4 @@ Modelling domains/
    domains/calculus
    domains/modelling-images
    domains/synthlang
+   domains/quantum
