@@ -2,13 +2,11 @@ Generalizations
 ===============
 
 Programs afford a unique capability where a procedure that was made
-specifically for some circumstance can be (almost) mechanically generalized in
-many ways to produce procedures that can be applied in many other
-circumstances. A generalization is said to be useful if it provides a concept
-that be applied in a number of circumstances other than the one in which it was
-constructed. This goes to say that not _all_ generalizations are worth the
-effort and, more importantly, the cost of inventing a vocabulary for the
-generalization.
+specifically for some circumstance can be (almost) mechanically generalized. A
+generalization is useful if it provides a concept that can be applied in a
+number of circumstances other than the one in which it was constructed. So not
+_all_ generalizations are worth the effort and, since generalizations involve
+inventing vocabulary, the cost of the additional vocabulary.
 
 .. hint:: Constructing good generalizations is an art learnt by experience,
    but we can give some guidelines towards that.

@@ -95,7 +95,7 @@ to contracts in what they help clarify, though operationally they're different.
 
 The **reason** we won't be looking at these in depth is that they all
 constitute a set of tools that turn the mechanism of computing on to validating
-what we're expressing in programming languages. They do not alter the "meaning"
+what we're expressing in programming languages. They do not alter the **meaning**
 of the programs we write [#tsmean]_ except to make clear to those making use of
 definitions written by others as to the conditions under which those
 definitions are usable and the guarantees they provide when used under those
