@@ -1,45 +1,32 @@
 #lang racket
-(require racket/contract)
 (require racket/flonum)
 (require math/flonum)
 
 (provide run-circuit)
 
-(define operator-name/c (or/c 'H 'cnot 'swap 'cswap)) 
-(define operator/c (-> operator-name/c any/c ... void?))
-(define measure/c (-> nonnegative-integer?))
-(define program/c (-> operator/c measure/c any/c ... any/c))
-(define (qubit-index/c N) (and/c integer? (>=/c 0) (</c N)))
-
 #|
-program = (λ (op measure . args) ...)
+program = (λ (op measure) ...)
 Below, i, j, k are qubit indices, theta is an angle in radians.
 Gates usage -
   (op 'H i)
-  (op 'cnot i j)      ; i is control qubit and j is the controlled qubit.
+  (op 'cnot i j)
   (op 'swap i j)
-  (op 'cswap i j k)   ; i is the control qubit
+  (op 'cswap i j k)
+  (op 'toffoli i j k)
+  (op 'X i)
+  (op 'Y i)
+  (op 'Z i)
+  (op 'S i)
+  (op 'T i)
+  (op 'Rx i theta)
+  (op 'Ry i theta)
+  (op 'Rz i theta)
   (measure) -> integer state index
-
-Example circuit -
-
-q0 --- H ---o---- H --- [/]
-            |
-q1 ---------X----------
-
-(run-circuit 2 3 empty
-   (lambda (op measure)
-      (op 'H 0)
-      (op 'cnot 0 1)
-      (op 'H 0)
-      (measure)))
 |#
-(define/contract (run-circuit N initial-state args program)
-  (-> positive-integer? nonnegative-integer? list? program/c any/c)
+(define (run-circuit N initial-state program)
   (define reg (make-statevec N initial-state))
-  (define/contract (H i)
-    (-> (qubit-index/c N) void?)
-    (with-qubits N (list i)
+  (define (H i)
+    (with-qubits reg N (list i)
       (λ (x ibit)
         (let* ([amp0 (svamp reg x)]
                [amp1 (svamp reg (+ x ibit))]
@@ -47,9 +34,8 @@ q1 ---------X----------
                [amp1h (* invsqrt2 (- amp0 amp1))])
           (svsetamp! reg x amp0h)
           (svsetamp! reg (+ x ibit) amp1h)))))
-  (define/contract (cnot i j)
-    (-> (qubit-index/c N) (qubit-index/c N) void?)
-    (with-qubits N (list i j)
+  (define (cnot i j)
+    (with-qubits reg N (list i j)
       (λ (x ibit jbit)
         (let* ([b10 (+ x ibit)]
                [b11 (+ x ibit jbit)]
@@ -57,9 +43,8 @@ q1 ---------X----------
                [amp11 (svamp reg b11)])
           (svsetamp! reg b10 amp11)
           (svsetamp! reg b11 amp10)))))
-  (define/contract (swap i j)
-    (-> (qubit-index/c N) (qubit-index/c N) void?)
-    (with-qubits N (list i j)
+  (define (swap i j)
+    (with-qubits reg N (list i j)
       (λ (x ibit jbit)
         (let* ([b10 (+ x ibit)]
                [b01 (+ x jbit)]
@@ -67,9 +52,8 @@ q1 ---------X----------
                [amp01 (svamp reg b01)])
           (svsetamp! reg b10 amp01)
           (svsetamp! reg b01 amp10)))))
-  (define/contract (cswap i j k)
-    (-> (qubit-index/c N) (qubit-index/c N) (qubit-index/c N) void?)
-    (with-qubits N (list i j k)
+  (define (cswap i j k)
+    (with-qubits reg N (list i j k)
       (λ (x ibit jbit kbit)
         (let* ([b101 (+ x ibit kbit)]
                [b110 (+ x ibit jbit)]
@@ -77,7 +61,78 @@ q1 ---------X----------
                [amp110 (svamp reg b110)])
           (svsetamp! reg b101 amp110)
           (svsetamp! reg b110 amp101)))))
-  (define/contract (measure) measure/c
+  (define (toffoli i j k)
+    (with-qubits reg N (list i j k)
+      (λ (x ibit jbit kbit)
+        (let* ([b110 (+ x ibit jbit)]
+               [b111 (+ x ibit jbit kbit)]
+               [amp110 (svamp reg b110)]
+               [amp111 (svamp reg b111)])
+          (svsetamp! reg b110 amp111)
+          (svsetamp! reg b111 amp110)))))
+  (define (X i)
+    (with-qubits reg N (list i)
+      (λ (x ibit)
+        (let ([a (svamp reg x)]
+              [b (svamp reg (+ x ibit))])
+          (svsetamp! reg (+ x ibit) a)
+          (svsetamp! reg x b)))))
+  (define (Y i)
+    (with-qubits reg N (list i)
+      (λ (x ibit)
+        (let ([a (svamp reg x)]
+              [b (svamp reg (+ x ibit))])
+          (svsetamp! reg (+ x ibit) (* 0+1i a))
+          (svsetamp! reg x (* 0-1i b))))))
+  (define (Z i)
+    (with-qubits reg N (list i)
+      (λ (x ibit)
+        (let ([amp1 (svamp reg (+ x ibit))])
+          (svsetamp! reg (+ x ibit) (- amp1))))))
+  (define (S i)
+    (with-qubits reg N (list i)
+      (λ (x ibit)
+        (let ([amp1 (svamp reg (+ x ibit))])
+          (svsetamp! reg (+ x ibit) (* 0+1i amp1))))))
+  (define (T i)
+    (with-qubits reg N (list i)
+      (λ (x ibit)
+        (let ([amp1 (svamp reg (+ x ibit))])
+          (svsetamp! reg (+ x ibit) (* invsqrt2 1+1i amp1))))))
+  (define (Rx i theta)
+    (let ([c (cos (* 0.5 theta))]
+          [s (* 0-1i (sin (* 0.5 theta)))])
+      (with-qubits reg N (list i)
+        (λ (x ibit)
+          (let* ([amp0 (svamp reg x)]
+                 [amp1 (svamp reg (+ x ibit))]
+                 [amp0rx (+ (* c amp0) (* s amp1))]
+                 [amp1rx (+ (* s amp0) (* c amp1))])
+            (svsetamp! reg x amp0rx)
+            (svsetamp! reg (+ x ibit) amp1rx))))))
+  (define (Ry i theta)
+    (let ([c (cos (* 0.5 theta))]
+          [s (* -1 (sin (* 0.5 theta)))])
+      (with-qubits reg N (list i)
+        (λ (x ibit)
+          (let* ([amp0 (svamp reg x)]
+                 [amp1 (svamp reg (+ x ibit))]
+                 [amp0ry (+ (* c amp0) (* s amp1))]
+                 [amp1ry (+ (* s amp0) (* c amp1))])
+            (svsetamp! reg x amp0ry)
+            (svsetamp! reg (+ x ibit) amp1ry))))))
+  (define (Rz i theta)
+    (let ([phinv (exp (* 0.5 0-1i theta))]
+          [ph (exp (* 0.5 0+1i theta))])
+      (with-qubits reg N (list i)
+        (λ (x ibit)
+          (let* ([amp0 (svamp reg x)]
+                 [amp1 (svamp reg (+ x ibit))]
+                 [amp0rz (* phinv amp0)]
+                 [amp1rz (* ph amp1)])
+            (svsetamp! reg x amp0rz)
+            (svsetamp! reg (+ x ibit) amp1rz))))))
+  (define (measure)
     (let* ([probs (cumulative-probability-distribution (expt 2 N) reg)]
            [state (random-select probs)]
            [amp (svamp reg state)])
@@ -87,20 +142,29 @@ q1 ---------X----------
       ; Preserve the phase.
       (svsetamp! reg state (/ amp (sqrt (cabs2 amp))))
       state))
-  (define/contract (op name . args)
-    (-> operator-name/c any/c ... any/c)
+  (define (op name . args)
     (case name
-      [(H) (apply H args)]
-      [(cnot) (apply cnot args)]
-      [(swap) (apply swap args)]
-      [(cswap) (apply cswap args)]))
-  (apply program op measure args))
+      [('H) (apply H args)]
+      [('cnot) (apply cnot args)]
+      [('swap) (apply swap args)]
+      [('cswap) (apply cswap args)]
+      [('toffoli) (apply toffoli args)]
+      [('X) (apply X args)]
+      [('Y) (apply Y args)]
+      [('Z) (apply Z args)]
+      [('S) (apply S args)]
+      [('T) (apply T args)]
+      [('Rx) (apply Rx args)]
+      [('Ry) (apply Ry args)]
+      [('Rz) (apply Rz args)]
+      [else (error (format "Unknown operator: ~a" name))]))
+  (program op measure))
 
 (define sqrt2 (fl (sqrt 2)))
 (define invsqrt2 (fl (/ 1.0 sqrt2)))
 
 ; Performs the procedure `proc` once for each subspace of gate inputs.
-(define (with-qubits N bits proc)
+(define (with-qubits reg N bits proc)
   (let* ([bitplaces (map (λ (k) (expt 2 k)) bits)]
          [bitmask (apply + bitplaces)])
     (let loop ([x 0] [xN (expt 2 N)])
@@ -124,8 +188,7 @@ q1 ---------X----------
     (vector-set! probs N (pacc 0.0))
     probs))
 
-(define/contract (random-select cpdf)
-  (-> any/c nonnegative-integer?)
+(define (random-select cpdf)
   (let ([N (- (vector-length cpdf) 1)]
         [p (random)])
     (let loop ([i (- N 1)])
