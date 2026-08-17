@@ -160,31 +160,31 @@ f'(x) &amp; = &amp; \sum_{k=1}^{N} k a_k x^{k-1}
 <p>But we also know <span class="math notranslate nohighlight">\(f(x) = a + xg(x)\)</span> and that tells us that
 <span class="math notranslate nohighlight">\(f'(x) = g(x) + xg'(x)\)</span>. So we can write the derivative
 calculation as –</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>; maps polynomial to polynomial
-(define (derivative f)
-   (if (empty? f)
-       empty
-       (padd (rest f) (xtimes (derivative (rest f))))))
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="c1">; maps polynomial to polynomial</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">derivative</span><span class="w"> </span><span class="n">f</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">f</span><span class="p">)</span>
+<span class="w">       </span><span class="nb">empty</span>
+<span class="w">       </span><span class="p">(</span><span class="n">padd</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">xtimes</span><span class="w"> </span><span class="p">(</span><span class="n">derivative</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">f</span><span class="p">))))))</span>
 </pre></div>
 </div>
 <p>Here we’re introducing the word <cite>padd</cite> to stand for polynomial addition, and
 the word <cite>xtimes</cite> to represent the construction <span class="math notranslate nohighlight">\(xg(x)\)</span> given
 <span class="math notranslate nohighlight">\(g(x)\)</span>. These are easy to define.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(define (padd p1 p2)
-   (if (empty? p1) p2
-       (if (empty? p2) p1
-           (cons (+ (first p1) (first p2))
-                 (padd (rest p1) (rest p2))))))
+<div class="highlight-racket notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">padd</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="n">p2</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">p1</span><span class="p">)</span><span class="w"> </span><span class="n">p2</span>
+<span class="w">       </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">p2</span><span class="p">)</span><span class="w"> </span><span class="n">p1</span>
+<span class="w">           </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">p1</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">p2</span><span class="p">))</span>
+<span class="w">                 </span><span class="p">(</span><span class="n">padd</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">p1</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">p2</span><span class="p">))))))</span>
 
-(define (xtimes g) (cons 0 g))
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">xtimes</span><span class="w"> </span><span class="n">g</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">g</span><span class="p">))</span>
 
-; We can also generalize that a little for convenience.
-; With `plin`, we compute a * p1 + b * p2
-(define (plin a p1 b p2)
-   (if (empty? p1) (map (lambda (x) (* x b)) p2)
-       (if (empty? p2) (map (lambda (x) (* x a)) p1)
-           (cons (+ (* a (first p1)) (* b (first p2)))
-                 (plin a (rest p1) b (rest p2))))))
+<span class="c1">; We can also generalize that a little for convenience.</span>
+<span class="c1">; With `plin`, we compute a * p1 + b * p2</span>
+<span class="p">(</span><span class="k">define</span><span class="w"> </span><span class="p">(</span><span class="n">plin</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="n">p2</span><span class="p">)</span>
+<span class="w">   </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">p1</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">b</span><span class="p">))</span><span class="w"> </span><span class="n">p2</span><span class="p">)</span>
+<span class="w">       </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">empty?</span><span class="w"> </span><span class="n">p2</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">a</span><span class="p">))</span><span class="w"> </span><span class="n">p1</span><span class="p">)</span>
+<span class="w">           </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">p1</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">p2</span><span class="p">)))</span>
+<span class="w">                 </span><span class="p">(</span><span class="n">plin</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">p1</span><span class="p">)</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">(</span><span class="nb">rest</span><span class="w"> </span><span class="n">p2</span><span class="p">))))))</span>
 </pre></div>
 </div>
 <div class="admonition-task admonition">

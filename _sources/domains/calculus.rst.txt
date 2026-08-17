@@ -149,7 +149,7 @@ But we also know :math:`f(x) = a + xg(x)` and that tells us that
 :math:`f'(x) = g(x) + xg'(x)`. So we can write the derivative
 calculation as --
 
-.. code::
+.. code:: racket
 
    ; maps polynomial to polynomial
    (define (derivative f)
@@ -161,7 +161,7 @@ Here we're introducing the word `padd` to stand for polynomial addition, and
 the word `xtimes` to represent the construction :math:`xg(x)` given
 :math:`g(x)`. These are easy to define.
 
-.. code::
+.. code:: racket
 
    (define (padd p1 p2)
       (if (empty? p1) p2
