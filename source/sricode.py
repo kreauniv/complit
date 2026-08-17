@@ -1,6 +1,16 @@
+# -*- coding: utf-8 -*-
+"""
+pygments.styles.xcode
+~~~~~~~~~~~~~~~~~~~~~
+
+Style similar to the `Xcode` default theme.
+
+:copyright: Copyright 2006-2014 by the Pygments team, see AUTHORS.
+:license: BSD, see LICENSE for details.
+"""
+
 from pygments.style import Style
 from pygments.token import (
-    Text,
     Keyword,
     Name,
     Comment,
@@ -8,17 +18,37 @@ from pygments.token import (
     Error,
     Number,
     Operator,
-    Generic,
+    Literal,
 )
 
 
 class sricodeStyle(Style):
+    """
+    Style similar to the Xcode default colouring theme.
+    """
+
     default_style = ""
+
     styles = {
-        Text: "#000000",
-        Comment: "#008426",
-        String: "#D92823",
-        Number: "#2F2ECF",
-        Keyword: "bold #000000",
-        Name.Class: "#753EA3",
+        Comment: "#177500",
+        Comment.Preproc: "#633820",
+        String: "#C41A16",
+        String.Char: "#2300CE",
+        Operator: "#000000",
+        Keyword: "bold #A90D91",
+        Name: "#000000",
+        Name.Attribute: "#836C28",
+        Name.Class: "#3F6E75",
+        Name.Function: "#000000",
+        Name.Builtin: "#A90D91",
+        # In Obj-C code this token is used to colour Cocoa types
+        Name.Builtin.Pseudo: "#5B269A",
+        Name.Variable: "#000000",
+        Name.Tag: "#000000",
+        Name.Decorator: "#000000",
+        # Workaround for a BUG here: lexer treats multiline method signatres as labels
+        Name.Label: "#000000",
+        Literal: "#1C01CE",
+        Number: "#1C01CE",
+        Error: "#000000",
     }
