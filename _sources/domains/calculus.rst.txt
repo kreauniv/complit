@@ -351,49 +351,51 @@ values -- :math:`f(x)` and :math:`f'(x)`. Note that :math:`x` here is not a "var
 but a specific position around which we're exploring what :math:`f` looks like.
 Since it requires two values, we can represent this region as a pair :math:`(f(x), f'(x))`.
 
-What does this pair for :math:`f(x) = x` look like? It would be :math:`(x,1)` for whatever
-given value of :math:`x`. Let's use lambdas for the two functions in this representation,
-and use a list of two functions as the representation for the behaviour of the function
-around a given region. So we'll represent :math:`f(x) = x` around :math:`x = 3` as the list
-`(dual 3 1)`. The constant function :math:`f(x) = k` will then have the representation
-`(dual k 0)`. 
+What does this pair for :math:`f(x) = x` look like? It would be :math:`(x,1)`
+for whatever given value of :math:`x`. Let's use lambdas for the two functions
+in this representation, and use a list of two functions as the representation
+for the behaviour of the function around a given region. So we'll represent
+:math:`f(x) = x` around :math:`x = 3` as the structure `(dual 3 1)`. The
+constant function :math:`f(x) = k` will then have the representation `(dual k
+0)`. Broadly, `(dual x y)` is taken to correspond to :math:`x+\epsilon y`, where
+:math:`\epsilon^2 = 0`.
 
 .. admonition:: `struct`
 
    The `struct` declaration helps us keep associated data together and provide
-   appropriate names. In this case, declaring `(struct dual (x dx))` provides a
+   appropriate names. In this case, declaring `(struct dual (x y))` provides a
    number of words automatically for us.
 
    1. We can construct such a pair using the word `dual` like `(dual 3.0 1.0)`.
    2. The word `dual?` can be used to check whether a given value is this kind
       of struct or not, like `(dual? d)`.
    3. Given such a struct value bound to some identifier, say `d`, the words
-      `dual-x` and `dual-dx`, derived from the struct's name and the names we gave
+      `dual-x` and `dual-y`, derived from the struct's name and the names we gave
       to its two fields, can be used to get at the two fields like `(dual-x d)`
-      and `(dual-dx d)`.
+      and `(dual-y d)`.
 
 Now, using the properties of derivatives of functions, we can write down
 operations on these "dual numbers" like this --
 
 .. code:: racket
 
-   (struct dual (x dx))
+   (struct dual (x y))
 
    ; Derivates add straightforwardly.
    (define (d+ d1 d2)
      (dual (+ (dual-x d1) (dual-x d2))
-           (+ (dual-dx d1) (dual-dx d2))))
+           (+ (dual-y d1) (dual-y d2))))
 
    ; Derivatives substract straightforwardly too.
    (define (d- d1 d2)
      (dual (- (dual-x d1) (dual-x d2))
-           (- (dual-dx d1) (dual-dx d2))))
+           (- (dual-y d1) (dual-y d2))))
 
    ; We need to use the derivative of products rule here.
    (define (d* d1 d2)
      (dual (* (dual-x d1) (dual-x d2))
-           (+ (* (dual-x d1) (dual-dx d2)) 
-              (* (dual-dx d1) (dual-x d2)))))
+           (+ (* (dual-x d1) (dual-y d2)) 
+              (* (dual-y d1) (dual-x d2)))))
 
    ; (a+εb)/(c+εd)
    ; = (1/c)(a+εb)(1-εd/c)
@@ -401,9 +403,9 @@ operations on these "dual numbers" like this --
    ; = (a/c) + ε(b/c-ad/c²)
    (define (d/ d1 d2)
      (dual (/ (dual-x d1) (dual-x d2))
-           (+ (/ (dual-dx d1) (dual-x d2))
-              (- (/ (dual-dx d1) (dual-x d2))
-                 (/ (* (dual-x d1) (dual-dx d2))
+           (+ (/ (dual-y d1) (dual-x d2))
+              (- (/ (dual-y d1) (dual-x d2))
+                 (/ (* (dual-x d1) (dual-y d2))
                     (* (dual-x d2) (dual-x d2)))))))
 
    (define (dconst k) (dual k 0))
@@ -411,38 +413,38 @@ operations on these "dual numbers" like this --
    ; 1/(a+εb) = 1/a -εb/a²
    (define (d1/ d)
      (dual (/ 1 (dual-x d)) 
-           (/ (- (dual-dx d)) (* (dual-x d) (dual-x d)))))
+           (/ (- (dual-y d)) (* (dual-x d) (dual-x d)))))
 
    (define (dlinear c m x)
        (dual (+ (* m (dual-x x)) c)
-             (* m (dual-dx x))))
+             (* m (dual-y x))))
 
    ; (a+εb)^n = a^n+εnba^(n-1)
    (define (dpow x n)
      (dual (expt (dual-x x) n)
-           (* (dual-dx x) n (expt (dual-x x) (- n 1)))))
+           (* (dual-y x) n (expt (dual-x x) (- n 1)))))
 
    ; e^(a+εb) = e^a(1+εb)
    (define (dexp x)
      (dual (exp (dual-x x))
-           (* (dual-dx x) (exp (dual-x x)))))
+           (* (dual-y x) (exp (dual-x x)))))
      
    (define (dsin x)
      (dual (sin (dual-x x))
-           (* (dual-dx x) (cos (dual-x x)))))
+           (* (dual-y x) (cos (dual-x x)))))
 
    (define (dcos x)
      (dual (cos (dual-x x))
-           (* (dual-dx x) -1 (sin (dual-x x)))))
+           (* (dual-y x) -1 (sin (dual-x x)))))
 
    (define (dsq x)
      (dual (* (dual-x x) (dual-x x))
-           (* (dual-dx x) 2 (dual-x x))))
+           (* (dual-y x) 2 (dual-x x))))
 
    ; sqrt(a+εb) = sqrt(a)(1+ε(b/2a)) = sqrt(a)+εb/(2sqrt(a))
    (define (dsqrt x)
      (dual (sqrt (dual-x x))
-           (* (dual-dx x) (/ 1/2 (sqrt (dual-x x))))))
+           (* (dual-y x) (/ 1/2 (sqrt (dual-x x))))))
 
    ; ... and more, for whatever vocabulary of basic functions you need.
 
@@ -503,7 +505,7 @@ which enables us to run the learning loop.
        (let ([l (loss p xs ys)])
          (if (or (> N maxN) (< (sqrt (dual-x l)) stop-loss))
              (list p l N)
-             (loop (d- p (dual (* lr (dual-dx l)) 0)) (+ N 1))))))
+             (loop (d- p (dual (* lr (dual-y l)) 0)) (+ N 1))))))
 
    ; Example case where the learnt parameter should be approx 2.1
    (define xs (list 1 2 3 4 5))
