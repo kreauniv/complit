@@ -16,7 +16,10 @@
 
 
 # -- Project information -----------------------------------------------------
+import os
+import sys
 
+sys.path.insert(0, os.path.abspath("."))
 project = "CompLIT: Programming Literacy"
 copyright = "2026, Srikumar K. S."
 author = "Srikumar K. S."
@@ -66,7 +69,7 @@ html_static_path = ["_static"]
 html_css_files = ["custom.css"]
 
 # -- Extension configuration -------------------------------------------------
-pygments_style = "xcode"
+pygments_style = "sricode.sricodeStyle"
 
 # -- Options for todo extension ----------------------------------------------
 
