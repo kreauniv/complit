@@ -231,10 +231,14 @@ Gates usage -
           ; it simple for illustration.
           (if (>= p (vector-ref cpdf i)) i (loop (- i 1)))
           0))))
-                                  
+
+(define (state-index/c sv)
+  (and/c exact-nonnegative-integer?
+         (</c (expt 2 (statevec-qubits sv)))))
+
 (define/contract (svamp sv i)
   (->i ((sv statevec?)
-        (i (sv) (and/c exact-nonnegative-integer? (</c (expt 2 (statevec-qubits sv))))))
+        (i (sv) (state-index/c sv)))
        (result complex?))
   (let ([amps (statevec-amps sv)]
         [ix (* 2 i)])
@@ -242,7 +246,7 @@ Gates usage -
                       (flvector-ref amps (+ 1 ix)))))
 (define/contract (svsetamp! sv i v)
   (->i ((sv statevec?)
-        (i (sv) (and/c exact-nonnegative-integer? (</c (expt 2 (statevec-qubits sv)))))
+        (i (sv) (state-index/c sv))
         (v complex?))
        (result void?))
   (let ([amps (statevec-amps sv)]
